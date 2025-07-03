@@ -14,6 +14,7 @@ const Hero = () => {
             <h1 className="text-black font-semibold text-sm md:text-base">
               Your #1 Platform for IT solution
             </h1>
+            
           </div>
         </div>
       </div>
