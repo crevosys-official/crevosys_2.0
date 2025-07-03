@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "icon": "/card_icons/Icon.png",
+    "title": "Development",
+    "description": "Development and building amazing digital products with best user experiences strategy."
+  },
+  {
+    "id": 2,
+    "icon": "/card_icons/Marketing.png",
+    "title": "Marketing",
+    "description": "Marketing services starts and ends within a strategy builds wireframe & solid prototyping posts design."
+  },
+  {
+    "id": 3,
+    "icon": "/card_icons/Design.png",
+    "title": "Design",
+    "description": "We design professional looking yet simple Logo are search engine and user friendly."
+  },
+  {
+    "id": 4,
+    "icon": "/card_icons/Technology.png",
+    "title": "Technology",
+    "description": "Social media posts design Infographic design and email imagery security and updates amazing."
+  }
+]
