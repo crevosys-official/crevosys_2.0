@@ -3,6 +3,7 @@ import Image from "next/image";
 import React, { useRef } from "react";
 import { BackgroundCircles } from "./design/Hero";
 import DecryptedText from "./animation/Decrypted-Text";
+import { Smile } from "lucide-react";
 
 const Hero = () => {
   const parallaxRef = useRef(null);
@@ -39,12 +40,15 @@ const Hero = () => {
           </div>
         </div>
         <div className="flex mt-3 items-center justify-center">
-          <h1 className="bg-gradient-to-r from-[#e4e4e4] to-[#ababab] text-transparent bg-clip-text font-secondary md:text-9xl text-5xl font-semibold tracking-wider">
+          <h1 className="bg-gradient-to-r from-[#e4e4e4] to-[#ababab] text-transparent bg-clip-text font-heading md:text-9xl text-5xl uppercase font-bold py-1 tracking-wide">
             Creativity Sparks
           </h1>
         </div>
         <div className="flex items-center justify-center relative mb-5">
-          <span className="inline-block text-[#ababab] relative text-5çxl md:text-9xl tracking-wider font-secondary font-semibold">
+          <span className="inline-block text-[#ababab] relative text-5çxl md:text-9xl tracking-wide font-heading uppercase font-bold">
+            <div className="group hover:scale-110 w-22 h-22 bg-orange-400 rounded-full absolute -right-24 -top-10 flex items-center justify-center transition duration-300 group-hover:scale-110 cursor-pointer">
+              <Smile className="w-18 h-18 text-[#e9e9e9] transition duration-300 group-hover:rotate-30" />
+            </div>
             Revolution
             <Image
               className="absolute top-full left-0 w-full"
@@ -62,7 +66,6 @@ const Hero = () => {
             text="Revolutionizing businesses with modern IT solutions and world-class
             design."
             animateOn="hover"
-            useOriginalCharsOnly={true || undefined}
           />
         </div>
       </div>

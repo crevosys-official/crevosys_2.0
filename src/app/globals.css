@@ -1,13 +1,40 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+  font-family: "HeadingNow";
+  src: url("/assets/fonts/headingNow57.woff2") format("woff2");
+
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "HeadingNow2";
+  src: url("/assets/fonts/headingNow56.woff2") format("woff2");
+
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "HeadingNow3";
+  src: url("/assets/fonts/headingNow55.woff2") format("woff2");
+
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --font-primary: "Inter Tight", sans-serif;
   --font-secondary: "Bebas Neue", sans-serif;
+  --font-heading: "HeadingNow", sans-serif;
+  --font-heading2: "HeadingNow2", sans-serif;
+  --font-heading3: "HeadingNow3", sans-serif;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
@@ -47,6 +74,9 @@
   --color-foreground: var(--foreground);
   --font-primary: var(--font-primary);
   --font-secondary: var(--font-secondary);
+  --font-heading: var(--font-heading);
+  --font-heading2: var(--font-heading2);
+  --font-heading3: var(--font-heading3);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -127,4 +157,8 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.slow-bounce {
+  animation-duration: 3s !important;
 }
