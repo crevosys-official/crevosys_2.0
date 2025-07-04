@@ -16,6 +16,8 @@
     "next": "15.3.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-just-parallax": "^3.1.16",
+    "react-next-parallax": "^0.1.0",
     "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {

@@ -1,41 +1,69 @@
+"use client";
 import Image from "next/image";
-import React from "react";
+import React, { useRef } from "react";
+import { BackgroundCircles } from "./design/Hero";
 
 const Hero = () => {
+  const parallaxRef = useRef(null);
+
   return (
-    <div className="flex flex-col md:gap-6 justify-center mt-12 container mx-auto">
-      <div className="flex mb-5 items-center justify-center">
-        <div className=" rounded-full bg-gradient-to-r from-[#D9D9D9] to-[#737373] items-center">
-          <div className="flex items-center gap-3 md:py-2 md:px-3 p-2">
-            <Image
-              className="w-[30px] h-[30px] rounded-2xl"
-              src="/elements/star.png"
-              width={30}
-              height={30}
-              alt=""
-            />
-            <h1 className="text-black font-primary font-semibold text-sm md:text-base">
-              Your #1 Platform for IT solution
-            </h1>
-          </div>
+    <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Gradient background image */}
+
+      {/* Background circles */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+        <div
+          className="w-full h-full opacity-15"
+          style={{ top: "200px", position: "relative" }}>
+          <BackgroundCircles parallaxRef={parallaxRef} />
         </div>
       </div>
-      <div className="flex mt-3 items-center justify-center">
-        <h1 className="bg-gradient-to-r from-[#e4e4e4] to-[#ababab] text-transparent bg-clip-text font-secondary md:text-9xl text-5xl font-semibold tracking-wider">
-          Creativity Sparks <br />{" "}
-          <span className="mt-3 items-center justify-center flex">
+
+      <div
+        className="relative z-10 flex flex-col md:gap-6 justify-center container mx-auto -mt-20"
+        ref={parallaxRef}>
+        <div className="flex mb-5 items-center justify-center">
+          <div className=" rounded-full bg-gradient-to-r from-[#D9D9D9] to-[#737373] items-center">
+            <div className="flex items-center gap-3 md:py-2 md:px-3 p-2">
+              <Image
+                className="w-[30px] h-[30px] rounded-2xl"
+                src="/elements/star.png"
+                width={30}
+                height={30}
+                alt=""
+              />
+
+              <h1 className="text-black font-primary font-semibold text-sm md:text-base">
+                Your #1 Platform for IT solution
+              </h1>
+            </div>
+          </div>
+        </div>
+        <div className="flex mt-3 items-center justify-center">
+          <h1 className="bg-gradient-to-r from-[#e4e4e4] to-[#ababab] text-transparent bg-clip-text font-secondary md:text-9xl text-5xl font-semibold tracking-wider">
+            Creativity Sparks
+          </h1>
+        </div>
+        <div className="flex items-center justify-center relative mb-5">
+          <span className="inline-block text-[#ababab] relative text-5çxl md:text-9xl tracking-wider font-secondary font-semibold">
             Revolution
-          </span>{" "}
-        </h1>
+            <Image
+              className="absolute top-full left-0 w-full"
+              src="/curve.png"
+              alt="curve"
+              height={28}
+              width={624}
+            />
+          </span>
+        </div>
+        <div className="flex mt-3 items-center justify-center">
+          <p className="text-gray-400 md:text-2xl text-center mx-10 md:mx-0">
+            Revolutionizing businesses with modern IT solutions and world-class
+            design.
+          </p>
+        </div>
       </div>
-      <div className="flex mt-3 items-center justify-center">
-        <p className="text-gray-400 md:text-2xl text-center mx-10 md:mx-0">
-          Revolutionizing businesses with modern IT solutions and world-class
-          design.
-        </p>
-      </div>
-      <div className="flex md:mt-10 mt-5 items-center justify-center"></div>
-    </div>
+    </section>
   );
 };
 
