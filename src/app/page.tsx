@@ -18,9 +18,9 @@ const page = () => {
         <Image
           src="/gradient.png"
           alt="gradient background"
-          layout="fill"
-          objectFit="cover"
-          className=" opacity-10"
+          fill
+          style={{ objectFit: "cover" }}
+          className="opacity-10"
           priority
         />
       </div>

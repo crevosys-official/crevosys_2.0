@@ -2,14 +2,13 @@
 import Image from "next/image";
 import React, { useRef } from "react";
 import { BackgroundCircles } from "./design/Hero";
+import DecryptedText from "./animation/Decrypted-Text";
 
 const Hero = () => {
   const parallaxRef = useRef(null);
 
   return (
     <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Gradient background image */}
-
       {/* Background circles */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
         <div
@@ -57,10 +56,14 @@ const Hero = () => {
           </span>
         </div>
         <div className="flex mt-3 items-center justify-center">
-          <p className="text-gray-400 md:text-2xl text-center mx-10 md:mx-0">
-            Revolutionizing businesses with modern IT solutions and world-class
-            design.
-          </p>
+          <DecryptedText
+            className="text-gray-400 md:text-2xl text-center mx-10 md:mx-0"
+            encryptedClassName="text-gray-400 opacity-60 md:text-2xl text-center mx-10 md:mx-0"
+            text="Revolutionizing businesses with modern IT solutions and world-class
+            design."
+            animateOn="hover"
+            useOriginalCharsOnly={true || undefined}
+          />
         </div>
       </div>
     </section>
