@@ -5,7 +5,7 @@ const About = () => {
     <div className="container mx-auto">
       {/* content */}
 
-      {/* <hr className=" py-10 opacity-20" /> */}
+      <hr className=" py-10 opacity-20" />
 
       <div className=" text-zinc-200 flex flex-col gap-3">
         <h1 className=" font-heading uppercase text-7xl">

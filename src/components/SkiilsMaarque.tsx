@@ -195,23 +195,24 @@ const SkillsMarquee: React.FC<SkillsMarqueeProps> = ({ className = "" }) => {
 
   return (
     <div className={`container mx-auto ${className}`}>
-      
       {/* Marquee for right slider */}
       <Marquee
         gradient={true}
-        gradientColor="#0E0E15"
+        gradientColor="#181829"
+        gradientWidth={120}
         speed={10}
         pauseOnHover={true}
         direction="right"
         autoFill={true}
-        className="mt-10 py-3 overflow-hidden">
+        className="py-3 overflow-hidden">
         {rightSkills.map(renderSkillImage)}
       </Marquee>
 
       {/* Marquee for left slider */}
       <Marquee
         gradient={true}
-        gradientColor="#0E0E15"
+        gradientColor="#181829"
+        gradientWidth={120}
         speed={10}
         pauseOnHover={true}
         direction="left"

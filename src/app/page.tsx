@@ -1,6 +1,7 @@
 import About from "@/components/About";
 import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
+import Services from "@/components/Services";
 import SkillsMarquee from "@/components/SkiilsMaarque";
 import Image from "next/image";
 import React from "react";
@@ -30,6 +31,7 @@ const page = () => {
       <Hero />
       <SkillsMarquee />
       <About />
+      <Services />
     </div>
   );
 };
