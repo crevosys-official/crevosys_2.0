@@ -1,5 +1,7 @@
+import About from "@/components/About";
 import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
+import SkillsMarquee from "@/components/SkiilsMaarque";
 import Image from "next/image";
 import React from "react";
 
@@ -26,6 +28,8 @@ const page = () => {
       </div>
       <Navbar />
       <Hero />
+      <SkillsMarquee />
+      <About />
     </div>
   );
 };
