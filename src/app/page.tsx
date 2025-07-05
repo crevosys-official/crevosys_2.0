@@ -1,12 +1,16 @@
+"use client";
 import About from "@/components/About";
 import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
 import Services from "@/components/Services";
 import SkillsMarquee from "@/components/SkiilsMaarque";
+import CustomCursor from "@/components/CustomCursor";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 
-const page = () => {
+const Page = () => {
+  const [cursorVariant, setCursorVariant] = useState<"default" | "hero" | "about">("default");
+
   return (
     <div
       className={[
@@ -27,13 +31,22 @@ const page = () => {
           priority
         />
       </div>
+
+      <CustomCursor variant={cursorVariant} />
+
       <Navbar />
-      <Hero />
+      <Hero
+        onCursorEnter={() => setCursorVariant("hero")}
+        onCursorLeave={() => setCursorVariant("default")}
+      />
       <SkillsMarquee />
-      <About />
+      <About
+        onCursorEnter={() => setCursorVariant("about")}
+        onCursorLeave={() => setCursorVariant("default")}
+      />
       <Services />
     </div>
   );
 };
 
-export default page;
+export default Page;

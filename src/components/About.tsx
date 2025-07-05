@@ -1,14 +1,23 @@
+"use client";
 import React from "react";
 
-const About = () => {
+interface AboutProps {
+  onCursorEnter?: () => void;
+  onCursorLeave?: () => void;
+}
+
+const About: React.FC<AboutProps> = ({ onCursorEnter, onCursorLeave }) => {
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto z-20">
       {/* content */}
 
       <hr className=" py-10 opacity-20" />
 
-      <div className=" text-zinc-200 flex flex-col gap-3">
-        <h1 className=" font-heading uppercase text-7xl">
+      <div className=" text-zinc-200 z-10 flex flex-col gap-3">
+        <h1
+          onMouseEnter={onCursorEnter}
+          onMouseLeave={onCursorLeave}
+          className=" font-heading uppercase text-7xl">
           We&apos;re a full service <br />
           digital agency
         </h1>
@@ -24,8 +33,6 @@ const About = () => {
           move fast to make it happen.
         </p>
       </div>
-
-      {/* images */}
     </div>
   );
 };
