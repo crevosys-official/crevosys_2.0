@@ -4,6 +4,7 @@ import React, { useRef } from "react";
 import { BackgroundCircles } from "./design/Hero";
 import DecryptedText from "./animation/Decrypted-Text";
 import { Smile } from "lucide-react";
+import Magnet from "./animation/megnet";
 
 const Hero = () => {
   const parallaxRef = useRef(null);
@@ -46,10 +47,17 @@ const Hero = () => {
         </div>
         <div className="flex items-center justify-center relative mb-5">
           <span className="inline-block text-[#ababab] relative text-5çxl md:text-9xl tracking-wide font-heading uppercase font-bold">
-            <div className="group hover:scale-110 w-22 h-22 bg-orange-400 rounded-full absolute -right-24 -top-10 flex items-center justify-center transition duration-300 group-hover:scale-110 cursor-pointer">
-              <Smile className="w-18 h-18 text-[#e9e9e9] transition duration-300 group-hover:rotate-30" />
-            </div>
             Revolution
+            <Magnet
+              padding={100}
+              disabled={false}
+              magnetStrength={15}
+              className="absolute -top-14 right-0 z-10"
+            >
+              <div className="group hover:scale-110 w-20 h-20 bg-orange-400 rounded-full flex items-center justify-center transition duration-300 group-hover:scale-110 cursor-pointer">
+                <Smile className="w-16 h-16 text-[#e9e9e9] transition duration-300 group-hover:rotate-30" />
+              </div>
+            </Magnet>
             <Image
               className="absolute top-full left-0 w-full"
               src="/curve.png"
