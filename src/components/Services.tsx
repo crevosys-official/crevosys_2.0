@@ -30,7 +30,7 @@ const Services = () => {
 
       {/* Content */}
       <div className="relative z-10">
-        <div className=" flex flex-col gap-4 mt-4">
+        <div className=" flex flex-col gap-4 mt-4 mb-4 md:mb-4 xl:mb-4 ">
           <div className=" border-gray-600 border w-fit flex justify-center mx-auto px-4 py-1.5  rounded-full gap-2 items-center text-zinc-300">
             <Star className=" w-3" />
             Services
@@ -39,29 +39,34 @@ const Services = () => {
           <h1 className="text-4xl font-heading tracking-wide text-center text-zinc-200">
             Our Solutions for your Digital Growth
           </h1>
-          <p className=" w-1/2 text-md tracking-wide text-gray-400 text-center flex mx-auto">
+          <p className=" xl:w-1/2 md:w-1/2 w-full text-md tracking-wide text-gray-400 text-center flex mx-auto">
             We offer expert Webflow design, development, SEO, and support
             services—tailored to boost your website&apos;s performance, user
             experience, and growth.
           </p>
         </div>
 
-        <div className="container mx-auto grid md:grid-cols-4 md:gap-7 gap-5 px-4 md:px-0 mb-10 md:mb-0">
+        <div className="container mx-auto grid md:grid-cols-2 xl:grid-cols-4 xl:gap-5 md:gap-7 gap-5 px-4 md:px-0 mb-10 md:mb-0">
           {service.map((serviceCard, index) => (
-            <PixelCard key={index} variant="blue" className="md:my-10">
-              <div className="absolute inset-0 p-10 flex flex-col gap-5">
-                <Image
-                  className="md:w-32 md:h-32 w-24 h-24"
-                  height={100}
-                  width={100}
-                  src={serviceCard.icon}
-                  alt=""
-                />
-                <h1 className="text-3xl text-white">{serviceCard.title}</h1>
-                <p className="text-gray-500 text-lg">
-                  {serviceCard.description}
-                </p>
-                <p className="flex gap-3 hover:text-blue-500 items-center group-hover:text-white">
+            <PixelCard
+              key={index}
+              variant="blue"
+              className="my-1 md:my-2 xl:my-10 w-full">
+              <div className="absolute inset-0 justify-between p-10 flex flex-col gap-5">
+                <div>
+                  <Image
+                    className="md:w-32 md:h-32 w-24 h-24"
+                    height={100}
+                    width={100}
+                    src={serviceCard.icon}
+                    alt="serviceCardImage"
+                  />
+                  <h1 className="text-3xl text-white">{serviceCard.title}</h1>
+                  <p className="text-gray-500 text-md mt-1">
+                    {serviceCard.description}
+                  </p>
+                </div>
+                <p className="flex gap-3 text-white hover:text-blue-500 items-center group-hover:text-white">
                   Learn more
                   <span className="group-hover:text-orange-500 group-hover:animate-bounce">
                     <MoveRight />

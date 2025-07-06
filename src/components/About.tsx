@@ -17,11 +17,11 @@ const About: React.FC<AboutProps> = ({ onCursorEnter, onCursorLeave }) => {
         <h1
           onMouseEnter={onCursorEnter}
           onMouseLeave={onCursorLeave}
-          className=" font-heading uppercase text-7xl">
+          className=" font-heading uppercase text-5xl md:text-7xl xl:text-7xl">
           We&apos;re a full service <br />
           digital agency
         </h1>
-        <p className=" text-lg tracking-wide text-gray-300">
+        <p className=" xl:text-lg md:text-md text-sm tracking-wide text-gray-400">
           At Crevosys, your success is our focus. We understand what it takes to
           launch a digital project and the challenges that come with it. Tight
           deadlines, shifting priorities, complex requirements? We&apos;ve seen

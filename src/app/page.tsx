@@ -9,7 +9,9 @@ import Image from "next/image";
 import React, { useState } from "react";
 
 const Page = () => {
-  const [cursorVariant, setCursorVariant] = useState<"default" | "hero" | "about">("default");
+  const [cursorVariant, setCursorVariant] = useState<
+    "default" | "hero" | "about"
+  >("default");
 
   return (
     <div
@@ -32,19 +34,21 @@ const Page = () => {
         />
       </div>
 
-      <CustomCursor variant={cursorVariant} />
+      <div className="px-4 md:container md:mx-auto xl:container xl:mx-auto">
+        <CustomCursor variant={cursorVariant} />
 
-      <Navbar />
-      <Hero
-        onCursorEnter={() => setCursorVariant("hero")}
-        onCursorLeave={() => setCursorVariant("default")}
-      />
-      <SkillsMarquee />
-      <About
-        onCursorEnter={() => setCursorVariant("about")}
-        onCursorLeave={() => setCursorVariant("default")}
-      />
-      <Services />
+        <Navbar />
+        <Hero
+          onCursorEnter={() => setCursorVariant("hero")}
+          onCursorLeave={() => setCursorVariant("default")}
+        />
+        <SkillsMarquee />
+        <About
+          onCursorEnter={() => setCursorVariant("about")}
+          onCursorLeave={() => setCursorVariant("default")}
+        />
+        <Services />
+      </div>
     </div>
   );
 };
