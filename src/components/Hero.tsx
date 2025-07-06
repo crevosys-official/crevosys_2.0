@@ -15,7 +15,7 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
   const parallaxRef = useRef(null);
 
   return (
-    <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative w-full min-h-screen pt-20 flex items-center justify-center overflow-hidden">
       {/* Background circles */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
         <div

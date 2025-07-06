@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
@@ -11,7 +10,8 @@ const CustomCursor: React.FC<CustomCursorProps> = ({ variant }) => {
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    const move = (e: MouseEvent) => setCursorPosition({ x: e.clientX, y: e.clientY });
+    const move = (e: MouseEvent) =>
+      setCursorPosition({ x: e.clientX, y: e.clientY });
     window.addEventListener("mousemove", move);
     return () => window.removeEventListener("mousemove", move);
   }, []);
@@ -60,4 +60,4 @@ const CustomCursor: React.FC<CustomCursorProps> = ({ variant }) => {
   );
 };
 
-export default CustomCursor; 
+export default CustomCursor;
