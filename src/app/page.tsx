@@ -7,10 +7,11 @@ import SkillsMarquee from "@/components/SkiilsMaarque";
 import CustomCursor from "@/components/CustomCursor";
 import Image from "next/image";
 import React, { useState } from "react";
+import Testimonials from "@/components/Testimonials";
 
 const Page = () => {
   const [cursorVariant, setCursorVariant] = useState<
-    "default" | "hero" | "about"
+    "default" | "hero" | "about" | "testimonials"
   >("default");
 
   return (
@@ -34,7 +35,7 @@ const Page = () => {
         />
       </div>
 
-      <div className="px-4 md:container md:mx-auto xl:container xl:mx-auto">
+      <div className="px-4">
         <CustomCursor variant={cursorVariant} />
 
         <Navbar />
@@ -48,6 +49,10 @@ const Page = () => {
           onCursorLeave={() => setCursorVariant("default")}
         />
         <Services />
+        <Testimonials
+          onCursorEnter={() => setCursorVariant("testimonials")}
+          onCursorLeave={() => setCursorVariant("default")}
+        />
       </div>
     </div>
   );

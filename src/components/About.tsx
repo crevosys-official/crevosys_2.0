@@ -8,7 +8,7 @@ interface AboutProps {
 
 const About: React.FC<AboutProps> = ({ onCursorEnter, onCursorLeave }) => {
   return (
-    <div className="container mx-auto z-20">
+    <div className="md:container md:mx-auto xl:container xl:mx-auto z-20">
       {/* content */}
 
       <hr className=" py-10 opacity-20" />
