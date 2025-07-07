@@ -4,7 +4,7 @@ import React, { useRef } from "react";
 import { BackgroundCircles } from "./design/Hero";
 import DecryptedText from "./animation/Decrypted-Text";
 import { Smile } from "lucide-react";
-import Magnet from "./animation/megnet";
+import Magnet from "./animation/Magnet";
 
 interface HeroProps {
   onCursorEnter?: () => void;
@@ -46,7 +46,24 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
           </div>
         </div>
         <div onMouseEnter={onCursorEnter} onMouseLeave={onCursorLeave}>
-          <div className="flex mt-3 items-center justify-center">
+          <div className="flex mt-3 items-center justify-center w-fit mx-auto relative">
+            <div className=" w-20 h-24 absolute -top-12 -left-16">
+              <Magnet
+                padding={100}
+                disabled={false}
+                magnetStrength={15}
+                className="z-10">
+                <div className="group hover:scale-110 rounded-full flex items-center justify-center transition duration-300 group-hover:scale-110 ">
+                  <Image
+                    src="/lightining3D.png"
+                    className="transition duration-300 group-hover:rotate-10"
+                    alt="light"
+                    height={200}
+                    width={200}
+                  />
+                </div>
+              </Magnet>
+            </div>
             <h1 className="bg-gradient-to-r from-[#e4e4e4] to-[#ababab] text-transparent bg-clip-text font-heading md:text-9xl text-5xl uppercase font-bold py-1 tracking-wide">
               Creativity Sparks
             </h1>
@@ -59,7 +76,7 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
                 disabled={false}
                 magnetStrength={15}
                 className="absolute -top-14 right-0 z-10">
-                <div className="group hover:scale-110 w-20 h-20 bg-orange-400 rounded-full flex items-center justify-center transition duration-300 group-hover:scale-110 cursor-pointer">
+                <div className="group hover:scale-110 w-20 h-20 bg-orange-400 rounded-full flex items-center justify-center transition duration-300 group-hover:scale-110 ">
                   <Smile className="w-16 h-16 text-[#e9e9e9] transition duration-300 group-hover:rotate-30" />
                 </div>
               </Magnet>
