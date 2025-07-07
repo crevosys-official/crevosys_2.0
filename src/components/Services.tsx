@@ -61,7 +61,9 @@ const Services = () => {
                     src={serviceCard.icon}
                     alt="serviceCardImage"
                   />
-                  <h1 className="text-3xl text-white">{serviceCard.title}</h1>
+                  <h1 className="text-3xl text-white mt-2">
+                    {serviceCard.title}
+                  </h1>
                   <p className="text-gray-500 text-md mt-1">
                     {serviceCard.description}
                   </p>
