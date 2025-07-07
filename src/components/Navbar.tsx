@@ -2,7 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { rgba } from "framer-motion";
+
 
 const Navbar = () => {
   const [isVisible, setIsVisible] = useState(true);

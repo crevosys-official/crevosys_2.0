@@ -8,6 +8,7 @@ import CustomCursor from "@/components/CustomCursor";
 import Image from "next/image";
 import React, { useState } from "react";
 import Testimonials from "@/components/Testimonials";
+import Progress from "@/components/Progress";
 
 const Page = () => {
   const [cursorVariant, setCursorVariant] = useState<
@@ -53,6 +54,7 @@ const Page = () => {
           onCursorEnter={() => setCursorVariant("testimonials")}
           onCursorLeave={() => setCursorVariant("default")}
         />
+        <Progress />
       </div>
     </div>
   );
