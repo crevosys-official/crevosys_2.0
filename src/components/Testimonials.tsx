@@ -1,10 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { Star } from "lucide-react";
+import { ArrowUp, Star } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { AnimatedTooltip } from "./ui/animated-tooltip";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+
+interface TestimonialsProps {
+  onCursorEnter?: () => void;
+  onCursorLeave?: () => void;
+}
 
 const people = [
   {
@@ -51,7 +56,10 @@ const people = [
   },
 ];
 
-const Testimonials = () => {
+const Testimonials: React.FC<TestimonialsProps> = ({
+  onCursorEnter,
+  onCursorLeave,
+}) => {
   const [feedback, setFeedback] = useState([]);
   const [showAll, setShowAll] = useState(false);
 
@@ -65,7 +73,7 @@ const Testimonials = () => {
   const displayedFeedback = showAll ? feedback : feedback.slice(0, 4);
 
   return (
-    <div className="testimonial-bg rounded-md bg-zinc-900/25 relative">
+    <div className="testimonial-bg rounded-4xl bg-zinc-900/25 relative">
       <div className=" w-full h-full bg-zinc-900/20 backdrop-blur-3xl rounded-md py-4">
         {/* 3d elements - place these first, with low z-index */}
         <Image
@@ -107,7 +115,10 @@ const Testimonials = () => {
         </div>
 
         {/* feedback cards */}
-        <div className="z-20 relative">
+        <div
+          className="z-20 relative"
+          onMouseEnter={onCursorEnter}
+          onMouseLeave={onCursorLeave}>
           {feedback.length > 0 ? (
             <>
               <div className="flex flex-wrap justify-center gap-4 pb-10">
@@ -119,8 +130,10 @@ const Testimonials = () => {
                       initial={{ opacity: 0, y: 40 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 40 }}
-                      transition={{ duration: 0.4, delay: showAll ? index * 0.08 : 0 }}
-                    >
+                      transition={{
+                        duration: 0.4,
+                        delay: showAll ? index * 0.08 : 0,
+                      }}>
                       <p className="text-zinc-400 pb-5">
                         &quot;{review.feedback}&quot;
                       </p>
@@ -146,20 +159,31 @@ const Testimonials = () => {
                   ))}
                 </AnimatePresence>
               </div>
-              {!showAll && feedback.length > 4 && (
-                <div className="flex justify-center pb-8">
-                  <button
-                    className="mt-4 px-6 py-2 bg-zinc-700 text-white rounded-full hover:bg-zinc-600 transition"
-                    onClick={() => setShowAll(true)}
-                  >
-                    More
-                  </button>
-                </div>
-              )}
             </>
           ) : (
             <div className="text-center text-zinc-400">No feedback yet.</div>
           )}
+        </div>
+        <div>
+          {!showAll && feedback.length > 4 ? (
+            <div className="flex justify-center pb-8">
+              <button
+                className="mt-4 px-6 py-2 bg-zinc-700 text-white rounded-full hover:bg-zinc-600 transition"
+                onClick={() => setShowAll(true)}>
+                More
+              </button>
+            </div>
+          ) : null}
+          {showAll && feedback.length > 4 ? (
+            <div className="flex justify-center pb-8">
+              <button
+                className="mt-4 px-6 py-2 bg-zinc-700 text-white rounded-full hover:bg-zinc-600 transition flex items-center gap-2"
+                onClick={() => setShowAll(false)}>
+                <ArrowUp />
+                Show Less
+              </button>
+            </div>
+          ) : null}
         </div>
       </div>
     </div>

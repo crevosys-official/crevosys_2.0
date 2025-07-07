@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 interface CustomCursorProps {
-  variant: "default" | "hero" | "about";
+  variant: "default" | "hero" | "about" | "testimonials";
 }
 
 const CustomCursor: React.FC<CustomCursorProps> = ({ variant }) => {
@@ -41,6 +41,14 @@ const CustomCursor: React.FC<CustomCursorProps> = ({ variant }) => {
       opacity: 0.4,
       backgroundColor: "#ff8804",
     },
+    testimonials: {
+      x: cursorPosition.x - 80,
+      y: cursorPosition.y - 60,
+      height: 100,
+      width: 100,
+      opacity: 0.2,
+      backgroundColor: "#ff8804",
+    },
   };
 
   return (
@@ -55,6 +63,7 @@ const CustomCursor: React.FC<CustomCursorProps> = ({ variant }) => {
         left: 0,
         pointerEvents: "none",
         zIndex: 2,
+        filter: variant === "testimonials" ? "blur(12px)" : "none",
       }}
     />
   );

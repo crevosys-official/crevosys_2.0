@@ -11,7 +11,7 @@ import Testimonials from "@/components/Testimonials";
 
 const Page = () => {
   const [cursorVariant, setCursorVariant] = useState<
-    "default" | "hero" | "about"
+    "default" | "hero" | "about" | "testimonials"
   >("default");
 
   return (
@@ -49,7 +49,10 @@ const Page = () => {
           onCursorLeave={() => setCursorVariant("default")}
         />
         <Services />
-        <Testimonials />
+        <Testimonials
+          onCursorEnter={() => setCursorVariant("testimonials")}
+          onCursorLeave={() => setCursorVariant("default")}
+        />
       </div>
     </div>
   );
