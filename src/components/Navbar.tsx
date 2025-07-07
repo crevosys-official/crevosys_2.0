@@ -2,12 +2,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { rgba } from "framer-motion";
 
 const Navbar = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,21 +27,13 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
-  // Helper function to check if a link is active
-  const isActive = (href: string) => {
-    if (href === "/") {
-      return pathname === "/";
-    }
-    return pathname.startsWith(href);
-  };
-
   return (
     <div
       className={`container mx-auto pb-10 navbar pt-6 fixed top-0 left-0 right-0  transition-transform duration-300 ${
         isVisible ? "translate-y-0" : "-translate-y-full"
       }`}>
       <div className="navbar-start">
-        <Link href="/" className="btn btn-ghost text-xl">
+        <a className="btn btn-ghost text-xl">
           <Image
             src="/crevoSysNav.png"
             alt="navloggo"
@@ -50,41 +41,17 @@ const Navbar = () => {
             height={100}
             width={100}
           />
-        </Link>
+        </a>
       </div>
       <div
         className=" navbar-end gap-8 items-center
       ">
         {/* menu bar */}
-        <div className="hidden lg:flex bg-zinc-700/20 backdrop-blur-md border border-white/10 px-4 rounded-full shadow-lg">
-          <ul className="menu menu-horizontal px-1 flex gap-6 text-lg tracking-wide text-white">
-            <li>
-              <Link
-                href="/"
-                className={` cursor-pointer ${
-                  isActive("/") ? "text-orange-400" : "text-white"
-                }`}>
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/team"
-                className={` cursor-pointer ${
-                  isActive("/team") ? "text-orange-400" : "text-white"
-                }`}>
-                Team
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/about"
-                className={` cursor-pointer ${
-                  isActive("/about") ? "text-orange-400" : "text-white"
-                }`}>
-                About
-              </Link>
-            </li>
+        <div className="hidden lg:flex bg-zinc-700/25 backdrop-blur-[1px] border border-white/10 px-4 rounded-full py-1 shadow-lg">
+          <ul className="menu menu-horizontal px-1 flex gap-8 text-lg tracking-wide text-white">
+            <Link href="/">Home</Link>
+            <Link href="/team">Team</Link>
+            <Link href="/about">About</Link>
           </ul>
         </div>
         <div>

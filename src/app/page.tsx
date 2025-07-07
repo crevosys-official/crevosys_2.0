@@ -34,7 +34,7 @@ const Page = () => {
         />
       </div>
 
-      <div className="px-4 md:container md:mx-auto xl:container xl:mx-auto">
+      <div className="px-4">
         <CustomCursor variant={cursorVariant} />
 
         <Navbar />
