@@ -1,0 +1,35 @@
+[
+  {
+    "title": "Plan",
+    "title_bg": "#F1AED4",
+    "about": "Planning is crucial at Crevosys. We plan the entire process based on your needs and discuss face-to-face to ensure we fully understand your goals.",
+    "step_details": [
+      "Understand client goals",
+      "Gather requirements",
+      "Create roadmap",
+      "Set timelines and resources"
+    ]
+  },
+  {
+    "title": "Design",
+    "title_bg": "#CCEF8E",
+    "about": "Design at Crevosys blends creativity and functionality. We create multiple Figma layouts and prototypes. Once approved, we proceed further.",
+    "step_details": [
+      "Create Figma layouts",
+      "Design wireframes & prototypes",
+      "Collaborate for feedback",
+      "Finalize design after approval"
+    ]
+  },
+  {
+    "title": "Build",
+    "title_bg": "#86DFE8",
+    "about": "We turn the approved design into a functional product using top-tier coding practices, ensuring scalability and performance.",
+    "step_details": [
+      "Convert design to code",
+      "Develop responsive apps",
+      "Test for quality",
+      "Deploy and support"
+    ]
+  }
+]
