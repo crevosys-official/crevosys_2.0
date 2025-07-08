@@ -9,6 +9,8 @@ import Image from "next/image";
 import React, { useState } from "react";
 import Testimonials from "@/components/Testimonials";
 import Progress from "@/components/Progress";
+import GetTouch from "@/components/GetTouch";
+import Footer from "@/components/Footer";
 
 const Page = () => {
   const [cursorVariant, setCursorVariant] = useState<
@@ -58,7 +60,9 @@ const Page = () => {
           onCardHover={(variant) => setCursorVariant(variant)}
           onCursorLeave={() => setCursorVariant("default")}
         />
+        <GetTouch />
       </div>
+      <Footer />
     </div>
   );
 };
