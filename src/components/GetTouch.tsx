@@ -27,8 +27,8 @@ const GetTouch = () => {
         className="absolute -bottom-24 md:w-96 hidden md:inline -right-8 z-50"
         src="/elements/Color-line-shape.webp"
         alt="line shape"
-        height={100}
-        width={100}
+        height={1000}
+        width={1000}
       />
     </div>
   );
