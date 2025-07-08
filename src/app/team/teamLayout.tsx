@@ -45,7 +45,7 @@ const TeamLayout = () => {
     },
     {
       id: 6,
-      picture: "/Team/sumon_withoutGlow.jpg",
+      picture: "/Team/jenifa_withoutGlow.jpg",
       name: "Nahid Akter Jenifa",
       Designation: "Junior Front-end developer",
       Position: "FRONT-END DEVELOPER",
