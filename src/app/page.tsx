@@ -3,14 +3,18 @@ import About from "@/components/About";
 import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
 import Services from "@/components/Services";
-import SkillsMarquee from "@/components/SkiilsMaarque";
+import SkillsMarquee from "@/components/SkilsMaarque";
 import CustomCursor from "@/components/CustomCursor";
 import Image from "next/image";
 import React, { useState } from "react";
+import Testimonials from "@/components/Testimonials";
+import Progress from "@/components/Progress";
+import GetTouch from "@/components/GetTouch";
+import Footer from "@/components/Footer";
 
 const Page = () => {
   const [cursorVariant, setCursorVariant] = useState<
-    "default" | "hero" | "about"
+    "default" | "hero" | "about" | "testimonials" | "plan" | "design" | "build"
   >("default");
 
   return (
@@ -34,7 +38,7 @@ const Page = () => {
         />
       </div>
 
-      <div className="px-4 md:container md:mx-auto xl:container xl:mx-auto">
+      <div className="px-4">
         <CustomCursor variant={cursorVariant} />
 
         <Navbar />
@@ -48,7 +52,17 @@ const Page = () => {
           onCursorLeave={() => setCursorVariant("default")}
         />
         <Services />
+        <Testimonials
+          onCursorEnter={() => setCursorVariant("testimonials")}
+          onCursorLeave={() => setCursorVariant("default")}
+        />
+        <Progress
+          onCardHover={(variant) => setCursorVariant(variant)}
+          onCursorLeave={() => setCursorVariant("default")}
+        />
+        <GetTouch />
       </div>
+      <Footer />
     </div>
   );
 };

@@ -194,7 +194,8 @@ const SkillsMarquee: React.FC<SkillsMarqueeProps> = ({ className = "" }) => {
   );
 
   return (
-    <div className={`container mx-auto ${className}`}>
+    <div
+      className={`md:container md:mx-auto xl:container xl:mx-auto ${className}`}>
       {/* Marquee for right slider */}
       <Marquee
         gradient={true}
