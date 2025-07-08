@@ -1,5 +1,4 @@
-import { data } from "framer-motion/client";
-import { Star, StarsIcon } from "lucide-react";
+import { StarsIcon } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 

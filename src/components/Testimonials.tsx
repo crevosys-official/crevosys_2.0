@@ -92,7 +92,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({
         />
 
         <div className="md:container md:mx-auto xl:container xl:mx-auto">
-          <div className=" flex flex-col gap-4 mt-4 pb-4 md:mb-4 xl:mb-4 ">
+          <div className=" flex flex-col gap-4 mt-4 pb-2 md:mb-4 xl:mb-4 ">
             <div className=" border-gray-600 border w-fit flex justify-center mx-auto px-4 py-1.5  rounded-full gap-2 items-center text-zinc-300">
               <Star className=" w-3" />
               Testimonials
@@ -134,9 +134,15 @@ const Testimonials: React.FC<TestimonialsProps> = ({
                         duration: 0.4,
                         delay: showAll ? index * 0.08 : 0,
                       }}>
-                      <p className="text-zinc-400 pb-5">
-                        &quot;{review.feedback}&quot;
-                      </p>
+                      <span className="flex gap-1 items-center my-3 bg-zinc-700/50 w-fit p-2 rounded-full text-md">
+                        <Star className=" w-5 text-[#FF8905] fill-[#FF8905]" />
+                        <Star className=" w-5 text-[#FF8905] fill-[#FF8905]" />
+                        <Star className=" w-5 text-[#FF8905] fill-[#FF8905]" />
+                        <Star className=" w-5 text-[#FF8905] fill-[#FF8905]" />
+                        <Star className=" w-5 text-[#FF8905] fill-[#FF8905]" />
+                        
+                      </span>
+                      <p className="text-zinc-400 pb-5">{review.feedback}</p>
                       <hr className=" border-zinc-200/10 border my-2" />
                       <div className="text-sm text-zinc-400">
                         <div className="flex gap-4 items-center">
