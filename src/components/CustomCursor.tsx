@@ -3,7 +3,14 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 interface CustomCursorProps {
-  variant: "default" | "hero" | "about" | "testimonials";
+  variant:
+    | "default"
+    | "hero"
+    | "about"
+    | "testimonials"
+    | "plan"
+    | "design"
+    | "build";
 }
 
 const CustomCursor: React.FC<CustomCursorProps> = ({ variant }) => {
@@ -48,6 +55,31 @@ const CustomCursor: React.FC<CustomCursorProps> = ({ variant }) => {
       width: 100,
       opacity: 0.2,
       backgroundColor: "#ff8804",
+    },
+    // for progress component
+    plan: {
+      x: cursorPosition.x - 80,
+      y: cursorPosition.y - 60,
+      height: 100,
+      width: 100,
+      opacity: 0.2,
+      backgroundColor: "#F1AED4",
+    },
+    design: {
+      x: cursorPosition.x - 80,
+      y: cursorPosition.y - 60,
+      height: 100,
+      width: 100,
+      opacity: 0.2,
+      backgroundColor: "#CCEF8E",
+    },
+    build: {
+      x: cursorPosition.x - 80,
+      y: cursorPosition.y - 60,
+      height: 100,
+      width: 100,
+      opacity: 0.2,
+      backgroundColor: "#86DFE8",
     },
   };
 

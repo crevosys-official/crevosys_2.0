@@ -69,7 +69,7 @@ const Services = () => {
                   </p>
                 </div>
                 <p className="flex gap-3 text-white hover:text-blue-500 items-center group-hover:text-white">
-                  Learn more
+                  Service Plan
                   <span className="group-hover:text-orange-500 group-hover:animate-bounce">
                     <MoveRight />
                   </span>

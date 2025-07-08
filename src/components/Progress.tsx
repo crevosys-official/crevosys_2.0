@@ -8,6 +8,10 @@ type ProgressItem = {
   about: string;
   step_details: string[];
 };
+interface ProgressProps {
+  onCardHover?: (variant: "plan" | "design" | "build") => void;
+  onCursorLeave?: () => void;
+}
 
 // css class constants
 const headingClass =
@@ -16,7 +20,10 @@ const flexCenterClass = "flex gap-4 mx-auto justify-center items-center";
 const transformContainerClass = "relative";
 const curveImageClass = "absolute bottom-1 w-full -rotate-1";
 
-const Progress = () => {
+const Progress: React.FC<ProgressProps> = ({
+  onCardHover,
+  onCursorLeave,
+}) => {
   const [progressData, setProgressData] = useState<ProgressItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -63,55 +70,62 @@ const Progress = () => {
       {error && <div className="text-center text-red-500 my-10">{error}</div>}
 
       {!loading && !error && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-between p-5 gap-7 mt-20">
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-between p-5 gap-7 mt-20"
+          onMouseLeave={onCursorLeave}>
           {progressData.length === 0 ? (
             <div className="col-span-full text-center text-gray-400">
               No progress data available.
             </div>
           ) : (
-            progressData.map((progress, index) => (
-              <div
-                key={index}
-                className="relative bg-[#191919]/30 border-zinc-300/10 border text-white p-10 rounded-xl">
+            progressData.map((progress, index) => {
+              const variant = progress.title.toLowerCase() as "plan" | "design" | "build";
+              return (
                 <div
-                  className="w-fit -rotate-5 pt-2 px-4 rounded-md absolute -top-10 flex items-center justify-center"
-                  style={{
-                    backgroundColor: progress.title_bg || "#fff",
-                  }}>
-                  <h1 className="font-heading text-[40px] text-black uppercase font-bold">
-                    {progress.title || "Untitled"}
-                  </h1>
+                  key={index}
+                  className="relative bg-[#191919]/30 border-zinc-300/10 border text-white p-10 rounded-xl"
+                  onMouseEnter={() => onCardHover?.(variant)}
+                  onMouseLeave={onCursorLeave}>
+                  <div
+                    className="w-fit -rotate-5 pt-2 px-4 rounded-md absolute -top-10 flex items-center justify-center"
+                    style={{
+                      backgroundColor: progress.title_bg || "#fff",
+                    }}>
+                    <h1 className="font-heading text-[40px] text-black uppercase font-bold">
+                      {progress.title || "Untitled"}
+                    </h1>
+                  </div>
+                  <p className="text-md text-gray-400 my-5">
+                    {progress.about || "No description provided."}
+                  </p>
+                  <div>
+                    <ul className="flex flex-col gap-3 my-4">
+                      {progress.step_details?.length ? (
+                        progress.step_details.map((step, idx, arr) => (
+                          <li
+                            key={idx}
+                            className="flex flex-col gap-2 relative pl-6">
+                            <div className="flex items-start gap-2">
+                              <span className="absolute left-0 top-1">
+                                <StarsIcon className="w-4" />
+                              </span>
+                              <span className="font-heading uppercase text-lg">
+                                {step}
+                              </span>
+                            </div>
+                            {idx < arr.length - 1 && (
+                              <hr className="border-gray-50/5 my-0.5" />
+                            )}
+                          </li>
+                        ))
+                      ) : (
+                        <li className="text-gray-500">No steps available.</li>
+                      )}
+                    </ul>
+                  </div>
                 </div>
-                <p className="text-md text-gray-400 my-5">
-                  {progress.about || "No description provided."}
-                </p>
-                <div>
-                  <ul className="flex flex-col gap-3 my-4">
-                    {progress.step_details?.length ? (
-                      progress.step_details.map((step, idx, arr) => (
-                        <li
-                          key={idx}
-                          className="flex flex-col gap-2 relative pl-6">
-                          <div className="flex items-start gap-2">
-                            <span className="absolute left-0 top-1">
-                              <StarsIcon className="w-4" />
-                            </span>
-                            <span className="font-heading uppercase text-lg">
-                              {step}
-                            </span>
-                          </div>
-                          {idx < arr.length - 1 && (
-                            <hr className="border-gray-50/5 my-0.5" />
-                          )}
-                        </li>
-                      ))
-                    ) : (
-                      <li className="text-gray-500">No steps available.</li>
-                    )}
-                  </ul>
-                </div>
-              </div>
-            ))
+              );
+            })
           )}
         </div>
       )}
