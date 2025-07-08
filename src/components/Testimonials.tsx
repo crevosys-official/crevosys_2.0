@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { ArrowUp, Star } from "lucide-react";
 import React, { useEffect, useState } from "react";
@@ -9,6 +8,13 @@ import { motion, AnimatePresence } from "framer-motion";
 interface TestimonialsProps {
   onCursorEnter?: () => void;
   onCursorLeave?: () => void;
+}
+
+interface Feedback {
+  feedback: string;
+  sender_profile: string;
+  sender_name: string;
+  sender_country: string;
 }
 
 const people = [
@@ -56,11 +62,56 @@ const people = [
   },
 ];
 
+// rating component
+const StarRating: React.FC = () => (
+  <span className="flex gap-1 items-center my-3 bg-zinc-700/50 w-fit p-2 rounded-full text-md">
+    {[...Array(5)].map((_, i) => (
+      <Star key={i} className="w-5 text-[#FF8905] fill-[#FF8905]" />
+    ))}
+  </span>
+);
+
+// Feedback card component with gsap
+const FeedbackCard: React.FC<{
+  review: Feedback;
+  index: number;
+  showAll: boolean;
+}> = ({ review, index, showAll }) => (
+  <motion.div
+    className="bg-zinc-800/30 border border-zinc-300/20 p-10 rounded-md w-72 flex flex-col justify-between backdrop-blur-md"
+    initial={{ opacity: 0, y: 40 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: 40 }}
+    transition={{
+      duration: 0.4,
+      delay: showAll ? index * 0.08 : 0,
+    }}>
+    <StarRating />
+    <p className="text-zinc-400 pb-5">{review.feedback}</p>
+    <hr className="border-zinc-200/10 border my-2" />
+    <div className="text-sm text-zinc-400">
+      <div className="flex gap-4 items-center">
+        <Image
+          className="w-10 h-10 object-cover rounded-full"
+          src={review.sender_profile}
+          alt="profile"
+          height={80}
+          width={80}
+        />
+        <div>
+          <h1 className="text-lg font-bold text-white">{review.sender_name}</h1>
+          <p>{review.sender_country}</p>
+        </div>
+      </div>
+    </div>
+  </motion.div>
+);
+
 const Testimonials: React.FC<TestimonialsProps> = ({
   onCursorEnter,
   onCursorLeave,
 }) => {
-  const [feedback, setFeedback] = useState([]);
+  const [feedback, setFeedback] = useState<Feedback[]>([]);
   const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
@@ -74,8 +125,8 @@ const Testimonials: React.FC<TestimonialsProps> = ({
 
   return (
     <div className="testimonial-bg rounded-4xl bg-zinc-900/25 relative">
-      <div className=" w-full h-full bg-zinc-900/20 backdrop-blur-3xl rounded-md py-4">
-        {/* 3d elements - place these first, with low z-index */}
+      <div className="w-full h-full bg-zinc-900/20 backdrop-blur-3xl rounded-md py-4">
+        {/* Decorative 3D elements */}
         <Image
           className="absolute -top-30 -left-30 z-0"
           src="/reviews.png"
@@ -92,105 +143,69 @@ const Testimonials: React.FC<TestimonialsProps> = ({
         />
 
         <div className="md:container md:mx-auto xl:container xl:mx-auto">
-          <div className=" flex flex-col gap-4 mt-4 pb-2 md:mb-4 xl:mb-4 ">
-            <div className=" border-gray-600 border w-fit flex justify-center mx-auto px-4 py-1.5  rounded-full gap-2 items-center text-zinc-300">
-              <Star className=" w-3" />
+          {/* Header */}
+          <div className="flex flex-col gap-4 mt-4 pb-2 md:mb-4 xl:mb-4">
+            <div className="border-gray-600 border w-fit flex justify-center mx-auto px-4 py-1.5 rounded-full gap-2 items-center text-zinc-300">
+              <Star className="w-3" />
               Testimonials
             </div>
-
             <h1 className="text-4xl font-heading tracking-wide text-center text-zinc-200">
               Our Happy Clients
             </h1>
-            <p className=" xl:w-1/2 md:w-1/2 w-full text-md tracking-wide text-gray-400 text-center flex mx-auto">
+            <p className="xl:w-1/2 md:w-1/2 w-full text-md tracking-wide text-gray-400 text-center flex mx-auto">
               Hear from clients who&apos;ve experienced remarkable
               transformations with crevosys.
             </p>
           </div>
 
-          <div>
-            <div className="flex flex-row items-center justify-center pb-10 w-full">
-              <AnimatedTooltip items={people} />
-            </div>
+          {/* Animated avatars */}
+          <div className="flex flex-row items-center justify-center pb-10 w-full">
+            <AnimatedTooltip items={people} />
           </div>
         </div>
 
-        {/* feedback cards */}
+        {/* Feedback cards */}
         <div
           className="z-20 relative"
           onMouseEnter={onCursorEnter}
           onMouseLeave={onCursorLeave}>
           {feedback.length > 0 ? (
-            <>
-              <div className="flex flex-wrap justify-center gap-4 pb-10">
-                <AnimatePresence>
-                  {displayedFeedback.map((review: any, index: number) => (
-                    <motion.div
-                      key={index}
-                      className="bg-zinc-800/30 border border-zinc-300/20 p-10 rounded-md w-72 flex flex-col justify-between backdrop-blur-md"
-                      initial={{ opacity: 0, y: 40 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 40 }}
-                      transition={{
-                        duration: 0.4,
-                        delay: showAll ? index * 0.08 : 0,
-                      }}>
-                      <span className="flex gap-1 items-center my-3 bg-zinc-700/50 w-fit p-2 rounded-full text-md">
-                        <Star className=" w-5 text-[#FF8905] fill-[#FF8905]" />
-                        <Star className=" w-5 text-[#FF8905] fill-[#FF8905]" />
-                        <Star className=" w-5 text-[#FF8905] fill-[#FF8905]" />
-                        <Star className=" w-5 text-[#FF8905] fill-[#FF8905]" />
-                        <Star className=" w-5 text-[#FF8905] fill-[#FF8905]" />
-                        
-                      </span>
-                      <p className="text-zinc-400 pb-5">{review.feedback}</p>
-                      <hr className=" border-zinc-200/10 border my-2" />
-                      <div className="text-sm text-zinc-400">
-                        <div className="flex gap-4 items-center">
-                          <Image
-                            className=" w-10 h-10 object-cover rounded-full"
-                            src={review.sender_profile}
-                            alt="profile"
-                            height={80}
-                            width={80}
-                          />
-                          <div>
-                            <h1 className=" text-lg font-bold text-white">
-                              {review.sender_name}
-                            </h1>
-                            <p>{review.sender_country}</p>
-                          </div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-              </div>
-            </>
+            <div className="flex flex-wrap justify-center gap-4 pb-10">
+              <AnimatePresence>
+                {displayedFeedback.map((review, index) => (
+                  <FeedbackCard
+                    key={index}
+                    review={review}
+                    index={index}
+                    showAll={showAll}
+                  />
+                ))}
+              </AnimatePresence>
+            </div>
           ) : (
             <div className="text-center text-zinc-400">No feedback yet.</div>
           )}
         </div>
-        <div>
-          {!showAll && feedback.length > 4 ? (
-            <div className="flex justify-center pb-8">
+
+        {/* Show more/less buttons */}
+        {feedback.length > 4 && (
+          <div className="flex justify-center pb-8">
+            {!showAll ? (
               <button
                 className="mt-4 px-6 py-2 bg-zinc-700 text-white rounded-full hover:bg-zinc-600 transition"
                 onClick={() => setShowAll(true)}>
                 More
               </button>
-            </div>
-          ) : null}
-          {showAll && feedback.length > 4 ? (
-            <div className="flex justify-center pb-8">
+            ) : (
               <button
                 className="mt-4 px-6 py-2 bg-zinc-700 text-white rounded-full hover:bg-zinc-600 transition flex items-center gap-2"
                 onClick={() => setShowAll(false)}>
                 <ArrowUp />
                 Show Less
               </button>
-            </div>
-          ) : null}
-        </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
