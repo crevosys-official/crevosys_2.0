@@ -12,7 +12,7 @@ import Progress from "@/components/Progress";
 
 const Page = () => {
   const [cursorVariant, setCursorVariant] = useState<
-    "default" | "hero" | "about" | "testimonials" | "progress"
+    "default" | "hero" | "about" | "testimonials" | "plan" | "design" | "build"
   >("default");
 
   return (
@@ -55,7 +55,7 @@ const Page = () => {
           onCursorLeave={() => setCursorVariant("default")}
         />
         <Progress
-          onCursorEnter={() => setCursorVariant("progress")}
+          onCardHover={(variant) => setCursorVariant(variant)}
           onCursorLeave={() => setCursorVariant("default")}
         />
       </div>
