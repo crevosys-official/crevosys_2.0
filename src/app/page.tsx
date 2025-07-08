@@ -3,7 +3,7 @@ import About from "@/components/About";
 import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
 import Services from "@/components/Services";
-import SkillsMarquee from "@/components/SkiilsMaarque";
+import SkillsMarquee from "@/components/SkilsMaarque";
 import CustomCursor from "@/components/CustomCursor";
 import Image from "next/image";
 import React, { useState } from "react";
@@ -12,7 +12,7 @@ import Progress from "@/components/Progress";
 
 const Page = () => {
   const [cursorVariant, setCursorVariant] = useState<
-    "default" | "hero" | "about" | "testimonials"
+    "default" | "hero" | "about" | "testimonials" | "progress"
   >("default");
 
   return (
@@ -54,7 +54,10 @@ const Page = () => {
           onCursorEnter={() => setCursorVariant("testimonials")}
           onCursorLeave={() => setCursorVariant("default")}
         />
-        <Progress />
+        <Progress
+          onCursorEnter={() => setCursorVariant("progress")}
+          onCursorLeave={() => setCursorVariant("default")}
+        />
       </div>
     </div>
   );

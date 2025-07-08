@@ -8,6 +8,10 @@ type ProgressItem = {
   about: string;
   step_details: string[];
 };
+interface ProgressProps {
+  onCursorEnter?: () => void;
+  onCursorLeave?: () => void;
+}
 
 // css class constants
 const headingClass =
@@ -16,7 +20,10 @@ const flexCenterClass = "flex gap-4 mx-auto justify-center items-center";
 const transformContainerClass = "relative";
 const curveImageClass = "absolute bottom-1 w-full -rotate-1";
 
-const Progress = () => {
+const Progress: React.FC<ProgressProps> = ({
+  onCursorEnter,
+  onCursorLeave,
+}) => {
   const [progressData, setProgressData] = useState<ProgressItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -63,7 +70,10 @@ const Progress = () => {
       {error && <div className="text-center text-red-500 my-10">{error}</div>}
 
       {!loading && !error && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-between p-5 gap-7 mt-20">
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-between p-5 gap-7 mt-20"
+          onMouseEnter={onCursorEnter}
+          onMouseLeave={onCursorLeave}>
           {progressData.length === 0 ? (
             <div className="col-span-full text-center text-gray-400">
               No progress data available.
