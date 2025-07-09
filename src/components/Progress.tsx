@@ -15,7 +15,7 @@ interface ProgressProps {
 
 // css class constants
 const headingClass =
-  "text-white text-center md:text-7xl xl:text-8xl text-6xl font-heading uppercase font-bold tracking-wide flex flex-col justify-center items-center cursor-pointer";
+  "text-white text-center md:text-7xl xl:text-8xl text-5xl font-heading uppercase font-bold tracking-wide flex flex-col justify-center items-center cursor-pointer";
 const flexCenterClass = "flex gap-4 mx-auto justify-center items-center";
 const transformContainerClass = "relative";
 const curveImageClass = "absolute bottom-1 w-full -rotate-1";
@@ -68,7 +68,7 @@ const Progress: React.FC<ProgressProps> = ({ onCardHover, onCursorLeave }) => {
 
       {!loading && !error && (
         <div
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  justify-between p-5 gap-7 mt-20"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  justify-between md:p-5 gap-7 mt-20"
           onMouseLeave={onCursorLeave}>
           {progressData.length === 0 ? (
             <div className="col-span-full text-center text-gray-400">
@@ -95,7 +95,7 @@ const Progress: React.FC<ProgressProps> = ({ onCardHover, onCursorLeave }) => {
                       {progress.title || "Untitled"}
                     </h1>
                   </div>
-                  <p className="text-md text-gray-400 my-5">
+                  <p className="text-md text-gray-400 md:my-8 my-5">
                     {progress.about || "No description provided."}
                   </p>
                   <div>

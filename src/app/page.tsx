@@ -21,7 +21,7 @@ const Page = () => {
     <div
       className={[
         "min-h-screen",
-        "bg-gradient-to-t from-[#070707] to-[#221f35]",
+        "bg-gradient-to-t from-[#070707] to-[#221f35] ",
       ].join(" ")}>
       <div
         className={[
@@ -38,10 +38,11 @@ const Page = () => {
         />
       </div>
 
-      <div className="px-4">
-        <CustomCursor variant={cursorVariant} />
+      {/* Navbar fixed at the top, above all content */}
+      <Navbar />
 
-        <Navbar />
+      <div className="md:px-16 px-5 pt-20"> {/* Add pt-20 to offset fixed navbar height */}
+        <CustomCursor variant={cursorVariant} />
         <Hero
           onCursorEnter={() => setCursorVariant("hero")}
           onCursorLeave={() => setCursorVariant("default")}
@@ -51,7 +52,9 @@ const Page = () => {
           onCursorEnter={() => setCursorVariant("about")}
           onCursorLeave={() => setCursorVariant("default")}
         />
-        <Services />
+      </div>
+      <Services />
+      <div className=" md:px-16 px-5">
         <Testimonials
           onCursorEnter={() => setCursorVariant("testimonials")}
           onCursorLeave={() => setCursorVariant("default")}

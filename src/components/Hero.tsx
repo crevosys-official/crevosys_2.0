@@ -60,7 +60,7 @@ const LightningIcon: React.FC = () => (
 const MainHeading: React.FC = () => (
   <div className="flex mt-3 items-center justify-center w-fit mx-auto relative">
     <LightningIcon />
-    <h1 className="bg-gradient-to-r from-[#e4e4e4] to-[#ababab] text-transparent bg-clip-text font-heading md:text-7xl xl:text-9xl text-5xl uppercase font-bold md:py-1 tracking-wide">
+    <h1 className="bg-gradient-to-r from-[#e4e4e4] to-[#ababab] text-transparent bg-clip-text font-heading md:text-7xl xl:text-9xl text-4xl uppercase font-bold md:py-1 tracking-wide">
       Creativity Sparks
     </h1>
   </div>
@@ -82,7 +82,7 @@ const SmileIcon: React.FC = () => (
 // Subheading component with "Revolution" text
 const SubHeading: React.FC = () => (
   <div className="flex items-center justify-center relative mb-5">
-    <span className="inline-block text-[#ababab] relative text-5xl tracking-wide font-heading uppercase font-bold md:text-7xl xl:text-9xl">
+    <span className="inline-block text-[#ababab] relative text-4xl tracking-wide font-heading uppercase font-bold md:text-7xl xl:text-9xl">
       Revolution
       <SmileIcon />
       <Image
