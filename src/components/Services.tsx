@@ -29,7 +29,7 @@ const Services = () => {
         style={{ backgroundImage: "url('/elements/servicebg.png')" }}></div>
 
       {/* Content */}
-      <div className="relative z-10 md:container md:mx-auto xl:container xl:mx-auto">
+      <div className="relative z-10 md:container md:mx-auto xl:container xl:mx-auto md:px-10">
         <div className=" flex flex-col gap-4 mt-4 mb-4 md:mb-4 xl:mb-4 ">
           <div className=" border-gray-600 border w-fit flex justify-center mx-auto px-4 py-1.5  rounded-full gap-2 items-center text-zinc-300">
             <Star className=" w-3" />

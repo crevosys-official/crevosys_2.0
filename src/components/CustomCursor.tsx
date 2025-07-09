@@ -95,7 +95,7 @@ const CustomCursor: React.FC<CustomCursorProps> = ({ variant }) => {
         left: 0,
         pointerEvents: "none",
         zIndex: 2,
-        filter: variant === "testimonials" ? "blur(12px)" : "none",
+        filter: variant === "testimonials" ? "blur(12px)" : "blur(0px)",
       }}
     />
   );

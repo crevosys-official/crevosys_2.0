@@ -83,7 +83,7 @@ const Footer = () => {
                   Team
                 </a>
               </div>
-              <div>
+              <div className=" hidden md:inline">
                 <h3 className="text-white uppercase">Blog</h3>
                 <a
                   href="#"
@@ -101,7 +101,7 @@ const Footer = () => {
                   Design
                 </a>
               </div>
-              <div>
+              <div className="hidden md:inline">
                 <h3 className="text-white uppercase">Services</h3>
                 <a
                   href="#"

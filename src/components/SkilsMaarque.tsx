@@ -175,7 +175,7 @@ const SkillsMarquee: React.FC<SkillsMarqueeProps> = ({ className = "" }) => {
 
   // Common image styles
   const imageStyles =
-    "w-20 mr-2 grayscale hover:grayscale-0 transition duration-300 hover:scale-105";
+    "md:w-20 w-12 mr-2 grayscale hover:grayscale-0 transition duration-300 hover:scale-105";
 
   // Render skill image component
   const renderSkillImage = (skill: SkillItem) => (

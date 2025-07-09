@@ -24,9 +24,9 @@ const page = () => {
           priority
         />
       </div>
+      <div  className="md:container md:mx-auto xl:container xl:mx-auto">
       <Navbar />
-      <div className="md:container md:mx-auto pt-20">
-        <TeamLayout />
+      <TeamLayout />
       </div>
     </div>
   );

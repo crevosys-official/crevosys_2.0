@@ -1,0 +1,207 @@
+[
+  {
+    "category": "Development",
+    "plans": [
+      {
+        "title": "Basic",
+        "details": {
+          "description": "Simple web applications for small businesses.",
+          "price": "$200",
+          "services": [
+            "Single Page Web Application",
+            "Basic UI Interface",
+            "1 Figma Design",
+            "1 Revision & Update",
+            "1 Hour Hands-On Support",
+            "Up to 3 Pages",
+            "Up to 4 Sections"
+          ]
+        }
+      },
+      {
+        "title": "Premium",
+        "details": {
+          "description": "Full stack solutions with stunning UI & animations.",
+          "price": "$499",
+          "services": [
+            "Full Stack Web Application",
+            "Modern High-Demand UI",
+            "3 Figma Designs + Prototypes",
+            "Unlimited Revisions",
+            "24/7 Support",
+            "Unlimited Sections",
+            "Interactive Animations",
+            "QA & Performance Testing"
+          ]
+        }
+      },
+      {
+        "title": "Enterprise",
+        "details": {
+          "description": "Advanced scalable applications with enterprise-level security & integrations.",
+          "price": "$999",
+          "services": [
+            "Enterprise-Grade Full Stack Development",
+            "Custom Advanced UI/UX",
+            "5 Figma Designs + Interactive Prototypes",
+            "Unlimited Revisions & Feature Enhancements",
+            "Dedicated Project Manager",
+            "24/7 Priority Support",
+            "Advanced QA & Security Testing",
+            "Performance Optimization",
+            "3rd Party API Integrations"
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "category": "Marketing",
+    "plans": [
+      {
+        "title": "Basic",
+        "details": {
+          "description": "Start building your online presence.",
+          "price": "$150",
+          "services": [
+            "Instagram & Facebook Setup",
+            "2 Social Posts/Week",
+            "Basic Email Marketing Setup",
+            "Basic Analytics Report"
+          ]
+        }
+      },
+      {
+        "title": "Premium",
+        "details": {
+          "description": "Grow with consistent campaigns & advertising.",
+          "price": "$400",
+          "services": [
+            "Social Media Campaigns",
+            "5 Posts/Week (Instagram, Facebook, LinkedIn)",
+            "Email Marketing Campaigns",
+            "Video Advertising Edits",
+            "Content Strategy & Calendar",
+            "Monthly Analytics & Growth Reports"
+          ]
+        }
+      },
+      {
+        "title": "Enterprise",
+        "details": {
+          "description": "Full digital marketing management with automation.",
+          "price": "$800",
+          "services": [
+            "Complete Social Media Management",
+            "Influencer Outreach & Partnerships",
+            "Google & Facebook Ads Management",
+            "Advanced Email Marketing Funnels",
+            "YouTube Video Ads & Shorts",
+            "Weekly Strategy & Analytics Calls",
+            "CRM Integration for Lead Tracking"
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "category": "Design",
+    "plans": [
+      {
+        "title": "Basic",
+        "details": {
+          "description": "Quick designs to boost your brand visuals.",
+          "price": "$100",
+          "services": [
+            "Logo Design",
+            "1 Social Media Banner",
+            "1 Simple Poster",
+            "1 Revision"
+          ]
+        }
+      },
+      {
+        "title": "Premium",
+        "details": {
+          "description": "Elevate your brand with advanced graphics.",
+          "price": "$300",
+          "services": [
+            "Complete Logo & Brand Kit",
+            "5 Social Media Banners",
+            "3 Marketing Posters",
+            "Basic 3D Illustration",
+            "Photo Manipulation",
+            "3 UI Screens for Web App",
+            "3 Figma Prototypes",
+            "3 Revisions"
+          ]
+        }
+      },
+      {
+        "title": "Enterprise",
+        "details": {
+          "description": "A complete creative package for scaling businesses.",
+          "price": "$700",
+          "services": [
+            "Full Branding Guidelines",
+            "Website + Mobile UI/UX Design",
+            "10 Social Media Templates",
+            "Advanced 3D Illustrations",
+            "Interactive Prototypes in Figma",
+            "Product Photography & Editing",
+            "Advanced Marketing Poster Design",
+            "Unlimited Revisions",
+            "Presentation Decks & Infographics"
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "category": "Technology",
+    "plans": [
+      {
+        "title": "Basic",
+        "details": {
+          "description": "Tech essentials for your online platform.",
+          "price": "$120",
+          "services": [
+            "Basic Hosting Setup",
+            "Domain Management",
+            "SSL Installation",
+            "Basic Website Security"
+          ]
+        }
+      },
+      {
+        "title": "Premium",
+        "details": {
+          "description": "Enhanced platforms & app development.",
+          "price": "$350",
+          "services": [
+            "Advanced Hosting & CDN",
+            "CMS Integration",
+            "Mobile Application Development (Prototype)",
+            "Basic Automation Scripts",
+            "Security Improvement Package"
+          ]
+        }
+      },
+      {
+        "title": "Enterprise",
+        "details": {
+          "description": "Full scale infrastructure & top-level security.",
+          "price": "$900",
+          "services": [
+            "Cloud Infrastructure (AWS/GCP/Azure)",
+            "DevOps & CI/CD Pipelines",
+            "Mobile & Desktop App Development",
+            "Advanced Security Testing & Firewalls",
+            "24/7 Monitoring & Maintenance",
+            "Disaster Recovery & Backup"
+          ]
+        }
+      }
+    ]
+  }
+]

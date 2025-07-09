@@ -78,7 +78,7 @@ const FeedbackCard: React.FC<{
   showAll: boolean;
 }> = ({ review, index, showAll }) => (
   <motion.div
-    className="bg-zinc-800/30 border border-zinc-300/20 p-10 rounded-md w-72 flex flex-col justify-between backdrop-blur-md"
+    className="bg-zinc-800/30 border border-zinc-300/20 p-10 rounded-md md:w-72 mx-5 md:mx-0 xl:mx-0 flex flex-col justify-between backdrop-blur-md"
     initial={{ opacity: 0, y: 40 }}
     animate={{ opacity: 1, y: 0 }}
     exit={{ opacity: 0, y: 40 }}
@@ -128,7 +128,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({
       <div className="w-full h-full bg-zinc-900/20 backdrop-blur-3xl rounded-md py-4">
         {/* Decorative 3D elements */}
         <Image
-          className="absolute -top-30 -left-30 z-0"
+          className="absolute -top-30 hidden md:inline-flex xl:inline-flex -left-30 z-0"
           src="/reviews.png"
           width={400}
           height={100}
