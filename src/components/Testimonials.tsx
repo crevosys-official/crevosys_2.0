@@ -78,7 +78,7 @@ const FeedbackCard: React.FC<{
   showAll: boolean;
 }> = ({ review, index, showAll }) => (
   <motion.div
-    className="bg-zinc-800/30 border border-zinc-300/20 p-10 rounded-md md:w-72 mx-5 md:mx-0 xl:mx-0 flex flex-col justify-between backdrop-blur-md"
+    className="bg-zinc-800/30 border border-white/40 p-12 rounded-xl md:w-full mx-5 md:mx-0 xl:mx-0  backdrop-blur-md"
     initial={{ opacity: 0, y: 40 }}
     animate={{ opacity: 1, y: 0 }}
     exit={{ opacity: 0, y: 40 }}
@@ -152,7 +152,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({
             <h1 className="text-4xl font-heading tracking-wide text-center text-zinc-200">
               Our Happy Clients
             </h1>
-            <p className="xl:w-1/2 md:w-1/2 w-full text-md tracking-wide text-gray-400 text-center flex mx-auto">
+            <p className="w-fit text-md md:text-lg tracking-wide text-gray-400 text-center flex mx-auto">
               Hear from clients who&apos;ve experienced remarkable
               transformations with crevosys.
             </p>
@@ -170,7 +170,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({
           onMouseEnter={onCursorEnter}
           onMouseLeave={onCursorLeave}>
           {feedback.length > 0 ? (
-            <div className="flex flex-wrap justify-center gap-4 pb-10">
+            <div className="justify-center gap-4 pb-8 md:px-10  mx-auto my-auto grid md:grid-cols-2 xl:grid-cols-4 grid-cols-1">
               <AnimatePresence>
                 {displayedFeedback.map((review, index) => (
                   <FeedbackCard

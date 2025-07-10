@@ -55,8 +55,8 @@ const Services = () => {
               <Link key={index} href={`/services/${slug}`}>
                 <PixelCard
                   variant="blue"
-                  className="my-1 md:my-2 xl:my-10 w-full cursor-pointer">
-                  <div className="absolute inset-0 justify-between p-10 flex flex-col gap-5">
+                  className="my-1 md:my-2 xl:my-10 w-full cursor-pointer hover:border-zinc-200/20">
+                  <div className="absolute inset-0 justify-between p-10 bg-zinc-800/20 flex flex-col gap-5">
                     <div>
                       <Image
                         className="md:w-32 md:h-32 w-24 h-24"
