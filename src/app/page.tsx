@@ -41,7 +41,9 @@ const Page = () => {
       {/* Navbar fixed at the top, above all content */}
       <Navbar />
 
-      <div className="md:px-16 px-5 pt-20"> {/* Add pt-20 to offset fixed navbar height */}
+      <div className="md:px-16 xl:px-20 px-5 pt-20">
+        {" "}
+        {/* Add pt-20 to offset fixed navbar height */}
         <CustomCursor variant={cursorVariant} />
         <Hero
           onCursorEnter={() => setCursorVariant("hero")}
@@ -54,7 +56,7 @@ const Page = () => {
         />
       </div>
       <Services />
-      <div className=" md:px-16 px-5">
+      <div className=" md:px-16 xl:px-20 px-5">
         <Testimonials
           onCursorEnter={() => setCursorVariant("testimonials")}
           onCursorLeave={() => setCursorVariant("default")}
