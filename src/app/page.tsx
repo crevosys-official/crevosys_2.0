@@ -25,7 +25,7 @@ const Page = () => {
       ].join(" ")}>
       <div
         className={[
-          "fixed inset-0 z-0 pointer-events-none",
+          "fixed inset-0 z-2 pointer-events-none",
           "flex items-center justify-center w-full h-full",
         ].join(" ")}>
         <Image

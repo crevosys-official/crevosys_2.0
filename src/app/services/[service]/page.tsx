@@ -1,21 +1,41 @@
-"use client";
-import { useParams } from "next/navigation";
+import Navbar from "@/components/Navbar";
+import ServiceLayoutPage from "./Layout";
+import Image from "next/image";
 
-const ServiceDetailPage = () => {
-  const params = useParams();
-  const service = params?.service as string;
-
-  // make the params capitalized
-  const displayName = service
-    .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-
+const page = () => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-3xl font-bold">You are in the {displayName} page</h1>
+    <div
+      className={[
+        "min-h-screen",
+        "bg-gradient-to-t from-[#070707] to-[#221f35] ",
+      ].join(" ")}>
+      <div
+        className={[
+          "fixed inset-0 z-0 pointer-events-none",
+          "flex items-center justify-center w-full h-full",
+        ].join(" ")}>
+        <Image
+          src="/gradient.png"
+          alt="gradient background"
+          fill
+          style={{ objectFit: "cover" }}
+          className="opacity-10"
+          priority
+        />
+        <div>
+          <Image
+            className="w-full h-screen"
+            src="/pricing/stars.svg"
+            alt="start"
+            height={1000}
+            width={1000}
+          />
+        </div>
+      </div>
+      <Navbar />
+      <ServiceLayoutPage />
     </div>
   );
 };
 
-export default ServiceDetailPage;
+export default page;
