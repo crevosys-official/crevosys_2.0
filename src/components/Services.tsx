@@ -3,6 +3,7 @@ import { MoveRight, Star } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import PixelCard from "./animation/PlexCard";
+import Link from "next/link";
 
 // Define the type for a service card
 type ServiceCard = {
@@ -47,36 +48,41 @@ const Services = () => {
         </div>
 
         <div className="container mx-auto grid md:grid-cols-2 xl:grid-cols-4 xl:gap-5 md:gap-7 gap-5 px-4 md:px-0 mb-10 md:mb-0">
-          {service.map((serviceCard, index) => (
-            <PixelCard
-              key={index}
-              variant="blue"
-              className="my-1 md:my-2 xl:my-10 w-full">
-              <div className="absolute inset-0 justify-between p-10 flex flex-col gap-5">
-                <div>
-                  <Image
-                    className="md:w-32 md:h-32 w-24 h-24"
-                    height={100}
-                    width={100}
-                    src={serviceCard.icon}
-                    alt="serviceCardImage"
-                  />
-                  <h1 className="text-3xl text-white mt-2">
-                    {serviceCard.title}
-                  </h1>
-                  <p className="text-gray-500 text-md mt-1">
-                    {serviceCard.description}
-                  </p>
-                </div>
-                <p className="flex gap-3 text-white hover:text-blue-500 items-center group-hover:text-white">
-                  Service Plan
-                  <span className="group-hover:text-orange-500 group-hover:animate-bounce">
-                    <MoveRight />
-                  </span>
-                </p>
-              </div>
-            </PixelCard>
-          ))}
+          {service.map((serviceCard, index) => {
+            // Create a slug for the URL (e.g., "Web Development" -> "web-development")
+            const slug = serviceCard.title.toLowerCase().replace(/\s+/g, "-");
+            return (
+              <Link key={index} href={`/services/${slug}`}>
+                <PixelCard
+                  variant="blue"
+                  className="my-1 md:my-2 xl:my-10 w-full cursor-pointer">
+                  <div className="absolute inset-0 justify-between p-10 flex flex-col gap-5">
+                    <div>
+                      <Image
+                        className="md:w-32 md:h-32 w-24 h-24"
+                        height={100}
+                        width={100}
+                        src={serviceCard.icon}
+                        alt="serviceCardImage"
+                      />
+                      <h1 className="text-3xl text-white mt-2">
+                        {serviceCard.title}
+                      </h1>
+                      <p className="text-gray-500 text-md mt-1">
+                        {serviceCard.description}
+                      </p>
+                    </div>
+                    <p className="flex gap-3 text-white hover:text-blue-500 items-center group-hover:text-white">
+                      Service Plan
+                      <span className="group-hover:text-orange-500 group-hover:animate-bounce">
+                        <MoveRight />
+                      </span>
+                    </p>
+                  </div>
+                </PixelCard>
+              </Link>
+            );
+          })}
         </div>
         <Image
           className=" absolute md:w-36 w-20 right-0 bottom-0 md:-bottom-0"
