@@ -25,7 +25,7 @@ const Page = () => {
       ].join(" ")}>
       <div
         className={[
-          "fixed inset-0 z-0 pointer-events-none",
+          "fixed inset-0 z-2 pointer-events-none",
           "flex items-center justify-center w-full h-full",
         ].join(" ")}>
         <Image
@@ -41,7 +41,9 @@ const Page = () => {
       {/* Navbar fixed at the top, above all content */}
       <Navbar />
 
-      <div className="md:px-16 px-5 pt-20"> {/* Add pt-20 to offset fixed navbar height */}
+      <div className="md:px-16 xl:px-20 px-5 pt-20">
+        {" "}
+        {/* Add pt-20 to offset fixed navbar height */}
         <CustomCursor variant={cursorVariant} />
         <Hero
           onCursorEnter={() => setCursorVariant("hero")}
@@ -54,7 +56,7 @@ const Page = () => {
         />
       </div>
       <Services />
-      <div className=" md:px-16 px-5">
+      <div className=" md:px-16 xl:px-20 px-5">
         <Testimonials
           onCursorEnter={() => setCursorVariant("testimonials")}
           onCursorLeave={() => setCursorVariant("default")}
