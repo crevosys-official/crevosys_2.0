@@ -218,7 +218,7 @@ const SkillsMarquee: React.FC<SkillsMarqueeProps> = ({ className = "" }) => {
         pauseOnHover={true}
         direction="left"
         autoFill={true}
-        className="mb-20 py-3 overflow-hidden z-50">
+        className="mb-20 py-3 overflow-hidden">
         {leftSkills.map(renderSkillImage)}
       </Marquee>
 

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ReactLenis } from "@/lib/lenis";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "Home | CrevoSys",
@@ -15,7 +16,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ReactLenis root>
-        <body className={` antialiased`}>{children}</body>
+        <body className={` antialiased`}>
+          {children}
+          <Toaster />
+        </body>
       </ReactLenis>
     </html>
   );
