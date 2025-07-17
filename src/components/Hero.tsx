@@ -13,15 +13,15 @@ interface HeroProps {
 
 // CSS class constants for better maintainability
 const HERO_SECTION_CLASSES =
-  "relative w-full min-h-[500px] md:min-h-screen xl:min-h-screen md:pt-20 flex items-center justify-center overflow-hidden md:container md:mx-auto xl:container xl:mx-auto";
+  "relative w-full min-h-[400px] md:min-h-screen xl:min-h-screen md:pt-0 pt-14 flex items-start md:items-center justify-start md:justify-center overflow-hidden md:container md:mx-auto xl:container xl:mx-auto";
 const BACKGROUND_CONTAINER_CLASSES =
-  "absolute inset-0 flex items-center justify-center pointer-events-none z-0";
+  "absolute inset-0 flex items-start md:items-center justify-start md:justify-center pointer-events-none z-0";
 const MAIN_CONTENT_CLASSES =
-  "relative z-10 flex flex-col md:gap-6 justify-center container mx-auto md:-mt-20";
+  "relative z-10 flex flex-col md:gap-6 justify-start md:justify-center container mx-auto md:-mt-20 items-start md:items-center";
 
 // Badge component for the "Your #1 Platform" section
 const PlatformBadge: React.FC = () => (
-  <div className="flex mb-5 items-center justify-center">
+  <div className="flex mb-5 items-start md:items-center justify-start md:justify-center">
     <div className="rounded-full bg-gradient-to-r from-[#D9D9D9] to-[#737373] items-center">
       <div className="flex items-center gap-3 md:py-2 md:px-3 p-2">
         <Image
@@ -41,7 +41,7 @@ const PlatformBadge: React.FC = () => (
 
 // Lightning icon component with magnet effect
 const LightningIcon: React.FC = () => (
-  <div className="md:w-20 md:h-24 w-12 h-12 absolute md:-top-12 md:-left-16 -top-8 -left-7">
+  <div className="md:w-20 md:h-24 w-12 h-12 absolute md:-top-12 md:-left-16 -top-8 -left-7 hidden md:inline-block">
     <Magnet padding={100} disabled={false} magnetStrength={15} className="z-10">
       <div className="group hover:scale-110 rounded-full flex items-center justify-center transition duration-300 group-hover:scale-110">
         <Image
@@ -58,9 +58,9 @@ const LightningIcon: React.FC = () => (
 
 // Main heading component
 const MainHeading: React.FC = () => (
-  <div className="flex mt-3 items-center justify-center w-fit mx-auto relative">
+  <div className="flex mt-3 items-start md:items-center justify-start md:justify-center w-fit md:mx-auto mx-0 relative">
     <LightningIcon />
-    <h1 className="bg-gradient-to-r from-[#e4e4e4] to-[#ababab] text-transparent bg-clip-text font-heading md:text-7xl xl:text-9xl text-4xl uppercase font-bold md:py-1 tracking-wide">
+    <h1 className="bg-gradient-to-r from-[#e4e4e4] to-[#ababab] text-transparent bg-clip-text font-heading md:text-7xl xl:text-9xl text-5xl uppercase font-bold md:py-1 tracking-wide">
       Creativity Sparks
     </h1>
   </div>
@@ -72,7 +72,7 @@ const SmileIcon: React.FC = () => (
     padding={100}
     disabled={false}
     magnetStrength={15}
-    className="absolute md:-top-7 xl:-top-14 md:right-0 -top-1 -right-1 z-10">
+    className="absolute md:-top-7 xl:-top-8 md:right-0 -top-1 -right-1 z-10">
     <div className="group hover:scale-110 md:w-16 md:h-16 xl:w-20 xl:h-20 w-12 h-12 bg-orange-400 rounded-full flex items-center justify-center transition duration-300 group-hover:scale-110">
       <Smile className="xl:w-16 xl:h-16 md:w-12 md:h-12 w-8 h-8 text-[#e9e9e9] transition duration-300 group-hover:rotate-30" />
     </div>
@@ -81,8 +81,8 @@ const SmileIcon: React.FC = () => (
 
 // Subheading component with "Revolution" text
 const SubHeading: React.FC = () => (
-  <div className="flex items-center justify-center relative mb-5">
-    <span className="inline-block text-[#ababab] relative text-4xl tracking-wide font-heading uppercase font-bold md:text-7xl xl:text-9xl">
+  <div className="flex items-start md:items-center justify-start md:justify-center relative mb-5">
+    <span className="inline-flex items-start text-[#ababab] relative text-5xl tracking-wide font-heading uppercase font-bold md:text-7xl xl:text-9xl">
       Revolution
       <SmileIcon />
       <Image
@@ -102,7 +102,7 @@ const DescriptionText: React.FC = () => {
     "Revolutionizing businesses with modern IT solutions and world-class design.";
 
   return (
-    <div className="flex mt-3 items-center justify-center">
+    <div className="flex mt-3 items-start md:items-center justify-start md:justify-center">
       {/* Desktop version with decryption animation */}
       <DecryptedText
         className="text-gray-400 hidden md:inline-flex md:text-2xl text-center mx-10 md:mx-0"
