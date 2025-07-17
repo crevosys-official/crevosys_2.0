@@ -18,13 +18,13 @@ export async function POST(req: NextRequest) {
     await transporter.sendMail({
       from: email,
       to: "crevosysofficial@gmail.com",
-      subject: "New Contact Form Submission",
+      subject: "New Contact Form Crevosys",
       html: `
         <h2>Contact Form Submission</h2>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Phone:</strong> ${phone}</p>
-        <p><strong>How did you hear about us?:</strong> ${source}</p>
+        <p><strong>How did He/She hear about us?:</strong> ${source}</p>
         <p><strong>Message:</strong> ${message}</p>
       `,
     });
