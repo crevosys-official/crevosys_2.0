@@ -1,11 +1,55 @@
-import { Button } from "@/components/ui/button";
+"use client";
+import { Button } from "@/components/ui/stateful-button";
 import { Facebook, Instagram, Linkedin, Smile } from "lucide-react";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { toast } from "sonner";
 
 const ContactLayout = () => {
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    source: "",
+    message: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setSuccess(false);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (res.ok) {
+        setSuccess(true);
+        toast.success("Message sent! Thank you for contacting us.");
+      } else {
+        toast.error("Failed to send message. Please try again.");
+      }
+    } catch (err) {
+      toast.error("Failed to send message. Please try again.");
+    }
+    setLoading(false);
+    return new Promise((resolve) => {
+      setTimeout(resolve, 4000);
+    });
+  };
+
   return (
     <div className="grid xl:grid-cols-2 gap-5 py-10 md:py-0 items-center justify-center px-14 min-h-screen">
-      {/* left side */}
       <div className=" relative flex flex-col gap-7">
         <div className=" bg-zinc-300 w-fit p-2 rounded-md -rotate-6">
           <h1 className=" text-2xl font-heading tracking-wider ">Contact</h1>
@@ -56,58 +100,83 @@ const ContactLayout = () => {
         <h1 className="md:text-4xl text-3xl mt-2 md:mt-0 font-heading uppercase tracking-wide">
           Get In Touch
         </h1>
-        <div>
-          <div className="grid md:grid-cols-2 gap-5 items-center">
-            <div>
-              <h4 className=" text-xl mb-4">Full Name</h4>
-              <input
-                type="text"
-                className=" border border-zinc-300/40 p-3 w-full rounded-md bg-zinc-800/30"
-              />
+        <form onSubmit={handleSubmit}>
+          <div>
+            <div className="grid md:grid-cols-2 gap-5 items-center">
+              <div>
+                <h4 className=" text-xl mb-4">Full Name</h4>
+                <input
+                  type="text"
+                  name="name"
+                  value={form.name}
+                  onChange={handleChange}
+                  className=" border border-zinc-300/40 p-3 w-full rounded-md bg-zinc-800/30"
+                  required
+                />
+              </div>
+              <div>
+                <h4 className=" text-xl mb-4">Email Address</h4>
+                <input
+                  type="email"
+                  name="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  className=" border border-zinc-300/40 p-3 w-full rounded-md bg-zinc-800/30"
+                  required
+                />
+              </div>
             </div>
-            <div>
-              <h4 className=" text-xl mb-4">Email Address</h4>
-              <input
-                type="email"
-                className=" border border-zinc-300/40 p-3 w-full rounded-md bg-zinc-800/30"
-              />
+            <div className="grid md:grid-cols-2 gap-5 items-center">
+              <div>
+                <h4 className=" text-xl my-4">Phone number (Optional)</h4>
+                <input
+                  type="text"
+                  name="phone"
+                  value={form.phone}
+                  onChange={handleChange}
+                  className=" border border-zinc-300/40 p-3 w-full rounded-md bg-zinc-800/30"
+                />
+              </div>
+              <div>
+                <h4 className=" text-xl my-4">How did you hear about us ?</h4>
+                <select
+                  name="source"
+                  value={form.source}
+                  onChange={handleChange}
+                  className=" border border-zinc-300/40 p-3 w-full rounded-md bg-zinc-800/30"
+                  required>
+                  <option value="" disabled>
+                    Select an option
+                  </option>
+                  <option value="social_media">Social Media</option>
+                  <option value="newspaper">Newspaper</option>
+                  <option value="advertisement">Advertisement</option>
+                  <option value="friends_or_relative">
+                    Friends or Relative
+                  </option>
+                  <option value="youtube">YouTube</option>
+                </select>
+              </div>
             </div>
           </div>
-          <div className="grid md:grid-cols-2 gap-5 items-center">
-            <div>
-              <h4 className=" text-xl my-4">Phone number (Optional)</h4>
-              <input
-                type="number"
-                className=" border border-zinc-300/40 p-3 w-full rounded-md bg-zinc-800/30"
-              />
-            </div>
-            <div>
-              <h4 className=" text-xl my-4">How did you hear about us ?</h4>
-              <select
-                className=" border border-zinc-300/40 p-3 w-full rounded-md bg-zinc-800/30"
-                defaultValue="">
-                <option value="" disabled>
-                  Select an option
-                </option>
-                <option value="social_media">Social Media</option>
-                <option value="newspaper">Newspaper</option>
-                <option value="advertisement">Advertisement</option>
-                <option value="friends_or_relative">Friends or Relative</option>
-                <option value="youtube">YouTube</option>
-              </select>
-            </div>
+          <div>
+            <h1 className=" text-xl my-4">How can we help ?</h1>
+            <textarea
+              name="message"
+              value={form.message}
+              onChange={handleChange}
+              className=" border border-zinc-300/40 w-full p-3 bg-zinc-800/30 rounded-md resize-none"
+              rows={5}
+              required
+            />
           </div>
-        </div>
-        <div>
-          <h1 className=" text-xl my-4">How can we help ?</h1>
-          <textarea
-            className=" border border-zinc-300/40 w-full p-3 bg-zinc-800/30 rounded-md resize-none"
-            rows={5}
-          />
-        </div>
-        <button className=" bg-[#FF8805] hover:bg-[#ff9b05b6] uppercase font-semibold w-fit p-3 rounded-full cursor-pointer">
-          Send Message
-        </button>
+          <Button
+            type="submit"
+            className=" bg-[#FF8805] hover:bg-[#ff9b05b6] uppercase font-semibold w-fit p-3 rounded-full cursor-pointer mt-4"
+            disabled={loading}>
+            Send Message
+          </Button>
+        </form>
       </div>
     </div>
   );
