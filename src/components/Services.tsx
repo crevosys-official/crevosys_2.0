@@ -23,7 +23,7 @@ const Services = () => {
   }, []);
 
   return (
-    <div className="relative overflow-hidden services md:pb-20 w-full mt-10 pt-10 rounded-2xl">
+    <div id="services" className="relative overflow-hidden services md:pb-20 w-full mt-10 pt-10 rounded-2xl">
       {/* Background with opacity */}
       <div
         className="absolute inset-0 bg-cover bg-no-repeat bg-center opacity-60"
