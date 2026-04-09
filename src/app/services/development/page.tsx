@@ -14,22 +14,22 @@ const DevelopmentPage = () => {
     {
       title: "Web App Development",
       description: "Building scalable, high-performance web applications using modern frameworks like Next.js and React.",
-      icon: "/card_icons/Icon.png",
+      icon: "https://i.postimg.cc/43pQXvG5/appdevelop.png",
     },
     {
       title: "Custom Software",
       description: "Tailored software designed to solve your specific business challenges and streamline operations.",
-      icon: "/card_icons/automation.png",
+      icon: "https://i.postimg.cc/jjy4R6T9/software.webp",
     },
     {
       title: "E-commerce Solutions",
       description: "Feature-rich online stores with secure payment gateways and seamless user experiences.",
-      icon: "/card_icons/Marketing.png",
+      icon: "https://i.postimg.cc/Pq1QdbH7/ecom.webp",
     },
     {
       title: "API & Cloud",
       description: "Connecting your systems and building robust APIs for seamless data flow and functionality.",
-      icon: "/card_icons/Design.png",
+      icon: "https://i.postimg.cc/Dw9cVj9P/api-2.png",
     },
   ];
 
@@ -95,38 +95,41 @@ const DevelopmentPage = () => {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {services.map((service, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="w-full"
-              >
-                <PixelCard
-                  variant="blue"
-                  className="w-full cursor-pointer hover:border-zinc-200/20 bg-zinc-900/30">
-                  <div className="absolute inset-0 justify-between p-10 bg-zinc-800/20 flex flex-col gap-5">
-                    <div>
-                      <Image
-                        className="md:w-24 md:h-24 w-16 h-16 mb-4 filter brightness-110"
-                        height={100}
-                        width={100}
-                        src={service.icon}
-                        alt={service.title}
-                      />
-                      <h3 className="text-2xl text-white font-semibold">
-                        {service.title}
-                      </h3>
-                      <p className="text-gray-400 text-sm mt-3 leading-relaxed">
-                        {service.description}
-                      </p>
+            {services.map((service, index) => {
+              const variants: ("blue" | "default" | "yellow" | "pink")[] = ["blue", "default", "yellow", "pink"];
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="w-full"
+                >
+                  <PixelCard
+                    variant={variants[index % variants.length]}
+                    className="w-full cursor-pointer hover:border-zinc-200/20 bg-zinc-900/30 font-primary">
+                    <div className="absolute inset-0 justify-between p-10 bg-zinc-800/20 flex flex-col gap-5">
+                      <div>
+                        <Image
+                          className="md:w-24 md:h-24 w-16 h-16 mb-4 filter brightness-110"
+                          height={100}
+                          width={100}
+                          src={service.icon}
+                          alt={service.title}
+                        />
+                        <h3 className="text-2xl text-white font-semibold">
+                          {service.title}
+                        </h3>
+                        <p className="text-gray-400 text-sm mt-3 leading-relaxed">
+                          {service.description}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </PixelCard>
-              </motion.div>
-            ))}
+                  </PixelCard>
+                </motion.div>
+              );
+            })}
           </div>
         </section>
 
