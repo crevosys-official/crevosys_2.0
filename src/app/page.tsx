@@ -11,6 +11,8 @@ import Testimonials from "@/components/Testimonials";
 import Progress from "@/components/Progress";
 import GetTouch from "@/components/GetTouch";
 import Footer from "@/components/Footer";
+import Pricing from "@/components/Pricing";
+import Projects from "@/components/Projects";
 
 const Page = () => {
   const [cursorVariant, setCursorVariant] = useState<
@@ -56,15 +58,23 @@ const Page = () => {
         />
       </div>
       <Services />
+      <Projects
+        onCursorEnter={() => setCursorVariant("design")}
+        onCursorLeave={() => setCursorVariant("default")}
+      />
+      <Testimonials
+        onCursorEnter={() => setCursorVariant("testimonials")}
+        onCursorLeave={() => setCursorVariant("default")}
+      />
       <div className=" md:px-16 xl:px-20 px-5">
-        <Testimonials
-          onCursorEnter={() => setCursorVariant("testimonials")}
-          onCursorLeave={() => setCursorVariant("default")}
-        />
         <Progress
           onCardHover={(variant) => setCursorVariant(variant)}
           onCursorLeave={() => setCursorVariant("default")}
         />
+        {/* <Pricing
+          onCursorEnter={() => setCursorVariant("plan")}
+          onCursorLeave={() => setCursorVariant("default")}
+        /> */}
         <GetTouch />
       </div>
       <Footer />

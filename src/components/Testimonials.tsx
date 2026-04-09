@@ -124,8 +124,8 @@ const Testimonials: React.FC<TestimonialsProps> = ({
   const displayedFeedback = showAll ? feedback : feedback.slice(0, 4);
 
   return (
-    <div className="testimonial-bg rounded-4xl bg-zinc-900/25 relative">
-      <div className="w-full h-full bg-zinc-900/20 backdrop-blur-3xl rounded-md py-4">
+    <div className="testimonial-bg bg-zinc-900/25 relative">
+      <div className="w-full h-full bg-zinc-900/20 backdrop-blur-3xl py-4">
         {/* Decorative 3D elements */}
         <Image
           className="absolute -top-30 hidden md:inline-flex xl:inline-flex -left-30 z-0"
