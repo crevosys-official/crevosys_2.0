@@ -30,6 +30,7 @@ const PlatformBadge: React.FC = () => (
           width={30}
           height={30}
           alt="Star icon"
+          loading="lazy"
         />
         <h1 className="text-black font-primary font-semibold text-sm md:text-base">
           Your #1 Platform for IT solution
@@ -50,6 +51,7 @@ const LightningIcon: React.FC = () => (
           alt="Lightning effect"
           height={200}
           width={200}
+          loading="lazy"
         />
       </div>
     </Magnet>
@@ -91,6 +93,7 @@ const SubHeading: React.FC = () => (
         alt="Decorative curve"
         height={28}
         width={624}
+        loading="lazy"
       />
     </span>
   </div>

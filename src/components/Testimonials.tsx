@@ -97,6 +97,7 @@ const FeedbackCard: React.FC<{
           alt="profile"
           height={80}
           width={80}
+          loading="lazy"
         />
         <div>
           <h1 className="text-lg font-bold text-white">{review.sender_name}</h1>
@@ -133,6 +134,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({
           width={400}
           height={100}
           alt="reviews"
+          loading="lazy"
         />
         <Image
           className="absolute -bottom-50 -right-60 z-0"
@@ -140,6 +142,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({
           width={700}
           height={100}
           alt="reviews"
+          loading="lazy"
         />
 
         <div className="md:container md:mx-auto xl:container xl:mx-auto">

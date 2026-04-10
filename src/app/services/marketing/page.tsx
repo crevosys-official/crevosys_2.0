@@ -4,38 +4,40 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { CheckCircle2, Code2, Globe, Rocket, Terminal, Zap, MoveRight, Star } from "lucide-react";
+import { Rocket, Star, Megaphone, Target, BarChart3, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import PixelCard from "@/components/animation/PlexCard";
 
-const DevelopmentPage = () => {
+// Using Lucide icons or keeping the structure if they want PNGs. 
+// I'll use common postimg links that are usually reliable for these types of services.
+const MarketingPage = () => {
   const services = [
     {
-      title: "Web App Development",
-      description: "Building scalable, high-performance web applications using modern frameworks like Next.js and React.",
-      icon: "https://i.postimg.cc/43pQXvG5/appdevelop.png",
+      title: "Search Engine Optimization",
+      description: "Boost your online visibility and drive organic traffic with our expert SEO strategies and technical audits.",
+      icon: "https://i.postimg.cc/FRwDFLV2/seo-3d-icon-png-download-5528528-png.webp",
     },
     {
-      title: "Custom Software",
-      description: "Tailored software designed to solve your specific business challenges and streamline operations.",
-      icon: "https://i.postimg.cc/jjy4R6T9/software.webp",
+      title: "Social Media Marketing",
+      description: "Build a strong brand presence and engage with your audience across all major social platforms effectively.",
+      icon: "https://i.postimg.cc/brbLZw6x/social-media-marketing-3d-icon-png-download-5862479.png",
     },
     {
-      title: "E-commerce Solutions",
-      description: "Feature-rich online stores with secure payment gateways and seamless user experiences.",
-      icon: "https://i.postimg.cc/Pq1QdbH7/ecom.webp",
+      title: "Content Strategy",
+      description: "Creation of compelling, high-quality content that resonates with your brand voice and converts visitors.",
+      icon: "https://i.postimg.cc/Jh4Tpmh2/content-strategy-3d-icon-png-download-12203095-png.webp",
     },
     {
-      title: "API & Cloud",
-      description: "Connecting your systems and building robust APIs for seamless data flow and functionality.",
-      icon: "https://i.postimg.cc/Dw9cVj9P/api-2.png",
+      title: "Pay-Per-Click Advertising",
+      description: "Targeted ad campaigns designed to maximize ROI and reach your ideal customers at the right moment.",
+      icon: "https://i.postimg.cc/Hxr6C2XN/pay-per-click-online-advertising-3d-icon-png-download-8879413-png.webp",
     },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-t from-[#070707] to-[#221f35] text-white selection:bg-orange-500/30 relative overflow-hidden">
-      {/* Background overlay from main page */}
+    <div className="min-h-screen bg-gradient-to-t from-[#070707] to-[#1a1c2e] text-white selection:bg-orange-500/30 relative overflow-hidden">
+      {/* Background overlay */}
       <div className="fixed inset-0 z-2 pointer-events-none flex items-center justify-center w-full h-full">
         <Image
           src="/gradient.png"
@@ -60,20 +62,20 @@ const DevelopmentPage = () => {
           >
             <div className="border-gray-600 border w-fit flex justify-center mx-auto px-4 py-1.5 rounded-full gap-2 items-center text-zinc-300">
               <Star className="w-3" />
-              Development Excellence
+              Marketing Excellence
             </div>
             
             <h1 className="text-4xl md:text-6xl font-heading tracking-wide text-zinc-200">
-              Innovative Solutions for Digital Growth
+              Strategic Marketing for Modern Brands
             </h1>
             <p className="xl:w-1/2 md:w-2/3 w-full text-md tracking-wide text-gray-400 text-center flex mx-auto leading-relaxed">
-              We leverage the latest technologies to build software that is not just functional, but also a joy to use. From concept to deployment, we craft robust, scalable solutions tailored to your needs.
+              We combine data-driven insights with creative storytelling to help your brand stand out in a crowded digital landscape. Our holistic approach ensures sustainable growth and maximum impact.
             </p>
             
             <div className="flex justify-center gap-4 mt-4">
               <Link href="/contact">
                 <Button size="lg" className="bg-gradient-to-r from-[#D9D9D9] to-[#737373] hover:from-[#e5e5e5] hover:to-[#8a8a8a] text-black font-semibold rounded-full px-8">
-                  Book your appointment
+                  Start your campaign
                 </Button>
               </Link>
             </div>
@@ -84,9 +86,9 @@ const DevelopmentPage = () => {
         <section className="py-14 container mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
             <div className="max-w-xl">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">What we provide</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">What we offer</h2>
               <p className="text-zinc-500 text-lg">
-                Comprehensive development services to power your business forward.
+                Comprehensive marketing services designed to scale your business.
               </p>
             </div>
             <Link href="/#services" className="flex items-center gap-2 text-orange-400 font-medium cursor-pointer hover:text-orange-300 transition-colors">
@@ -96,7 +98,7 @@ const DevelopmentPage = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {services.map((service, index) => {
-              const variants: ("blue" | "default" | "yellow" | "pink")[] = ["blue", "default", "yellow", "pink"];
+              const variants: ("blue" | "default" | "yellow" | "pink")[] = ["pink", "blue", "yellow", "default"];
               return (
                 <motion.div
                   key={index}
@@ -138,24 +140,28 @@ const DevelopmentPage = () => {
         <section className="py-24 bg-zinc-900/10 backdrop-blur-sm border-y border-white/5">
           <div className="container mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-8">Our Development Process</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-8">Our Marketing Strategy</h2>
               <div className="space-y-8">
                 {[
                   {
-                    title: "Discovery & Planning",
-                    desc: "We dive deep into your requirements and business goals to create a comprehensive roadmap."
+                    title: "Market Analysis",
+                    desc: "We perform deep research into your industry, competitors, and audience behavior.",
+                    icon: <BarChart3 className="w-6 h-6 text-orange-500" />
                   },
                   {
-                    title: "Agile Execution",
-                    desc: "Sprints-based development with regular updates, ensuring transparency and flexibility."
+                    title: "Creative Development",
+                    desc: "Our team crafts unique messages and visuals that capture attention and build trust.",
+                    icon: <Megaphone className="w-6 h-6 text-orange-500" />
                   },
                   {
-                    title: "Rigorous Testing",
-                    desc: "Complete QA and performance optimization to ensure a bug-free, high-speed experience."
+                    title: "Omnichannel Execution",
+                    desc: "Deploying campaigns across the right mix of channels for maximum reach and impact.",
+                    icon: <Target className="w-6 h-6 text-orange-500" />
                   },
                   {
-                    title: "Scalable Deployment",
-                    desc: "Cloud-native deployment strategies that grow with your user base."
+                    title: "Data-Driven Optimization",
+                    desc: "Continuous monitoring and refining of campaigns based on real-time performance data.",
+                    icon: <Users className="w-6 h-6 text-orange-500" />
                   }
                 ].map((item, idx) => (
                   <motion.div 
@@ -167,7 +173,7 @@ const DevelopmentPage = () => {
                     transition={{ delay: idx * 0.1 }}
                   >
                     <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center">
-                      <CheckCircle2 className="w-6 h-6 text-orange-500" />
+                      {item.icon}
                     </div>
                     <div>
                       <h4 className="text-lg font-semibold mb-2 text-zinc-100">{item.title}</h4>
@@ -180,13 +186,13 @@ const DevelopmentPage = () => {
             
             <div className="relative aspect-square md:aspect-auto md:h-[500px] rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
               <Image
-                src="/services/development.png"
-                alt="Development Process"
+                src="/services/marketing.png"
+                alt="Marketing Strategy"
                 fill
                 className="object-cover"
                 loading="lazy"
               />
-              <div className="absolute inset-0 bg-blue-600/5 mix-blend-overlay"></div>
+              <div className="absolute inset-0 bg-purple-600/5 mix-blend-overlay"></div>
             </div>
           </div>
         </section>
@@ -197,4 +203,4 @@ const DevelopmentPage = () => {
   );
 };
 
-export default DevelopmentPage;
+export default MarketingPage;

@@ -29,6 +29,7 @@ const page = () => {
             alt="start"
             height={1000}
             width={1000}
+            loading="lazy"
           />
         </div>
       </div>

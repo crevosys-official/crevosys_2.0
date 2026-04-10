@@ -157,6 +157,7 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 300px, 450px"
+                loading="lazy"
               />
             </div>
           ))}

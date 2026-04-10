@@ -16,6 +16,7 @@ const Footer = () => {
                   alt="Brand Logo"
                   height={100}
                   width={100}
+                  loading="lazy"
                 />
                 <div>
                   <h1 className=" text-3xl font-heading uppercase">Crevosys</h1>

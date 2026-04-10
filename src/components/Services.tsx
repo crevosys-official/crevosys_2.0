@@ -64,6 +64,7 @@ const Services = () => {
                         width={100}
                         src={serviceCard.icon}
                         alt="serviceCardImage"
+                        loading="lazy"
                       />
                       <h1 className="text-3xl text-white mt-2">
                         {serviceCard.title}
@@ -90,6 +91,7 @@ const Services = () => {
           width={100}
           src="/card_icons/Light-image.png"
           alt=""
+          loading="lazy"
         />
       </div>
     </div>

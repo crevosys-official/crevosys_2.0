@@ -29,6 +29,7 @@ const GetTouch = () => {
         alt="line shape"
         height={1000}
         width={1000}
+        loading="lazy"
       />
     </div>
   );

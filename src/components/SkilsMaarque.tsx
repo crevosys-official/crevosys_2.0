@@ -188,7 +188,7 @@ const SkillsMarquee: React.FC<SkillsMarqueeProps> = ({ className = "" }) => {
         alt={skill.alt}
         width={80}
         height={80}
-        priority={false}
+        loading="lazy"
       />
     </div>
   );
