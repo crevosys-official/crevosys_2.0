@@ -14,22 +14,22 @@ const AutomationPage = () => {
     {
       title: "AI Chatbots",
       description: "Intelligent conversational agents that provide 24/7 customer support and personalized user engagements.",
-      icon: "/services/chatbot.png",
+      icon: "https://i.postimg.cc/J0ys5pSR/aichatbot.webp",
     },
     {
       title: "Workflow Automation",
       description: "Seamlessly integrate AI into your daily operations to automate repetitive tasks and boost productivity.",
-      icon: "/services/workflow.png",
+      icon: "https://i.postimg.cc/x8WcxKS2/workflow.webp",
     },
     {
       title: "Smart Analytics",
       description: "Leverage machine learning to extract deep insights and predictive patterns from your complex datasets.",
-      icon: "/services/analytics.png",
+      icon: "https://i.postimg.cc/mk0tXQGG/analytics.webp",
     },
     {
       title: "Custom AI Agents",
       description: "Bespoke AI solutions designed to tackle your industry-specific challenges with autonomous capabilities.",
-      icon: "/services/custom-ai.png",
+      icon: "https://i.postimg.cc/Y2ygLWTH/agent.webp",
     },
   ];
 
