@@ -30,7 +30,6 @@ const PlatformBadge: React.FC = () => (
           width={30}
           height={30}
           alt="Star icon"
-          loading="lazy"
         />
         <h1 className="text-black font-primary font-semibold text-sm md:text-base">
           Your #1 Platform for IT solution
@@ -51,7 +50,6 @@ const LightningIcon: React.FC = () => (
           alt="Lightning effect"
           height={200}
           width={200}
-          loading="lazy"
         />
       </div>
     </Magnet>
@@ -93,7 +91,6 @@ const SubHeading: React.FC = () => (
         alt="Decorative curve"
         height={28}
         width={624}
-        loading="lazy"
       />
     </span>
   </div>
@@ -101,8 +98,7 @@ const SubHeading: React.FC = () => (
 
 // Description text component
 const DescriptionText: React.FC = () => {
-  const descriptionText =
-    "Revolutionizing businesses with modern IT solutions and world-class design.";
+  const descriptionText = "Revolutionizing businesses with modern IT solutions and world-class design.";
 
   return (
     <div className="flex mt-3 items-start md:items-center justify-start md:justify-center">

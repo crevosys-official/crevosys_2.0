@@ -103,7 +103,6 @@ const Navbar = () => {
               className="md:w-18 w-18"
               height={100}
               width={100}
-              loading="lazy"
             />
           </Link>
         </div>
@@ -169,7 +168,6 @@ const Navbar = () => {
                   className="w-24"
                   height={100}
                   width={100}
-                  loading="lazy"
                 />
               </div>
               {/* X button at the top right */}

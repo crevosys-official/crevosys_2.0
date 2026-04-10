@@ -1,16 +1,22 @@
 import Image from "next/image";
 import React from "react";
 import ContactLayout from "./ContactLayout";
+import Navbar from "@/components/Navbar";
 
 const page = () => {
   return (
     <div>
+        
       {/* background container */}
       <div
+      
         className={[
           "min-h-screen",
           "bg-gradient-to-t from-[#070707] to-[#221f35] ",
         ].join(" ")}>
+
+            <Navbar></Navbar>
+
         <div
           className={[
             "fixed inset-0 z-0 pointer-events-none",
