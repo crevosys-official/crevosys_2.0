@@ -187,9 +187,13 @@ export default function PixelCard({
     null
   );
   const timePreviousRef = useRef(performance.now());
-  const reducedMotion = useRef(
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches
-  ).current;
+  const reducedMotion = useRef(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      reducedMotion.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    }
+  }, []);
 
   const variantCfg: VariantConfig = VARIANTS[variant] || VARIANTS.default;
   const finalGap = gap ?? variantCfg.gap;
@@ -220,7 +224,7 @@ export default function PixelCard({
         const dx = x - width / 2;
         const dy = y - height / 2;
         const distance = Math.sqrt(dx * dx + dy * dy);
-        const delay = reducedMotion ? 0 : distance;
+        const delay = reducedMotion.current ? 0 : distance;
         if (!ctx) return;
         pxs.push(
           new Pixel(
@@ -229,7 +233,7 @@ export default function PixelCard({
             x,
             y,
             color,
-            getEffectiveSpeed(finalSpeed, reducedMotion),
+            getEffectiveSpeed(finalSpeed, reducedMotion.current),
             delay
           )
         );
