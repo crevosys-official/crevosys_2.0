@@ -1,0 +1,45 @@
+[
+  {
+    "id": 1,
+    "title": "The Palace Resort",
+    "category": "Hotel/Resort Management",
+    "image": "https://i.postimg.cc/kXs0MB82/the-Palace-upwork-thumbnail.jpg",
+    "modalImage": "https://i.postimg.cc/2y9nTs3d/1gd.jpg",
+    "year": "2026",
+    "description": "A comprehensive management system for high-end luxury resorts, featuring automated booking engines, staff coordination modules, and real-time inventory tracking. Designed to streamline operations and enhance the guest experience through seamless digital integration.",
+    "tech": ["Next.js", "TypeScript", "Gsap", "Framer-motion", "Tailwind CSS"],
+    "videoUrl": "#",
+    "live": "https://the-palace-resort.vercel.app"
+  },
+  {
+    "id": 2,
+    "title": "Meetup",
+    "category": "Restaurant food delivery/Management",
+    "image": "https://i.postimg.cc/nr8Bj4sw/meetup-upwork-thumbnail.jpg",
+    "year": "2026",
+    "description": "A modern mobile-first e-commerce solution focusing on high conversion rates and intuitive user journeys. Features include AR product previews, biometric checkout, and personalized AI recommendations.",
+    "tech": ["Next.js", "Typescript", "TailwindCSS", "Superbase", "GSAP"],
+    "videoUrl": "#",
+    "live":"https://meetup-restaurant.vercel.app"
+  },
+  {
+    "id": 3,
+    "title": "Real Estate Hub",
+    "category": "Platform",
+    "image": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    "year": "2023",
+    "description": "An all-in-one platform connecting property buyers, sellers, and agents with advanced filtering and virtual tour capabilities. Built for scalability and high-performance data handling.",
+    "tech": ["Vue.js", "Go", "Elasticsearch", "Docker"],
+    "videoUrl": "#"
+  },
+  {
+    "id": 4,
+    "title": "AI Saas Landing",
+    "category": "Web Design",
+    "image": "https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    "year": "2024",
+    "description": "A high-converting landing page for an AI-powered SaaS product, utilizing cutting-edge animations and interactive demos to showcase complex technical features simply.",
+    "tech": ["Framer Motion", "Three.js", "GSAP", "React"],
+    "videoUrl": "#"
+  }
+]

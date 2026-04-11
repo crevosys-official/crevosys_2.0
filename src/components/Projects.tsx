@@ -3,40 +3,14 @@
 import React, { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
+import projectsData from "@/data/projects.json";
+import { Project } from "@/types/project";
+import ProjectModal from "./ProjectModal";
 
-// The project data includes a thumbnail that will trail the cursor
-const projects = [
-  {
-    id: 1,
-    title: "Fintech Dashboard",
-    category: "Web Application",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    year: "2024"
-  },
-  {
-    id: 2,
-    title: "E-Commerce App",
-    category: "Mobile Design",
-    image: "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    year: "2023"
-  },
-  {
-    id: 3,
-    title: "Real Estate Hub",
-    category: "Platform",
-    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    year: "2023"
-  },
-  {
-    id: 4,
-    title: "AI Saas Landing",
-    category: "Web Design",
-    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    year: "2024"
-  },
-];
+// Cast the imported JSON to the Project type array
+const projects = projectsData as Project[];
 
 interface ProjectsProps {
   onCursorEnter?: () => void;
@@ -47,18 +21,18 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
   const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   useEffect(() => {
     const container = containerRef.current;
     const imgElement = imageRef.current;
     if (!container || !imgElement) return;
 
-    // Use gsap.quickTo for high-performance following of the mouse cursor
+    //  gsap
     const xMove = gsap.quickTo(imgElement, "x", { duration: 0.6, ease: "power3" });
     const yMove = gsap.quickTo(imgElement, "y", { duration: 0.6, ease: "power3" });
 
     const handleMouseMove = (e: MouseEvent) => {
-      // Find the center of the image element and apply offset so it perfectly tracks the cursor
       const imgWidth = imgElement.offsetWidth || 300;
       const imgHeight = imgElement.offsetHeight || 300;
       const x = e.clientX - imgWidth / 2;
@@ -109,13 +83,14 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
                 setHoveredProject(null);
                 if (onCursorLeave) onCursorLeave();
               }}
+              onClick={() => setSelectedProject(project)}
             >
               {/* Left text column relative to list item */}
               <div className="flex flex-col pointer-events-none">
                 <span className="text-indigo-400 text-sm font-semibold tracking-widest mb-3 block md:hidden">
                   {project.category.toUpperCase()}
                 </span>
-                <h3 className="text-3xl md:text-4xl font-bold text-white group-hover:text-white transition-all duration-300 transform group-hover:translate-x-6 drop-shadow-xl">
+                <h3 className="text-2xl md:text-3xl font-bold text-white group-hover:text-orange-500 transition-all duration-300 transform group-hover:translate-x-6 drop-shadow-xl">
                   {project.title}
                 </h3>
               </div>
@@ -136,7 +111,7 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
       {/* GSAP Floating Image Setup - Strictly follows pointer and transitions opacity */}
       <div
         ref={imageRef}
-        className="fixed top-0 left-0 pointer-events-none z-[100] w-[300px] h-[220px] md:w-[450px] md:h-[330px] overflow-hidden rounded-2xl shadow-[0_0_60px_rgba(0,0,0,0.6)] flex items-center justify-center will-change-transform"
+        className="fixed top-0 left-0 pointer-events-none z-[100] w-[240px] h-[180px] md:w-[350px] md:h-[260px] overflow-hidden rounded-2xl shadow-[0_0_60px_rgba(0,0,0,0.6)] flex items-center justify-center will-change-transform"
         style={{
           opacity: hoveredProject !== null ? 1 : 0,
           visibility: hoveredProject !== null ? 'visible' : 'hidden',
@@ -156,13 +131,24 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
                 alt={project.title}
                 fill
                 className="object-cover"
-                sizes="(max-width: 768px) 300px, 450px"
+                sizes="(max-width: 768px) 240px, 350px"
                 loading="lazy"
               />
             </div>
           ))}
         </div>
       </div>
+
+      {/* Project Modal */}
+      <AnimatePresence>
+        {selectedProject && (
+          <ProjectModal 
+            project={selectedProject} 
+            isOpen={!!selectedProject} 
+            onClose={() => setSelectedProject(null)} 
+          />
+        )}
+      </AnimatePresence>
     </section>
   );
 };
