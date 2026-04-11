@@ -11,12 +11,12 @@ import Testimonials from "@/components/Testimonials";
 import Progress from "@/components/Progress";
 import GetTouch from "@/components/GetTouch";
 import Footer from "@/components/Footer";
-import Pricing from "@/components/Pricing";
+
 import Projects from "@/components/Projects";
 
 const Page = () => {
   const [cursorVariant, setCursorVariant] = useState<
-    "default" | "hero" | "about" | "testimonials" | "plan" | "design" | "build"
+    "default" | "hero" | "about" | "testimonials" | "design" | "build"
   >("default");
 
   return (
@@ -71,10 +71,7 @@ const Page = () => {
           onCardHover={(variant) => setCursorVariant(variant)}
           onCursorLeave={() => setCursorVariant("default")}
         />
-        {/* <Pricing
-          onCursorEnter={() => setCursorVariant("plan")}
-          onCursorLeave={() => setCursorVariant("default")}
-        /> */}
+
         <GetTouch />
       </div>
       <Footer />
