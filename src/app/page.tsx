@@ -16,7 +16,7 @@ import Projects from "@/components/Projects";
 
 const Page = () => {
   const [cursorVariant, setCursorVariant] = useState<
-    "default" | "hero" | "about" | "testimonials" | "design" | "build"
+    "default" | "hero" | "about" | "testimonials" | "plan" | "design" | "build"
   >("default");
 
   return (
