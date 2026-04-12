@@ -8,7 +8,6 @@ import {
   Star,
   Target,
   Eye,
-  Rocket,
   Users,
   Lightbulb,
   Shield,
@@ -30,11 +29,7 @@ const fadeInUp = {
   transition: { duration: 0.6 },
 };
 
-const staggerContainer = {
-  initial: {},
-  whileInView: { transition: { staggerChildren: 0.15 } },
-  viewport: { once: true },
-};
+
 
 const AboutPage = () => {
   const values = [

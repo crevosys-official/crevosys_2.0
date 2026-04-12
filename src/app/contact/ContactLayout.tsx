@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/stateful-button";
 import { Facebook, Instagram, Linkedin, Smile } from "lucide-react";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { toast } from "sonner";
 
 const ContactLayout = () => {
@@ -13,7 +13,6 @@ const ContactLayout = () => {
     message: "",
   });
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -26,7 +25,6 @@ const ContactLayout = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setSuccess(false);
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
@@ -34,12 +32,11 @@ const ContactLayout = () => {
         body: JSON.stringify(form),
       });
       if (res.ok) {
-        setSuccess(true);
         toast.success("Message sent! Thank you for contacting us.");
       } else {
         toast.error("Failed to send message. Please try again.");
       }
-    } catch (err) {
+    } catch {
       toast.error("Failed to send message. Please try again.");
     }
     setLoading(false);
@@ -56,7 +53,7 @@ const ContactLayout = () => {
         </div>
         <div className=" relative">
           <h1 className="md:text-9xl text-7xl font-semibold text-white uppercase font-heading tracking-wide">
-            Let's work Together
+            Let&apos;s work Together
           </h1>
           <div className="group hover:scale-110 md:w-14 md:h-14 xl:w-20 xl:h-20 w-12 h-12 bg-orange-400 rounded-full flex items-center justify-center transition duration-300 group-hover:scale-110 absolute md:bottom-10 md:right-40 bottom-6 right-35">
             <Smile className="xl:w-14 xl:h-14 md:w-12 md:h-12 w-8 h-8 text-[#e9e9e9] transition duration-300 rotate-30" />

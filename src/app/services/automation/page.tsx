@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Rocket, Star, Bot, Cpu, Zap, BarChart3, CheckCircle2 } from "lucide-react";
+import { Rocket, Star, Bot, Cpu, Zap, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import PixelCard from "@/components/animation/PlexCard";

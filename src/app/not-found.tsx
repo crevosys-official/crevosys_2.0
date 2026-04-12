@@ -25,8 +25,8 @@ const NotFound = () => {
             Lost in the Digital Void?
           </h2>
           <p className="text-zinc-500 text-lg mb-10 leading-relaxed">
-            The page you're looking for has vanished into thin air. Don't worry, 
-            even the best explorers get lost sometimes. Let's get you back on track.
+            The page you&apos;re looking for has vanished into thin air. Don&apos;t worry, 
+            even the best explorers get lost sometimes. Let&apos;s get you back on track.
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

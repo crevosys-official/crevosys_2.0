@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Megaphone, Search, Share2, BarChart, Rocket, Star, CheckCircle2 } from "lucide-react";
+import { Megaphone, Search, Share2, BarChart, Rocket, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import PixelCard from "@/components/animation/PlexCard";
