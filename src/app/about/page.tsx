@@ -138,9 +138,27 @@ const AboutPage = () => {
 
         {/* ─────────────────── Stats Bar ─────────────────── */}
         <section className="container mx-auto px-6 mb-24">
+          {/* Mobile view - static stats */}
+          <div className="grid grid-cols-2 md:hidden gap-4">
+            {stats.map((stat, index) => (
+              <div
+                key={index}
+                className="relative bg-zinc-800/40 backdrop-blur-md border border-white/10 rounded-2xl p-6 text-center"
+              >
+                <h3 className="text-3xl font-heading text-orange-400 mb-2">
+                  {stat.number}
+                </h3>
+                <p className="text-zinc-400 text-sm uppercase tracking-wider">
+                  {stat.label}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop view - animated stats */}
           <motion.div
             {...fadeInUp}
-            className="grid grid-cols-2 md:grid-cols-4 gap-4"
+            className="hidden md:grid grid-cols-4 gap-4"
           >
             {stats.map((stat, index) => (
               <motion.div
@@ -151,11 +169,11 @@ const AboutPage = () => {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="relative group"
               >
-                <div className="bg-zinc-800/40 backdrop-blur-md border border-white/10 rounded-2xl p-6 md:p-8 text-center hover:border-orange-500/30 transition-all duration-500 hover:bg-zinc-800/60">
-                  <h3 className="text-3xl md:text-5xl font-heading text-orange-400 mb-2">
+                <div className="bg-zinc-800/40 backdrop-blur-md border border-white/10 rounded-2xl p-8 text-center hover:border-orange-500/30 transition-all duration-500 hover:bg-zinc-800/60">
+                  <h3 className="text-5xl font-heading text-orange-400 mb-2">
                     {stat.number}
                   </h3>
-                  <p className="text-zinc-400 text-sm md:text-base uppercase tracking-wider">
+                  <p className="text-zinc-400 text-base uppercase tracking-wider">
                     {stat.label}
                   </p>
                 </div>

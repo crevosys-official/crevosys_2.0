@@ -37,12 +37,12 @@ const Services = () => {
             Services
           </div>
 
-          <h1 className="text-4xl font-heading tracking-wide text-center text-zinc-200">
+          <h1 className="text-4xl font-heading tracking-wide text-center text-zinc-200 px-4 ">
             Our Solutions for your Digital Growth
           </h1>
-          <p className=" xl:w-1/2 md:w-1/2 w-full text-md tracking-wide text-gray-400 text-center flex mx-auto">
+          <p className=" xl:w-1/2 md:w-1/2 w-full text-md tracking-wide text-gray-400 text-center flex mx-auto px-4">
             We offer expert Webflow design, development, SEO, and support
-            services—tailored to boost your website&apos;s performance, user
+            services tailored to boost your website&apos;s performance, user
             experience, and growth.
           </p>
         </div>
