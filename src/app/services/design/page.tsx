@@ -184,7 +184,7 @@ const DesignPage = () => {
             
             <div className="relative aspect-square md:aspect-auto md:h-[500px] rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
               <Image
-                src="/services/design.png"
+                src="/services/crevosysdesign.png"
                 alt="Creative Process"
                 fill
                 className="object-cover"

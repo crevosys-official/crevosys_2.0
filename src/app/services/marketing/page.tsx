@@ -184,7 +184,7 @@ const MarketingPage = () => {
             
             <div className="relative aspect-square md:aspect-auto md:h-[500px] rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
               <Image
-                src="/services/marketing.png"
+                src="/services/crevosysmarketing.png"
                 alt="Marketing Process"
                 fill
                 className="object-cover"
