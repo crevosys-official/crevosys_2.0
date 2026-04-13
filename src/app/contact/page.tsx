@@ -9,17 +9,15 @@ const page = () => {
         
       {/* background container */}
       <div
-      
         className={[
-          "min-h-screen",
-          "bg-gradient-to-t from-[#070707] to-[#221f35] ",
+          "min-h-screen relative overflow-hidden",
+          "bg-gradient-to-t from-[#070707] to-[#221f35]",
         ].join(" ")}>
-
-            <Navbar></Navbar>
+        <Navbar />
 
         <div
           className={[
-            "fixed inset-0 z-0 pointer-events-none",
+            "fixed inset-0 z-0 pointer-events-none overflow-hidden",
             "flex items-center justify-center w-full h-full",
           ].join(" ")}>
           <Image
@@ -30,11 +28,11 @@ const page = () => {
             className="opacity-10"
             priority
           />
-          <div>
+          <div className="w-full h-full flex items-center justify-center">
             <Image
-              className="w-full h-screen"
+              className="w-full h-auto min-h-screen opacity-30 md:opacity-100"
               src="/pricing/stars.svg"
-              alt="start"
+              alt="stars"
               height={1000}
               width={1000}
               loading="lazy"
