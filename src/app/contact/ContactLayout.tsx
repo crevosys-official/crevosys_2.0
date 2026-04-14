@@ -46,7 +46,7 @@ const ContactLayout = () => {
   };
 
   return (
-    <div className="grid lg:grid-cols-2 gap-10 px-6 md:px-14 pt-32 pb-10 lg:py-0 items-center justify-center min-h-screen">
+    <div className="grid lg:grid-cols-2 gap-10 px-6 md:px-14 pt-32 pb-10 items-center justify-center min-h-screen">
       <div className="relative flex flex-col gap-6 md:gap-7">
         <div className="bg-zinc-300 w-fit p-2 rounded-md -rotate-6">
           <h1 className="text-xl md:text-2xl font-heading tracking-wider text-black">Contact</h1>
