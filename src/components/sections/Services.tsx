@@ -2,7 +2,7 @@
 import { MoveRight, Star } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import PixelCard from "./animation/PlexCard";
+import PixelCard from "@/components/animation/PlexCard";
 import Link from "next/link";
 
 // Define the type for a service card

@@ -1,7 +1,7 @@
 import React from "react";
-import TeamLayout from "./teamLayout";
+import TeamLayout from "@/components/team/TeamLayout";
 import Image from "next/image";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/layout/Navbar";
 
 const page = () => {
   return (

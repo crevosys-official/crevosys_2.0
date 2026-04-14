@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { LucideMenu, X } from "lucide-react";
-import Portal from "./Portal"; // adjust path as needed
+import Portal from "@/components/layout/Portal"; // adjust path as needed
 import { AnimatePresence, motion } from "framer-motion";
 
 // Add this import for the hamburger icon (Heroicons)

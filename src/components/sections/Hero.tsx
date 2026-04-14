@@ -1,10 +1,10 @@
 "use client";
 import Image from "next/image";
 import React, { useRef } from "react";
-import { BackgroundCircles } from "./design/Hero";
-import DecryptedText from "./animation/Decrypted-Text";
+import { BackgroundCircles } from "@/components/design/Hero";
+import DecryptedText from "@/components/animation/Decrypted-Text";
 import { Smile } from "lucide-react";
-import Magnet from "./animation/Magnet";
+import Magnet from "@/components/animation/Magnet";
 
 interface HeroProps {
   onCursorEnter?: () => void;

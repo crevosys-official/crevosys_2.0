@@ -1,7 +1,7 @@
 "use client";
 import { ArrowUp, Star } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { AnimatedTooltip } from "./ui/animated-tooltip";
+import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 

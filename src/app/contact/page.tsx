@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
-import ContactLayout from "./ContactLayout";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/layout/Navbar";
+import ContactLayout from "@/components/contact/ContactLayout";
 
 const page = () => {
   return (

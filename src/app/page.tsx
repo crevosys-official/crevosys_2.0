@@ -1,18 +1,17 @@
 "use client";
-import About from "@/components/About";
-import Hero from "@/components/Hero";
-import Navbar from "@/components/Navbar";
-import Services from "@/components/Services";
-import SkillsMarquee from "@/components/SkilsMaarque";
-import CustomCursor from "@/components/CustomCursor";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import CustomCursor from "@/components/layout/CustomCursor";
+import Hero from "@/components/sections/Hero";
+import About from "@/components/sections/About";
+import Services from "@/components/sections/Services";
+import SkillsMarquee from "@/components/sections/SkillsMarquee";
+import Projects from "@/components/sections/Projects";
+import Testimonials from "@/components/sections/Testimonials";
+import Progress from "@/components/sections/Progress";
+import GetTouch from "@/components/sections/GetTouch";
 import Image from "next/image";
 import React, { useState } from "react";
-import Testimonials from "@/components/Testimonials";
-import Progress from "@/components/Progress";
-import GetTouch from "@/components/GetTouch";
-import Footer from "@/components/Footer";
-
-import Projects from "@/components/Projects";
 
 const Page = () => {
   const [cursorVariant, setCursorVariant] = useState<

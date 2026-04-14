@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import projectsData from "@/data/projects.json";
 import { Project } from "@/types/project";
-import ProjectModal from "./ProjectModal";
+import ProjectModal from "@/components/sections/ProjectModal";
 
 // Cast the imported JSON to the Project type array
 const projects = projectsData as Project[];
