@@ -71,10 +71,10 @@ const ContactLayout = () => {
       Give us a Call
     </h1>
     <a
-      href="tel:+8801784321799"
+      href="tel:+88 01855245281"
       className="text-lg md:text-xl font-medium text-white hover:text-orange-400 transition cursor-pointer hover:underline"
     >
-      +88 01784-321799
+      +88 01855245281
     </a>
   </div>
 
