@@ -63,20 +63,35 @@ const ContactLayout = () => {
           Are you looking for a digital trustworthy partner to help with your digital strategy, UX, Web presence or digital activity?
         </p>
         {/* contact info */}
-        <div className="flex flex-col md:flex-row items-start gap-8 md:gap-10 text-white">
-          <div className="flex flex-col gap-1">
-            <h1 className="font-heading uppercase text-xl md:text-2xl text-orange-400">Give us a Call</h1>
-            <p className="text-xl md:text-2xl text-zinc-300 underline">01784321799</p>
-          </div>
-          <div className="flex flex-col gap-1">
-            <h1 className="font-heading uppercase text-xl md:text-2xl text-orange-400">
-              Send us an email
-            </h1>
-            <p className="text-xl md:text-2xl text-zinc-300 underline break-all">
-              crevosysofficial@gmail.com
-            </p>
-          </div>
-        </div>
+        <div className="flex flex-col md:flex-row items-start gap-8 md:gap-12 text-white">
+  
+  {/* Phone */}
+  <div className="flex flex-col gap-2">
+    <h1 className="font-heading uppercase text-lg md:text-xl tracking-wide text-orange-400">
+      Give us a Call
+    </h1>
+    <a
+      href="tel:+8801784321799"
+      className="text-lg md:text-xl font-medium text-white hover:text-orange-400 transition cursor-pointer hover:underline"
+    >
+      +88 01784-321799
+    </a>
+  </div>
+
+  {/* Email */}
+  <div className="flex flex-col gap-2">
+    <h1 className="font-heading uppercase text-lg md:text-xl tracking-wide text-orange-400">
+      Send us an email
+    </h1>
+    <a
+      href="mailto:crevosysofficial@gmail.com"
+      className="text-lg md:text-xl font-medium text-white hover:text-orange-400 transition break-all cursor-pointer hover:underline"
+    >
+      crevosysofficial@gmail.com
+    </a>
+  </div>
+
+</div>
         {/* social media */}
         <div className="text-white flex items-center gap-5">
           <div className="w-12 h-12 border border-white/20 rounded-full flex justify-center items-center transition duration-200 hover:bg-orange-400 hover:border-orange-400 hover:scale-110 cursor-pointer">
