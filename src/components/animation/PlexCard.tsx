@@ -124,10 +124,10 @@ function getEffectiveSpeed(value: number, reducedMotion: boolean) {
 
 const VARIANTS = {
   default: {
-    activeColor: null,
-    gap: 5,
-    speed: 35,
-    colors: "#f8fafc80,#f1f5f980,#cbd5e180",
+    activeColor: "#e0f2fe80",
+    gap: 7,
+    speed: 25,
+    colors: "#e0f2fe80,#7dd3fc80,#0ea5e980",
     noFocus: false,
   },
   blue: {
@@ -138,18 +138,18 @@ const VARIANTS = {
     noFocus: false,
   },
   yellow: {
-    activeColor: "#fef08a80",
-    gap: 3,
-    speed: 20,
-    colors: "#fef08a80,#fde04780,#eab30880",
+    activeColor: "#e0f2fe80",
+    gap: 7,
+    speed: 25,
+    colors: "#e0f2fe80,#7dd3fc80,#0ea5e980",
     noFocus: false,
   },
   pink: {
-    activeColor: "#fecdd380",
-    gap: 6,
-    speed: 80,
-    colors: "#fecdd380,#fda4af80,#e11d4880",
-    noFocus: true,
+    activeColor: "#e0f2fe80",
+    gap: 7,
+    speed: 25,
+    colors: "#e0f2fe80,#7dd3fc80,#0ea5e980",
+    noFocus: false,
   },
 };
 

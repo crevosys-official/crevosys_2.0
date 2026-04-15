@@ -305,7 +305,7 @@ const AboutPage = () => {
               transition={{ duration: 0.6 }}
               className="w-full"
             >
-              <PixelCard variant="yellow" className="w-full cursor-pointer hover:border-zinc-200/20 bg-zinc-900/30">
+              <PixelCard variant="blue" className="w-full cursor-pointer hover:border-zinc-200/20 bg-zinc-900/30">
                 <div className="absolute inset-0 p-8 md:p-10 flex flex-col gap-6 bg-zinc-800/20">
                   <div className="flex items-center gap-4">
                     <div className="w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
