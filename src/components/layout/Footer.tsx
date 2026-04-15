@@ -73,60 +73,70 @@ const Footer = () => {
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               <div>
                 <h3 className="text-white uppercase">About</h3>
-                <a
-                  href="#"
-                  className="block mt-2 text-sm text-white hover:underline">
-                  Company
-                </a>
-                <a
-                  href="#"
-                  className="block mt-2 text-sm text-white hover:underline">
+                <Link
+                  href="/about"
+                  className="block mt-2 text-sm text-gray-300 hover:text-white hover:underline">
+                  About Us
+                </Link>
+                <Link
+                  href="/about#mission"
+                  className="block mt-2 text-sm text-gray-300 hover:text-white hover:underline">
                   Mission & Vision
-                </a>
+                </Link>
+                <Link
+                  href="/team"
+                  className="block mt-2 text-sm text-gray-300 hover:text-white hover:underline">
+                  Leadership Team
+                </Link>
                 <a
                   href="#"
-                  className="block mt-2 text-sm text-white hover:underline">
-                  Team
+                  className="block mt-2 text-sm text-gray-300 hover:text-white hover:underline">
+                  Testimonials
                 </a>
               </div>
               <div className=" hidden md:inline">
-                <h3 className="text-white uppercase">Blog</h3>
+                <h3 className="text-white uppercase">Insights</h3>
                 <a
                   href="#"
-                  className="block mt-2 text-sm text-white hover:underline">
-                  Tech
+                  className="block mt-2 text-sm text-gray-300 hover:text-white hover:underline">
+                  Tech Trends
                 </a>
                 <a
                   href="#"
-                  className="block mt-2 text-sm text-white hover:underline">
-                  AI
+                  className="block mt-2 text-sm text-gray-300 hover:text-white hover:underline">
+                  AI Innovations
                 </a>
                 <a
                   href="#"
-                  className="block mt-2 text-sm text-white hover:underline">
-                  Design
+                  className="block mt-2 text-sm text-gray-300 hover:text-white hover:underline">
+                  Design Thinking
+                </a>
+                <a
+                  href="#"
+                  className="block mt-2 text-sm text-gray-300 hover:text-white hover:underline">
+                  Industry News
                 </a>
               </div>
               <div className="hidden md:inline">
                 <h3 className="text-white uppercase">Services</h3>
                 <Link
                   href="/services/development"
-                  className="block mt-2 text-sm text-white hover:underline">
+                  className="block mt-2 text-sm text-gray-300 hover:text-white hover:underline">
                   Development
                 </Link>
                 <Link
                   href="/services/marketing"
-                  className="block mt-2 text-sm text-white hover:underline">
+                  className="block mt-2 text-sm text-gray-300 hover:text-white hover:underline">
                   Marketing
                 </Link>
                 <Link
                   href="/services/design"
-                  className="block mt-2 text-sm text-white hover:underline">
+                  className="block mt-2 text-sm text-gray-300 hover:text-white hover:underline">
                   Design
                 </Link>
                 <Link
                   href="/services/automation"
-                  className="block mt-2 text-sm text-white hover:underline">
+                  className="block mt-2 text-sm text-gray-300 hover:text-white hover:underline">
                   Automation
                 </Link>
               </div>
