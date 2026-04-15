@@ -109,26 +109,26 @@ const Footer = () => {
               </div>
               <div className="hidden md:inline">
                 <h3 className="text-white uppercase">Services</h3>
-                <a
-                  href="#"
+                <Link
+                  href="/services/development"
                   className="block mt-2 text-sm text-white hover:underline">
                   Development
-                </a>
-                <a
-                  href="#"
+                </Link>
+                <Link
+                  href="/services/marketing"
                   className="block mt-2 text-sm text-white hover:underline">
                   Marketing
-                </a>
-                <a
-                  href="#"
+                </Link>
+                <Link
+                  href="/services/design"
                   className="block mt-2 text-sm text-white hover:underline">
                   Design
-                </a>
-                <a
-                  href="#"
+                </Link>
+                <Link
+                  href="/services/automation"
                   className="block mt-2 text-sm text-white hover:underline">
-                  Technology
-                </a>
+                  Automation
+                </Link>
               </div>
               <div>
                 <h3 className="text-white uppercase">Contact</h3>
