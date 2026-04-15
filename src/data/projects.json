@@ -24,16 +24,28 @@
   },
   {
     "id": 3,
-    "title": "Real Estate Hub",
-    "category": "Platform",
-    "image": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    "title": "Lunaria Hill Hospital",
+    "category": "Modern Hospital Management SystemPlatform",
+    "image": "https://i.postimg.cc/ZRWcx1MF/Whats-App-Image-2025-05-28-at-23-59-58-52bbe56a.jpg",
     "year": "2023",
-    "description": "An all-in-one platform connecting property buyers, sellers, and agents with advanced filtering and virtual tour capabilities. Built for scalability and high-performance data handling.",
+    "description": "A complete hospital website with appointment booking, departments, doctor profiles, and patient services with clean UI and admin panel.",
     "tech": ["Vue.js", "Go", "Elasticsearch", "Docker"],
-    "videoUrl": "#"
+    "videoUrl": "#",
+    "live":"https://lunariahill.netlify.app/"
   },
   {
     "id": 4,
+    "title": "Skylet Bank Ltd - Landing",
+    "category": "Modern & Secure Banking Solutions",
+    "image": "https://i.postimg.cc/9QVJz5pq/image.png",
+    "year": "2024",
+    "description": "Landing page for a fictional bank with services, call-to-action sections, mobile responsiveness and elegant dark branding.",
+    "tech": ["Framer Motion", "Three.js", "GSAP", "React"],
+    "videoUrl": "#",
+    "live":"https://skyletbankltd.netlify.app/"
+  },
+  {
+    "id": 5,
     "title": "AI Saas Landing",
     "category": "Web Design",
     "image": "https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",

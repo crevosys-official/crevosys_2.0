@@ -63,32 +63,69 @@ const ContactLayout = () => {
           Are you looking for a digital trustworthy partner to help with your digital strategy, UX, Web presence or digital activity?
         </p>
         {/* contact info */}
-        <div className="flex flex-col md:flex-row items-start gap-8 md:gap-10 text-white">
-          <div className="flex flex-col gap-1">
-            <h1 className="font-heading uppercase text-xl md:text-2xl text-orange-400">Give us a Call</h1>
-            <p className="text-xl md:text-2xl text-zinc-300 underline">01784321799</p>
-          </div>
-          <div className="flex flex-col gap-1">
-            <h1 className="font-heading uppercase text-xl md:text-2xl text-orange-400">
-              Send us an email
-            </h1>
-            <p className="text-xl md:text-2xl text-zinc-300 underline break-all">
-              crevosysofficial@gmail.com
-            </p>
-          </div>
-        </div>
+        <div className="flex flex-col md:flex-row items-start gap-8 md:gap-12 text-white">
+  
+  {/* Phone */}
+  <div className="flex flex-col gap-2">
+    <h1 className="font-heading uppercase text-lg md:text-xl tracking-wide text-orange-400">
+      Give us a Call
+    </h1>
+    <a
+      href="tel:+88 01855245281"
+      className="text-lg md:text-xl font-medium text-white hover:text-orange-400 transition cursor-pointer hover:underline"
+    >
+      +88 01855245281
+    </a>
+  </div>
+
+  {/* Email */}
+  <div className="flex flex-col gap-2">
+    <h1 className="font-heading uppercase text-lg md:text-xl tracking-wide text-orange-400">
+      Send us an email
+    </h1>
+    <a
+      href="mailto:crevosysofficial@gmail.com"
+      className="text-lg md:text-xl font-medium text-white hover:text-orange-400 transition break-all cursor-pointer hover:underline"
+    >
+      crevosysofficial@gmail.com
+    </a>
+  </div>
+
+</div>
         {/* social media */}
         <div className="text-white flex items-center gap-5">
-          <div className="w-12 h-12 border border-white/20 rounded-full flex justify-center items-center transition duration-200 hover:bg-orange-400 hover:border-orange-400 hover:scale-110 cursor-pointer">
-            <Facebook className="w-5 h-5 fill-gray-100" />
-          </div>
-          <div className="w-12 h-12 border border-white/20 rounded-full flex justify-center items-center transition duration-200 hover:bg-pink-500 hover:border-pink-500 hover:scale-110 cursor-pointer">
-            <Instagram className="w-5 h-5 fill-white" />
-          </div>
-          <div className="w-12 h-12 border border-white/20 rounded-full flex justify-center items-center transition duration-200 hover:bg-blue-600 hover:border-blue-600 hover:scale-110 cursor-pointer">
-            <Linkedin className="w-5 h-5 fill-gray-100" />
-          </div>
-        </div>
+  
+  {/* Facebook */}
+  <a
+    href="https://www.facebook.com/CrevoSys"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="w-12 h-12 border border-white/20 rounded-full flex justify-center items-center transition duration-200 hover:bg-orange-400 hover:border-orange-400 hover:scale-110"
+  >
+    <Facebook className="w-5 h-5 text-white" />
+  </a>
+
+  {/* Instagram */}
+  <a
+    href="https://www.instagram.com/crevosys/"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="w-12 h-12 border border-white/20 rounded-full flex justify-center items-center transition duration-200 hover:bg-pink-500 hover:border-pink-500 hover:scale-110"
+  >
+    <Instagram className="w-5 h-5 text-white" />
+  </a>
+
+  {/* LinkedIn */}
+  <a
+    href="https://www.linkedin.com/company/crevosys-official/"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="w-12 h-12 border border-white/20 rounded-full flex justify-center items-center transition duration-200 hover:bg-blue-600 hover:border-blue-600 hover:scale-110"
+  >
+    <Linkedin className="w-5 h-5 text-white" />
+  </a>
+
+</div>
       </div>
       {/* right side */}
       <div className="text-white flex flex-col gap-5 bg-zinc-800/20 p-6 md:p-10 rounded-3xl border border-white/10 backdrop-blur-sm">
