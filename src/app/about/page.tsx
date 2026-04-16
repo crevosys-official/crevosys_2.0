@@ -188,7 +188,7 @@ const AboutPage = () => {
             <motion.div {...fadeInUp}>
               <div className="border-gray-600 border w-fit px-4 py-1.5 rounded-full gap-2 flex items-center text-zinc-300 mb-6">
                 <Users className="w-3" />
-                Meet our founders
+                Who we are
               </div>
               <h2 className="text-3xl md:text-5xl font-heading tracking-wide text-zinc-200 mb-6">
                 Meet Our Founders
