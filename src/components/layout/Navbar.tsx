@@ -272,8 +272,10 @@ export default function Navigation() {
 
       {/* Menu Fullscreen Overlay */}
       <div
-        className={`fixed inset-0 w-full h-[100svh] transition-all ${
-          isOpen ? "pointer-events-auto" : "pointer-events-none"
+        className={`fixed inset-0 w-full h-[100svh] transition-opacity duration-300 ${
+          isOpen
+            ? "pointer-events-auto opacity-100 visible"
+            : "pointer-events-none opacity-0 invisible"
         }`}
       >
         {/* Morphing SVG Background */}

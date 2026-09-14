@@ -238,3 +238,13 @@ body::-webkit-scrollbar,
   scrollbar-width: none;
 }
 
+/* Prevent menu content flash on initial load / reload */
+.menu-char {
+  opacity: 0;
+}
+
+.menu-info-item {
+  opacity: 0;
+}
+
+
