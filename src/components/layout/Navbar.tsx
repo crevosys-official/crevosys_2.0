@@ -5,6 +5,7 @@ import Link from "next/link";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import Image from "next/image";
+import { useLenis } from "@/lib/lenis";
 
 const NAV_LINKS = [
   { title: "Home", href: "/" },
@@ -35,6 +36,7 @@ export default function Navigation() {
   const menuPathRef = useRef<SVGPathElement>(null);
   const isAnimating = useRef(false);
 
+  const lenis = useLenis();
   const { contextSafe } = useGSAP({ scope: containerRef });
 
   // Initial GSAP Setup
@@ -45,17 +47,29 @@ export default function Navigation() {
     gsap.set(".menu-info-item", { opacity: 0, y: 100 });
   }, []);
 
-  // Lock body scroll when overlay is open
+  // Lock body & Lenis scroll when overlay is open
   useEffect(() => {
     if (isOpen) {
+      if (lenis) {
+        lenis.stop();
+      }
       document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
     } else {
+      if (lenis) {
+        lenis.start();
+      }
       document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
     }
     return () => {
+      if (lenis) {
+        lenis.start();
+      }
       document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
     };
-  }, [isOpen]);
+  }, [isOpen, lenis]);
 
   // Only show navbar when completely at the top position (scrollY <= 20)
   useEffect(() => {
@@ -272,6 +286,7 @@ export default function Navigation() {
 
       {/* Menu Fullscreen Overlay */}
       <div
+        data-lenis-prevent
         className={`fixed inset-0 w-full h-[100svh] transition-opacity duration-300 ${
           isOpen
             ? "pointer-events-auto opacity-100 visible"
