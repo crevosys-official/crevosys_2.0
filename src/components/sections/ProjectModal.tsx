@@ -63,7 +63,7 @@ const ProjectModal: React.FC<ModalProps> = ({ project, onClose }) => {
         </div>
 
         {/* Right Side - Information */}
-        <div className="w-full md:w-1/2 p-8 md:p-14 overflow-y-auto custom-scrollbar bg-gradient-to-br from-white/5 to-transparent shadow-inner" data-lenis-prevent>
+        <div className="w-full md:w-1/2 p-8 md:p-14 overflow-y-auto no-scrollbar bg-gradient-to-br from-white/5 to-transparent shadow-inner" data-lenis-prevent>
           <div className="flex justify-between items-start mb-6">
             <div>
               <span className="text-orange-500 font-semibold tracking-wider text-sm uppercase mb-2 block">
