@@ -37,121 +37,275 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      // -------------------------------------------------------------
-      // 1. MASTER TIMELINE: Luxury Intro & Text Reveal Animation
-      // -------------------------------------------------------------
-      const introTl = gsap.timeline({
-        defaults: { ease: "power4.out" },
-      });
+      let scrollTl: gsap.core.Timeline | null = null;
 
-      // A. Badge Entrance
-      if (badgeRef.current) {
-        introTl.fromTo(
-          badgeRef.current,
-          {
-            opacity: 0,
-            y: -24,
-            scale: 0.9,
-            filter: "blur(8px)",
+      // -----------------------------------------------------------------
+      // SCROLL PARALLAX & BIDIRECTIONAL TEXT REVEAL TIMELINE
+      // When scrolling down: words exit in sequence into masks
+      // When scrolling back: words reveal in REVERSE order out of masks!
+      // -----------------------------------------------------------------
+      const initScrollTimeline = () => {
+        if (scrollTl || !sectionRef.current) return;
+
+        scrollTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: 1.2,
+            invalidateOnRefresh: true,
           },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            filter: "blur(0px)",
-            duration: 0.9,
-            delay: 0.1,
-          }
-        );
-      }
+        });
 
-      // B. Headline Words Reveal (Masked 3D Slide & Blur Clear)
-      introTl.fromTo(
-        ".hero-reveal-word",
-        {
-          yPercent: 120,
-          rotateX: -40,
-          opacity: 0,
-          filter: "blur(10px)",
-          transformOrigin: "50% 100%",
-        },
-        {
-          yPercent: 0,
-          rotateX: 0,
-          opacity: 1,
-          filter: "blur(0px)",
-          duration: 1.15,
-          stagger: 0.045,
-          ease: "power4.out",
-        },
-        "-=0.6"
-      );
+        // 1. Text Content gentle upward lift
+        if (contentRef.current) {
+          scrollTl.to(
+            contentRef.current,
+            {
+              y: -80,
+              ease: "none",
+            },
+            0
+          );
+        }
 
-      // C. Subtitle Lines Reveal
-      if (subtitleRef.current) {
-        introTl.fromTo(
-          subtitleRef.current.querySelectorAll(".hero-sub-line"),
+        // 2. Headline Words: exit upward into mask on scroll down,
+        // and REVEAL IN REVERSE order (from end to start) when scrolling back!
+        scrollTl.to(
+          ".hero-reveal-word",
           {
-            yPercent: 100,
+            yPercent: -130,
             opacity: 0,
-            filter: "blur(6px)",
+            filter: "blur(10px)",
+            rotateX: 30,
+            stagger: {
+              each: 0.035,
+              from: "start",
+            },
+            ease: "power2.inOut",
+            duration: 0.65,
+          },
+          0
+        );
+
+        // 3. Subtitle Lines: exit on scroll down, reverse-reveal on scroll back
+        if (subtitleRef.current) {
+          scrollTl.to(
+            subtitleRef.current.querySelectorAll(".hero-sub-line"),
+            {
+              yPercent: -120,
+              opacity: 0,
+              filter: "blur(8px)",
+              stagger: 0.05,
+              ease: "power2.inOut",
+              duration: 0.55,
+            },
+            0.04
+          );
+        }
+
+        // 4. Strategy Pill Badge: slide and fade
+        if (badgeRef.current) {
+          scrollTl.to(
+            badgeRef.current,
+            {
+              y: -30,
+              opacity: 0,
+              scale: 0.92,
+              filter: "blur(6px)",
+              ease: "power2.inOut",
+              duration: 0.45,
+            },
+            0
+          );
+        }
+
+        // 5. CTA Buttons: slide and fade
+        if (ctaRef.current) {
+          scrollTl.to(
+            ctaRef.current,
+            {
+              y: 28,
+              opacity: 0,
+              scale: 0.94,
+              ease: "power2.inOut",
+              duration: 0.45,
+            },
+            0.04
+          );
+        }
+
+        // 6. Ambient Glow: Parallax drift and soft diffusion
+        if (glowRef.current) {
+          scrollTl.to(
+            glowRef.current,
+            {
+              y: 130,
+              scale: 1.25,
+              opacity: 0.45,
+              ease: "none",
+              duration: 1,
+            },
+            0
+          );
+        }
+
+        // 7. hero_shape.png: Deep weighted 3D scroll parallax
+        if (shapeParallaxRef.current) {
+          scrollTl.to(
+            shapeParallaxRef.current,
+            {
+              y: 175,
+              scale: 1.08,
+              ease: "none",
+              duration: 1,
+            },
+            0
+          );
+        }
+
+        ScrollTrigger.refresh();
+      };
+
+      // -----------------------------------------------------------------
+      // INITIAL MOUNT CHECK:
+      // If already scrolled down (e.g. page refresh midway), immediately bind scrollTl.
+      // If at top of page, play the cinematic intro, then bind scrollTl.
+      // -----------------------------------------------------------------
+      if (window.scrollY > 30) {
+        gsap.set(".hero-reveal-word", { yPercent: 0, rotateX: 0, opacity: 1, filter: "blur(0px)" });
+        if (badgeRef.current) gsap.set(badgeRef.current, { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" });
+        if (subtitleRef.current) {
+          gsap.set(subtitleRef.current.querySelectorAll(".hero-sub-line"), { yPercent: 0, opacity: 1, filter: "blur(0px)" });
+        }
+        if (ctaRef.current) gsap.set(ctaRef.current, { opacity: 1, y: 0, scale: 1 });
+        if (shapeWrapperRef.current) gsap.set(shapeWrapperRef.current, { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" });
+        initScrollTimeline();
+      } else {
+        const introTl = gsap.timeline({
+          defaults: { ease: "power4.out" },
+          onComplete: () => {
+            initScrollTimeline();
+          },
+        });
+
+        // A. Badge Entrance
+        if (badgeRef.current) {
+          introTl.fromTo(
+            badgeRef.current,
+            {
+              opacity: 0,
+              y: -24,
+              scale: 0.9,
+              filter: "blur(8px)",
+            },
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              filter: "blur(0px)",
+              duration: 0.9,
+              delay: 0.1,
+            }
+          );
+        }
+
+        // B. Headline Words Reveal (Masked 3D Slide & Blur Clear)
+        introTl.fromTo(
+          ".hero-reveal-word",
+          {
+            yPercent: 120,
+            rotateX: -40,
+            opacity: 0,
+            filter: "blur(10px)",
+            transformOrigin: "50% 100%",
           },
           {
             yPercent: 0,
+            rotateX: 0,
             opacity: 1,
             filter: "blur(0px)",
-            duration: 0.95,
-            stagger: 0.08,
-            ease: "power3.out",
+            duration: 1.15,
+            stagger: 0.045,
+            ease: "power4.out",
           },
-          "-=0.7"
+          "-=0.6"
         );
-      }
 
-      // D. CTA Buttons Reveal
-      if (ctaRef.current) {
-        introTl.fromTo(
-          ctaRef.current,
-          {
-            opacity: 0,
-            y: 24,
-            scale: 0.94,
-          },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.85,
-            ease: "power3.out",
-          },
-          "-=0.7"
-        );
-      }
+        // C. Subtitle Lines Reveal
+        if (subtitleRef.current) {
+          introTl.fromTo(
+            subtitleRef.current.querySelectorAll(".hero-sub-line"),
+            {
+              yPercent: 100,
+              opacity: 0,
+              filter: "blur(6px)",
+            },
+            {
+              yPercent: 0,
+              opacity: 1,
+              filter: "blur(0px)",
+              duration: 0.95,
+              stagger: 0.08,
+              ease: "power3.out",
+            },
+            "-=0.7"
+          );
+        }
 
-      // E. Hero 3D Shape Dramatic Entrance
-      if (shapeWrapperRef.current) {
-        introTl.fromTo(
-          shapeWrapperRef.current,
-          {
-            opacity: 0,
-            y: 60,
-            scale: 1.18,
-            filter: "blur(14px)",
-          },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            filter: "blur(0px)",
-            duration: 1.5,
-            ease: "power3.out",
-          },
-          "-=1.1"
-        );
+        // D. CTA Buttons Reveal
+        if (ctaRef.current) {
+          introTl.fromTo(
+            ctaRef.current,
+            {
+              opacity: 0,
+              y: 24,
+              scale: 0.94,
+            },
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              duration: 0.85,
+              ease: "power3.out",
+            },
+            "-=0.7"
+          );
+        }
+
+        // E. Hero 3D Shape Entrance
+        if (shapeWrapperRef.current) {
+          introTl.fromTo(
+            shapeWrapperRef.current,
+            {
+              opacity: 0,
+              y: 60,
+              scale: 1.18,
+              filter: "blur(14px)",
+            },
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              filter: "blur(0px)",
+              duration: 1.5,
+              ease: "power3.out",
+            },
+            "-=1.1"
+          );
+        }
+
+        // If user initiates scroll while intro is playing, fast-forward to full view and bind scrollTl
+        const onEarlyScroll = () => {
+          if (introTl.isActive()) {
+            introTl.progress(1);
+          }
+        };
+        window.addEventListener("scroll", onEarlyScroll, { passive: true, once: true });
       }
 
       // -------------------------------------------------------------
-      // 2. IDLE FLOATING ANIMATION (Organic Breathing 3D Life)
+      // IDLE FLOATING ANIMATION (Organic 3D Breathing)
       // -------------------------------------------------------------
       if (shapeFloatRef.current) {
         gsap.to(shapeFloatRef.current, {
@@ -164,61 +318,7 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
       }
 
       // -------------------------------------------------------------
-      // 3. SCROLL PARALLAX EFFECT WITH hero_shape.png (ScrollTrigger)
-      // -------------------------------------------------------------
-      const scrollTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1.2,
-          invalidateOnRefresh: true,
-        },
-      });
-
-      // A. Text Content floats upward and gracefully fades
-      if (contentRef.current) {
-        scrollTl.to(
-          contentRef.current,
-          {
-            y: -110,
-            opacity: 0.12,
-            scale: 0.96,
-            ease: "none",
-          },
-          0
-        );
-      }
-
-      // B. Ambient Glow moves and expands
-      if (glowRef.current) {
-        scrollTl.to(
-          glowRef.current,
-          {
-            y: 110,
-            scale: 1.2,
-            opacity: 0.45,
-            ease: "none",
-          },
-          0
-        );
-      }
-
-      // C. hero_shape.png deep weighted parallax (descends with scale depth)
-      if (shapeParallaxRef.current) {
-        scrollTl.to(
-          shapeParallaxRef.current,
-          {
-            y: 160,
-            scale: 1.07,
-            ease: "none",
-          },
-          0
-        );
-      }
-
-      // -------------------------------------------------------------
-      // 4. INTERACTIVE 3D MOUSE PARALLAX (Buttery smooth quickTo)
+      // INTERACTIVE 3D MOUSE PARALLAX (Buttery smooth quickTo)
       // -------------------------------------------------------------
       if (shapeTiltRef.current && glowRef.current && sectionRef.current) {
         const tiltX = gsap.quickTo(shapeTiltRef.current, "x", {
@@ -282,13 +382,7 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
       }
     }, sectionRef);
 
-    // Refresh ScrollTrigger after paint
-    const timer = setTimeout(() => {
-      ScrollTrigger.refresh();
-    }, 150);
-
     return () => {
-      clearTimeout(timer);
       ctx.revert();
     };
   }, []);
@@ -299,7 +393,7 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
       className="relative w-full min-h-screen flex flex-col items-center justify-between overflow-hidden bg-[#000000] pt-24 sm:pt-28 select-none"
       style={{ perspective: 1200 }}
     >
-      {/* Background ambient radial gradients matching hero_shape colors (blue, indigo, purple) */}
+      {/* Background ambient radial gradients matching hero_shape colors */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_85%_65%_at_50%_-10%,rgba(59,130,246,0.12),rgba(147,51,234,0.09),rgba(0,0,0,0)_80%)] pointer-events-none" />
 
       {/* Left side subtle blue glow */}
@@ -323,7 +417,6 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
           ref={badgeRef}
           className="group relative inline-flex items-center gap-2 p-1 pr-4 rounded-full bg-[#18181b]/90 border border-white/10 backdrop-blur-xl mb-5 sm:mb-7 shadow-[0_4px_20px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1)] transition-transform duration-300 hover:scale-[1.02]"
         >
-          {/* Subtle badge shimmer highlight */}
           <div className="absolute inset-0 rounded-full bg-gradient-to-r from-transparent via-white/[0.06] to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
           <span className="relative flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold text-white bg-gradient-to-r from-[#ff6a00] to-[#e85500] shadow-[0_0_14px_rgba(255,106,0,0.55),inset_0_1px_1px_rgba(255,255,255,0.35)]">
@@ -404,7 +497,6 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
           <Link href="/contact" className="focus:outline-none">
             <button className="group relative px-6 sm:px-7 py-2.5 sm:py-3 rounded-full text-sm font-semibold text-white bg-gradient-to-b from-[#ff7520] via-[#f75200] to-[#cb3c00] shadow-[0_0_26px_rgba(247,82,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.4)] hover:shadow-[0_0_36px_rgba(247,82,0,0.8)] hover:brightness-110 active:scale-[0.98] transition-all duration-300 border border-orange-400/40 cursor-pointer overflow-hidden">
               <span className="relative z-10">Get Started</span>
-              {/* Luxury sheen sweep on hover */}
               <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none" />
             </button>
           </Link>
