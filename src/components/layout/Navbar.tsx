@@ -4,15 +4,22 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { LucideMenu, X } from "lucide-react";
-import Portal from "@/components/layout/Portal"; // adjust path as needed
+import Portal from "@/components/layout/Portal";
 import { AnimatePresence, motion } from "framer-motion";
 
-// Add this import for the hamburger icon (Heroicons)
+const navLinks = [
+  { label: "About", href: "/about" },
+  { label: "Features", href: "/services" },
+  { label: "Benefits", href: "/services" },
+  { label: "Testimonials", href: "/#testimonials" },
+  { label: "FAQs", href: "/#faqs" },
+  { label: "Pricing", href: "/#pricing" },
+];
 
 const Navbar = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false); // NEW
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -52,103 +59,67 @@ const Navbar = () => {
     return pathname.startsWith(href);
   };
 
-  // Menu items for reuse
-  const menuItems = (
-    <>
-      <li>
-        <Link
-          href="/"
-          className={`hover:text-orange-400 transition-colors duration-200 ${
-            isActive("/") ? "text-orange-400 font-bold" : ""
-          }`}
-          onClick={() => setMobileMenuOpen(false)}>
-          Home
-        </Link>
-      </li>
-      <li>
-        <Link
-          href="/team"
-          className={`hover:text-orange-400 transition-colors duration-200 ${
-            isActive("/team") ? "text-orange-400 font-bold" : ""
-          }`}
-          onClick={() => setMobileMenuOpen(false)}>
-          Team
-        </Link>
-      </li>
-      <li>
-        <Link
-          href="/about"
-          className={`hover:text-orange-400 transition-colors duration-200 ${
-            isActive("/about") ? "text-orange-400 font-bold" : ""
-          }`}
-          onClick={() => setMobileMenuOpen(false)}>
-          About
-        </Link>
-      </li>
-    </>
-  );
-
   return (
-    <div
-      className={`w-full pb-10 navbar pt-6 fixed top-0 left-0 right-0 z-50 px-6 md:px-16 transition-transform duration-300 ${
+    <nav
+      className={`w-full fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ${
         isVisible ? "translate-y-0" : "-translate-y-full"
-      }`}>
-      <div className="container mx-auto flex justify-between items-center">
-        <div className="navbar-start">
-          {/* Changed logo to a sample one */}
-          <Link href="/">
-            <Image
-              src="/crevoicon.png"
-              alt="navlogo"
-              className="md:w-18 w-18"
-              height={100}
-              width={100}
-            />
+      }`}
+    >
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 md:px-10 lg:px-16 py-5">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2.5 flex-shrink-0">
+          <Image
+            src="/crevoicon.png"
+            alt="Crevosys"
+            className="w-7 h-7 md:w-8 md:h-8 object-contain"
+            height={32}
+            width={32}
+            priority
+          />
+          <span className="text-white font-bold text-lg tracking-tight font-sans">Crevosys</span>
+        </Link>
+
+        {/* Desktop Nav Links — flat, no container */}
+        <div className="hidden lg:flex items-center gap-8">
+          {navLinks.map((link) => (
+            <Link
+              key={link.label}
+              href={link.href}
+              className={`text-sm font-medium tracking-wide transition-colors duration-200 hover:text-white ${
+                isActive(link.href) ? "text-white" : "text-zinc-400"
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </div>
+
+        {/* Get Started Button — solid white pill */}
+        <div className="hidden lg:block">
+          <Link href="/contact">
+            <button className="px-5 py-2 rounded-full text-sm font-semibold text-black bg-white hover:bg-zinc-200 transition-all duration-200 cursor-pointer">
+              Get Started
+            </button>
           </Link>
         </div>
-        <div className="navbar-end gap-8 items-center">
-          {/* Desktop menu */}
-          <div className="hidden lg:flex bg-zinc-700/25 backdrop-blur-[5px] border border-white/10 px-4 rounded-full shadow-lg">
-            <ul className="menu menu-horizontal px-1 flex gap-8 text-lg uppercase font-heading tracking-wider text-white">
-              {menuItems}
-            </ul>
-          </div>
-          {/* Contact button (desktop only) */}
-          <div className="hidden md:block">
-            <Link href="/contact">
-              <button
-                type="submit"
-                className="justify-center flex gap-2 items-center mx-auto bg-gradient-to-r from-[#D9D9D9] to-[#737373] text-black shadow-xl text-md bg-[#3A3A3A] backdrop-blur-md lg:font-semibold isolation-auto  before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full before:bg-orange-400  before:-z-10 cursor-pointer before:aspect-square before:hover:scale-150 before:hover:duration-700 relative z-10 px-4 py-2 overflow-hidden border rounded-full group">
-                Let&apos;s talk{" "}
-                <svg
-                  className="w-8 h-8 justify-end group-hover:rotate-90 group-hover:bg-gray-50 text-gray-50 bg-orange-400 ease-linear duration-300 rounded-full border-gray-700 group-hover:border-none p-2 rotate-45"
-                  viewBox="0 0 16 19"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M7 18C7 18.5523 7.44772 19 8 19C8.55228 19 9 18.5523 9 18H7ZM8.70711 0.292893C8.31658 -0.0976311 7.68342 -0.0976311 7.29289 0.292893L0.928932 6.65685C0.538408 7.04738 0.538408 7.68054 0.928932 8.07107C1.31946 8.46159 1.95262 8.46159 2.34315 8.07107L8 2.41421L13.6569 8.07107C14.0474 8.46159 14.6805 8.46159 15.0711 8.07107C15.4616 7.68054 15.4616 7.04738 15.0711 6.65685L8.70711 0.292893ZM9 18L9 1H7L7 18H9Z"
-                    className="fill-gray-200 group-hover:fill-gray-800"></path>
-                </svg>
-              </button>
-            </Link>
-          </div>
-          {/* Hamburger icon (mobile only) */}
-          <div className="lg:hidden flex items-center">
-            <button
-              onClick={() => setMobileMenuOpen((prev) => !prev)}
-              className="p-2 rounded-md text-white focus:outline-none"
-              aria-label="Toggle menu">
-              {mobileMenuOpen ? (
-                // Close icon
-                <X className="h-8 w-8 text-white z-50" />
-              ) : (
-                // Hamburger icon
-                <LucideMenu className="h-8 w-8" />
-              )}
-            </button>
-          </div>
+
+        {/* Hamburger icon (mobile only) */}
+        <div className="lg:hidden flex items-center">
+          <button
+            onClick={() => setMobileMenuOpen((prev) => !prev)}
+            className="p-2 rounded-md text-white focus:outline-none"
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? (
+              <X className="h-7 w-7 text-white z-50" />
+            ) : (
+              <LucideMenu className="h-7 w-7" />
+            )}
+          </button>
         </div>
       </div>
-      {/* Move the mobile menu OUTSIDE the navbar's main div */}
+
+      {/* Mobile Menu */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <Portal>
@@ -158,51 +129,54 @@ const Navbar = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -40 }}
               transition={{ duration: 0.35, ease: "easeInOut" }}
-              className="lg:hidden fixed inset-0 w-screen min-h-[100dvh] bg-zinc-800 z-[9999] flex flex-col items-center justify-center "
+              className="lg:hidden fixed inset-0 w-screen min-h-[100dvh] bg-black/95 backdrop-blur-md z-[9999] flex flex-col items-center justify-center"
             >
-              {/* Logo at the top of the menu */}
+              {/* Logo at top */}
               <div className="absolute top-8 left-1/2 -translate-x-1/2">
                 <Image
                   src="/crevoicon.png"
-                  alt="navloggo"
-                  className="w-24"
-                  height={100}
-                  width={100}
+                  alt="CrevoSys"
+                  className="w-20"
+                  height={80}
+                  width={80}
                 />
               </div>
-              {/* X button at the top right */}
+              {/* X button */}
               <button
                 onClick={() => setMobileMenuOpen(false)}
                 className="absolute top-8 right-8 p-2 rounded-md text-white z-[201]"
-                aria-label="Close menu">
-                <X className="h-8 w-8 text-white" />
+                aria-label="Close menu"
+              >
+                <X className="h-7 w-7 text-white" />
               </button>
-              <ul className="flex flex-col items-center w-full gap-8 text-2xl uppercase font-heading tracking-wider text-white mt-14">
-                {menuItems}
-                <Link
-                  href="/contact"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-3">
-                  <button
-                    type="submit"
-                    className="justify-center gap-2 flex items-center mx-auto bg-gradient-to-r from-[#D9D9D9] to-[#737373] text-black shadow-xl text-md bg-[#3A3A3A] backdrop-blur-md lg:font-semibold isolation-auto  before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full before:bg-orange-400  before:-z-10 cursor-pointer before:aspect-square before:hover:scale-150 before:hover:duration-700 relative z-10 px-4 py-2 overflow-hidden border rounded-full group">
-                    Let&apos;s talk{" "}
-                    <svg
-                      className="w-8 h-8 justify-end group-hover:rotate-90 group-hover:bg-gray-50 text-gray-50 bg-orange-400 ease-linear duration-300 rounded-full border-gray-700 group-hover:border-none p-2 rotate-45"
-                      viewBox="0 0 16 19"
-                      xmlns="http://www.w3.org/2000/svg">
-                      <path
-                        d="M7 18C7 18.5523 7.44772 19 8 19C8.55228 19 9 18.5523 9 18H7ZM8.70711 0.292893C8.31658 -0.0976311 7.68342 -0.0976311 7.29289 0.292893L0.928932 6.65685C0.538408 7.04738 0.538408 7.68054 0.928932 8.07107C1.31946 8.46159 1.95262 8.46159 2.34315 8.07107L8 2.41421L13.6569 8.07107C14.0474 8.46159 14.6805 8.46159 15.0711 8.07107C15.4616 7.68054 15.4616 7.04738 15.0711 6.65685L8.70711 0.292893ZM9 18L9 1H7L7 18H9Z"
-                        className="fill-gray-200 group-hover:fill-gray-800"></path>
-                    </svg>
-                  </button>
-                </Link>
+              <ul className="flex flex-col items-center w-full gap-7 mt-10">
+                {navLinks.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="text-xl font-medium tracking-wide text-zinc-300 hover:text-white transition-colors duration-200"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+                <li className="mt-4">
+                  <Link
+                    href="/contact"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <button className="px-7 py-3 rounded-full text-base font-semibold text-white bg-transparent border border-white/80 hover:bg-white hover:text-black transition-all duration-300 cursor-pointer">
+                      Get Started
+                    </button>
+                  </Link>
+                </li>
               </ul>
             </motion.div>
           </Portal>
         )}
       </AnimatePresence>
-    </div>
+    </nav>
   );
 };
 

@@ -3,9 +3,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import CustomCursor from "@/components/layout/CustomCursor";
 import Hero from "@/components/sections/Hero";
-import About from "@/components/sections/About";
 import Services from "@/components/sections/Services";
-import SkillsMarquee from "@/components/sections/SkillsMarquee";
 import Projects from "@/components/sections/Projects";
 import Testimonials from "@/components/sections/Testimonials";
 import Progress from "@/components/sections/Progress";
@@ -20,10 +18,7 @@ const Page = () => {
 
   return (
     <div
-      className={[
-        "min-h-screen",
-        "bg-gradient-to-t from-[#070707] to-[#221f35] ",
-      ].join(" ")}>
+      className="min-h-screen bg-[#000000]">
       <div
         className={[
           "fixed inset-0 z-2 pointer-events-none",
@@ -42,20 +37,14 @@ const Page = () => {
       {/* Navbar fixed at the top, above all content */}
       <Navbar />
 
-      <div className="md:px-16 xl:px-20 px-5 pt-20">
-        {" "}
-        {/* Add pt-20 to offset fixed navbar height */}
-        <CustomCursor variant={cursorVariant} />
-        <Hero
-          onCursorEnter={() => setCursorVariant("hero")}
-          onCursorLeave={() => setCursorVariant("default")}
-        />
-        <SkillsMarquee />
-        <About
-          onCursorEnter={() => setCursorVariant("about")}
-          onCursorLeave={() => setCursorVariant("default")}
-        />
-      </div>
+      <CustomCursor variant={cursorVariant} />
+
+      {/* Hero Section — full width edge-to-edge */}
+      <Hero
+        onCursorEnter={() => setCursorVariant("hero")}
+        onCursorLeave={() => setCursorVariant("default")}
+      />
+
       <Services />
       <Projects
         onCursorEnter={() => setCursorVariant("design")}

@@ -1,148 +1,112 @@
 "use client";
 import Image from "next/image";
-import React, { useRef } from "react";
-import { BackgroundCircles } from "@/components/design/Hero";
-import DecryptedText from "@/components/animation/Decrypted-Text";
-import { Smile } from "lucide-react";
-import Magnet from "@/components/animation/Magnet";
+import Link from "next/link";
+import React from "react";
+import { motion } from "framer-motion";
 
 interface HeroProps {
   onCursorEnter?: () => void;
   onCursorLeave?: () => void;
 }
 
-// CSS class constants for better maintainability
-const HERO_SECTION_CLASSES =
-  "relative w-full min-h-[400px] md:min-h-screen xl:min-h-screen md:pt-0 pt-14 flex items-start md:items-center justify-start md:justify-center overflow-hidden md:container md:mx-auto xl:container xl:mx-auto";
-const BACKGROUND_CONTAINER_CLASSES =
-  "absolute inset-0 flex items-start md:items-center justify-start md:justify-center pointer-events-none z-0";
-const MAIN_CONTENT_CLASSES =
-  "relative z-10 flex flex-col md:gap-6 justify-start md:justify-center container mx-auto md:-mt-20 items-start md:items-center";
-
-// Badge component for the "Your #1 Platform" section
-const PlatformBadge: React.FC = () => (
-  <div className="flex mb-5 items-start md:items-center justify-start md:justify-center">
-    <div className="rounded-full bg-gradient-to-r from-[#D9D9D9] to-[#737373] items-center">
-      <div className="flex items-center gap-3 md:py-2 md:px-3 p-2">
-        <Image
-          className="w-[30px] h-[30px] rounded-2xl"
-          src="/elements/star.png"
-          width={30}
-          height={30}
-          alt="Star icon"
-        />
-        <h1 className="text-black font-primary font-semibold text-sm md:text-base">
-          Your #1 Platform for IT solution
-        </h1>
-      </div>
-    </div>
-  </div>
-);
-
-// Lightning icon component with magnet effect
-const LightningIcon: React.FC = () => (
-  <div className="md:w-20 md:h-24 w-12 h-12 absolute md:-top-12 md:-left-16 -top-8 -left-7 hidden md:inline-block">
-    <Magnet padding={100} disabled={false} magnetStrength={15} className="z-10">
-      <div className="group hover:scale-110 rounded-full flex items-center justify-center transition duration-300 group-hover:scale-110">
-        <Image
-          src="/lightining3D.png"
-          className="transition duration-300 group-hover:rotate-10"
-          alt="Lightning effect"
-          height={200}
-          width={200}
-        />
-      </div>
-    </Magnet>
-  </div>
-);
-
-// Main heading component
-const MainHeading: React.FC = () => (
-  <div className="flex mt-3 items-start md:items-center justify-start md:justify-center w-fit md:mx-auto mx-0 relative">
-    <LightningIcon />
-    <h1 className="bg-gradient-to-r from-[#e4e4e4] to-[#ababab] text-transparent bg-clip-text font-heading md:text-7xl xl:text-9xl text-5xl uppercase font-bold md:py-1 tracking-wide">
-      Creativity Sparks
-    </h1>
-  </div>
-);
-
-// Smile icon component with magnet effect
-const SmileIcon: React.FC = () => (
-  <Magnet
-    padding={100}
-    disabled={false}
-    magnetStrength={15}
-    className="absolute md:-top-7 xl:-top-8 md:right-0 -top-1 -right-1 z-10">
-    <div className="group hover:scale-110 md:w-16 md:h-16 xl:w-20 xl:h-20 w-12 h-12 bg-orange-400 rounded-full flex items-center justify-center transition duration-300 group-hover:scale-110">
-      <Smile className="xl:w-16 xl:h-16 md:w-12 md:h-12 w-8 h-8 text-[#e9e9e9] transition duration-300 group-hover:rotate-30" />
-    </div>
-  </Magnet>
-);
-
-// Subheading component with "Revolution" text
-const SubHeading: React.FC = () => (
-  <div className="flex items-start md:items-center justify-start md:justify-center relative mb-5">
-    <span className="inline-flex items-start text-[#ababab] relative text-5xl tracking-wide font-heading uppercase font-bold md:text-7xl xl:text-9xl">
-      Revolution
-      <SmileIcon />
-      <Image
-        className="absolute top-full left-0 w-full"
-        src="/curve.png"
-        alt="Decorative curve"
-        height={28}
-        width={624}
-      />
-    </span>
-  </div>
-);
-
-// Description text component
-const DescriptionText: React.FC = () => {
-  const descriptionText = "Revolutionizing businesses with modern IT solutions and world-class design.";
-
-  return (
-    <div className="flex mt-3 items-start md:items-center justify-start md:justify-center">
-      {/* Desktop version with decryption animation */}
-      <DecryptedText
-        className="text-gray-400 hidden md:inline-flex md:text-2xl text-center mx-10 md:mx-0"
-        encryptedClassName="text-gray-400 opacity-60 md:text-2xl text-center mx-10 md:mx-0"
-        text={descriptionText}
-        animateOn="hover"
-      />
-      {/* Mobile version - static text */}
-      <p className="text-gray-400 opacity-60 md:text-2xl text-center md:mx-0 md:hidden">
-        {descriptionText}
-      </p>
-    </div>
-  );
-};
-
 const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
-  const parallaxRef = useRef<HTMLDivElement>(null);
-
   return (
-    <section className={HERO_SECTION_CLASSES}>
-      {/* Background circles with parallax effect */}
-      <div className={BACKGROUND_CONTAINER_CLASSES}>
-        <div
-          className="w-full h-full opacity-15"
-          style={{ top: "200px", position: "relative" }}>
-          <BackgroundCircles parallaxRef={parallaxRef} />
-        </div>
+    <section className="relative w-full min-h-screen flex flex-col items-center justify-between overflow-hidden bg-[#000000] pt-24 sm:pt-28">
+      {/* Background ambient radial gradients matching hero_shape colors (blue, indigo, purple) */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_85%_65%_at_50%_-10%,rgba(59,130,246,0.10),rgba(147,51,234,0.08),rgba(0,0,0,0)_80%)] pointer-events-none" />
+      
+      {/* Left side subtle blue glow */}
+      <div className="absolute top-[20%] left-[-10%] w-[550px] h-[450px] bg-blue-600/[0.08] blur-[140px] rounded-full pointer-events-none" />
+      
+      {/* Center heading indigo/purple aura */}
+      <div className="absolute top-[30%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[420px] bg-gradient-to-r from-blue-600/[0.07] via-indigo-600/[0.09] to-purple-600/[0.08] blur-[130px] rounded-full pointer-events-none" />
+      
+      {/* Right side subtle purple/pink glow */}
+      <div className="absolute top-[25%] right-[-10%] w-[550px] h-[450px] bg-purple-600/[0.08] blur-[140px] rounded-full pointer-events-none" />
+
+      {/* Main Content Area */}
+      <div
+        className="w-full max-w-5xl mx-auto flex flex-col items-center text-center px-4 sm:px-6 relative z-20"
+        onMouseEnter={onCursorEnter}
+        onMouseLeave={onCursorLeave}
+      >
+        {/* Strategy Pill Badge */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="inline-flex items-center gap-2 p-1 pr-4 rounded-full bg-[#18181b]/90 border border-white/10 backdrop-blur-md mb-5 sm:mb-7"
+        >
+          <span className="px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold text-white bg-gradient-to-r from-[#ff6a00] to-[#e85500] shadow-[0_0_12px_rgba(255,106,0,0.5)]">
+            Strategy
+          </span>
+          <span className="text-zinc-300 text-xs sm:text-sm font-medium tracking-wide">
+            Business Growth
+          </span>
+        </motion.div>
+
+        {/* 2-line Heading */}
+        <motion.h1
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.08, ease: "easeOut" }}
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-[4.75rem] font-semibold text-white tracking-[-0.03em] leading-[1.08] max-w-5xl"
+        >
+          <span className="block">Transform your Data into</span>
+          <span className="block">Powerful and Smart Solutions</span>
+        </motion.h1>
+
+        {/* Subtitle */}
+        <motion.p
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.16, ease: "easeOut" }}
+          className="mt-4 sm:mt-5 text-zinc-400 text-sm sm:text-base md:text-[1.05rem] font-normal max-w-xl leading-relaxed"
+        >
+          Discover insights, enhance choices, and grow your business{" "}
+          <br className="hidden sm:inline" />
+          using advanced data-driven innovations.
+        </motion.p>
+
+        {/* CTA Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.24, ease: "easeOut" }}
+          className="flex items-center justify-center gap-3.5 sm:gap-4 mt-6 sm:mt-7"
+        >
+          <Link href="/contact">
+            <button className="px-6 sm:px-7 py-2.5 sm:py-3 rounded-full text-sm font-semibold text-white bg-gradient-to-b from-[#ff7520] via-[#f75200] to-[#cb3c00] shadow-[0_0_24px_rgba(247,82,0,0.55),inset_0_1px_1px_rgba(255,255,255,0.35)] hover:shadow-[0_0_35px_rgba(247,82,0,0.8)] hover:brightness-110 active:scale-[0.98] transition-all duration-300 border border-orange-400/40 cursor-pointer">
+              Get Started
+            </button>
+          </Link>
+          <Link href="/services">
+            <button className="px-6 sm:px-7 py-2.5 sm:py-3 rounded-full text-sm font-semibold text-zinc-950 bg-white hover:bg-zinc-100 shadow-[0_2px_12px_rgba(255,255,255,0.12)] active:scale-[0.98] transition-all duration-300 cursor-pointer">
+              See Features
+            </button>
+          </Link>
+        </motion.div>
       </div>
 
-      {/* Main content container */}
-      <div className={MAIN_CONTENT_CLASSES} ref={parallaxRef}>
-        <PlatformBadge />
+      {/* === 3D Hero Shape — Scaled to cut off edges and pulled up to eliminate gap === */}
+      <motion.div
+        initial={{ opacity: 0, y: 35 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, delay: 0.35, ease: "easeOut" }}
+        className="relative w-full flex items-end justify-center pointer-events-none mt-auto overflow-hidden"
+      >
+        {/* Ambient glow matching the 3D shape gradient */}
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-[300px] bg-gradient-to-r from-blue-600/25 via-purple-600/30 to-pink-500/25 blur-[120px] rounded-full pointer-events-none" />
 
-        {/* Interactive heading section */}
-        <div onMouseEnter={onCursorEnter} onMouseLeave={onCursorLeave}>
-          <MainHeading />
-          <SubHeading />
-        </div>
-
-        <DescriptionText />
-      </div>
+        <Image
+          src="/elements/hero_shape.png"
+          alt="Hero 3D Shape"
+          width={2905}
+          height={1119}
+          priority
+          className="w-[130vw] min-w-[1300px] max-w-none h-auto object-contain object-bottom select-none pointer-events-none scale-125 sm:scale-135 md:scale-140 lg:scale-145 translate-y-[12%] sm:translate-y-[15%] md:translate-y-[32%] drop-shadow-[0_-15px_40px_rgba(0,0,0,0.6)]"
+        />
+      </motion.div>
     </section>
   );
 };
