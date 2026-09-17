@@ -1,9 +1,16 @@
 "use client";
 import { ArrowUp, Star } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 interface TestimonialsProps {
   onCursorEnter?: () => void;
@@ -16,6 +23,41 @@ interface Feedback {
   sender_name: string;
   sender_country: string;
 }
+
+const DEFAULT_FEEDBACK: Feedback[] = [
+  {
+    feedback:
+      "Working with this team was a fantastic experience! They delivered our project ahead of schedule and exceeded our expectations.",
+    sender_profile:
+      "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3387&q=80",
+    sender_name: "John Doe",
+    sender_country: "USA",
+  },
+  {
+    feedback:
+      "Their attention to detail and creative approach truly set them apart. Highly recommended for any design needs.",
+    sender_profile:
+      "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YXZhdGFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
+    sender_name: "Robert Johnson",
+    sender_country: "Canada",
+  },
+  {
+    feedback:
+      "Excellent communication and top-notch technical skills. I would definitely work with them again in the future.",
+    sender_profile:
+      "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YXZhdGFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
+    sender_name: "Jane Smith",
+    sender_country: "UK",
+  },
+  {
+    feedback:
+      "They turned our vision into reality with professionalism and creativity. The results speak for themselves!",
+    sender_profile:
+      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGF2YXRhcnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60",
+    sender_name: "Sahid Ahmed",
+    sender_country: "Bangladesh",
+  },
+];
 
 const people = [
   {
@@ -71,14 +113,14 @@ const StarRating: React.FC = () => (
   </span>
 );
 
-// Feedback card component with gsap
+// Feedback card component
 const FeedbackCard: React.FC<{
   review: Feedback;
   index: number;
   showAll: boolean;
 }> = ({ review, index, showAll }) => (
   <motion.div
-    className="bg-zinc-800/30 border border-white/40 p-12 rounded-xl md:w-full mx-5 md:mx-0 xl:mx-0  backdrop-blur-md"
+    className="testimonial-card-item bg-zinc-800/30 border border-white/40 p-12 rounded-xl md:w-full mx-5 md:mx-0 xl:mx-0 backdrop-blur-md"
     initial={{ opacity: 0, y: 40 }}
     animate={{ opacity: 1, y: 0 }}
     exit={{ opacity: 0, y: 40 }}
@@ -112,24 +154,114 @@ const Testimonials: React.FC<TestimonialsProps> = ({
   onCursorEnter,
   onCursorLeave,
 }) => {
-  const [feedback, setFeedback] = useState<Feedback[]>([]);
+  const [feedback, setFeedback] = useState<Feedback[]>(DEFAULT_FEEDBACK);
   const [showAll, setShowAll] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const bgImage1Ref = useRef<HTMLImageElement>(null);
+  const bgImage2Ref = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
     fetch("/feedback.json")
       .then((res) => res.json())
-      .then((data) => setFeedback(data))
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setFeedback(data);
+          ScrollTrigger.refresh();
+        }
+      })
       .catch((err) => console.error("Failed to load feedback:", err));
   }, []);
+
+  useGSAP(
+    () => {
+      if (!sectionRef.current) return;
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 75%",
+          once: true,
+        },
+      });
+
+      // 1. Header reveal
+      tl.fromTo(
+        ".testimonial-badge",
+        { opacity: 0, y: -20, scale: 0.9 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "power3.out" }
+      )
+        .fromTo(
+          ".testimonial-title",
+          { opacity: 0, y: 35, filter: "blur(6px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.75, ease: "power3.out" },
+          "-=0.35"
+        )
+        .fromTo(
+          ".testimonial-desc",
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" },
+          "-=0.35"
+        )
+        // 2. Animated Avatars cluster
+        .fromTo(
+          ".testimonial-avatars",
+          { opacity: 0, scale: 0.85, y: 15 },
+          { opacity: 1, scale: 1, y: 0, duration: 0.6, ease: "back.out(1.5)" },
+          "-=0.2"
+        )
+        // 3. Feedback cards
+        .fromTo(
+          ".testimonial-card-item",
+          { opacity: 0, y: 45, scale: 0.95 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.7,
+            stagger: 0.1,
+            ease: "power3.out",
+          },
+          "-=0.3"
+        );
+
+      // Decorative parallax
+      if (bgImage1Ref.current) {
+        gsap.to(bgImage1Ref.current, {
+          y: 40,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1.5,
+          },
+        });
+      }
+      if (bgImage2Ref.current) {
+        gsap.to(bgImage2Ref.current, {
+          y: -50,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1.5,
+          },
+        });
+      }
+    },
+    { scope: sectionRef, dependencies: [feedback.length, showAll] }
+  );
 
   const displayedFeedback = showAll ? feedback : feedback.slice(0, 4);
 
   return (
-    <div className="testimonial-bg bg-zinc-900/25 relative">
+    <div ref={sectionRef} className="testimonial-bg bg-zinc-900/25 relative">
       <div className="w-full h-full bg-zinc-900/20 backdrop-blur-3xl py-4">
         {/* Decorative 3D elements */}
         <Image
-          className="absolute -top-30 hidden md:inline-flex xl:inline-flex -left-30 z-0"
+          ref={bgImage1Ref}
+          className="absolute -top-30 hidden md:inline-flex xl:inline-flex -left-30 z-0 pointer-events-none"
           src="/reviews.png"
           width={400}
           height={100}
@@ -137,7 +269,8 @@ const Testimonials: React.FC<TestimonialsProps> = ({
           loading="lazy"
         />
         <Image
-          className="absolute -bottom-50 -right-60 z-0"
+          ref={bgImage2Ref}
+          className="absolute -bottom-50 -right-60 z-0 pointer-events-none"
           src="/reviews.png"
           width={700}
           height={100}
@@ -148,21 +281,21 @@ const Testimonials: React.FC<TestimonialsProps> = ({
         <div className="md:container md:mx-auto xl:container xl:mx-auto">
           {/* Header */}
           <div className="flex flex-col gap-4 mt-4 pb-2 md:mb-4 xl:mb-4">
-            <div className="border-gray-600 border w-fit flex justify-center mx-auto px-4 py-1.5 rounded-full gap-2 items-center text-zinc-300">
+            <div className="testimonial-badge border-gray-600 border w-fit flex justify-center mx-auto px-4 py-1.5 rounded-full gap-2 items-center text-zinc-300">
               <Star className="w-3" />
               Testimonials
             </div>
-            <h1 className="text-4xl font-heading tracking-wide text-center text-zinc-200">
+            <h1 className="testimonial-title text-4xl font-heading tracking-wide text-center text-zinc-200">
               Our Happy Clients
             </h1>
-            <p className="w-fit text-md md:text-lg tracking-wide text-gray-400 text-center flex mx-auto">
+            <p className="testimonial-desc w-fit text-md md:text-lg tracking-wide text-gray-400 text-center flex mx-auto">
               Hear from clients who&apos;ve experienced remarkable
               transformations with crevosys.
             </p>
           </div>
 
           {/* Animated avatars */}
-          <div className="flex flex-row items-center justify-center pb-10 w-full">
+          <div className="testimonial-avatars flex flex-row items-center justify-center pb-10 w-full">
             <AnimatedTooltip items={people} />
           </div>
         </div>
@@ -195,13 +328,13 @@ const Testimonials: React.FC<TestimonialsProps> = ({
           <div className="flex justify-center pb-8">
             {!showAll ? (
               <button
-                className="mt-4 px-6 py-2 bg-zinc-700 text-white rounded-full hover:bg-zinc-600 transition"
+                className="mt-4 px-6 py-2 bg-zinc-700 text-white rounded-full hover:bg-zinc-600 transition cursor-pointer"
                 onClick={() => setShowAll(true)}>
                 More
               </button>
             ) : (
               <button
-                className="mt-4 px-6 py-2 bg-zinc-700 text-white rounded-full hover:bg-zinc-600 transition flex items-center gap-2"
+                className="mt-4 px-6 py-2 bg-zinc-700 text-white rounded-full hover:bg-zinc-600 transition flex items-center gap-2 cursor-pointer"
                 onClick={() => setShowAll(false)}>
                 <ArrowUp />
                 Show Less

@@ -2,12 +2,18 @@
 
 import React, { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 import Image from "next/image";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import projectsData from "@/data/projects.json";
 import { Project } from "@/types/project";
 import ProjectModal from "@/components/sections/ProjectModal";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 // Cast the imported JSON to the Project type array
 const projects = projectsData as Project[];
@@ -23,12 +29,59 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
+  useGSAP(
+    () => {
+      if (!containerRef.current) return;
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 78%",
+          once: true,
+        },
+      });
+
+      // 1. Header reveal
+      tl.fromTo(
+        ".projects-header-title",
+        { opacity: 0, y: 35, filter: "blur(6px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.8, ease: "power3.out" }
+      )
+        .fromTo(
+          ".projects-header-desc",
+          { opacity: 0, y: 22 },
+          { opacity: 1, y: 0, duration: 0.65, ease: "power3.out" },
+          "-=0.4"
+        )
+        .fromTo(
+          ".projects-border-top",
+          { scaleX: 0 },
+          { scaleX: 1, transformOrigin: "left center", duration: 0.8, ease: "power2.out" },
+          "-=0.3"
+        )
+        // 2. Stagger project items reveal
+        .fromTo(
+          ".project-item-row",
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            stagger: 0.12,
+            ease: "power3.out",
+          },
+          "-=0.4"
+        );
+    },
+    { scope: containerRef }
+  );
+
   useEffect(() => {
     const container = containerRef.current;
     const imgElement = imageRef.current;
     if (!container || !imgElement) return;
 
-    //  gsap
+    // gsap quickTo for floating image
     const xMove = gsap.quickTo(imgElement, "x", { duration: 0.6, ease: "power3" });
     const yMove = gsap.quickTo(imgElement, "y", { duration: 0.6, ease: "power3" });
 
@@ -50,31 +103,19 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
     <section className="py-24 relative" id="portfolio" ref={containerRef}>
       <div className="max-w-7xl mx-auto px-5 lg:px-10">
         <div className="flex flex-col mb-16">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-3xl md:text-4xl font-bold text-white mb-4"
-          >
+          <h2 className="projects-header-title text-3xl md:text-4xl font-bold text-white mb-4">
             Featured Work
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-gray-400 text-lg max-w-2xl"
-          >
+          </h2>
+          <p className="projects-header-desc text-gray-400 text-lg max-w-2xl">
             A selection of our most recent and successful projects. We craft digital experiences that drive growth and innovation.
-          </motion.p>
+          </p>
         </div>
 
-        <div className="flex flex-col border-t border-white/10 mt-10">
+        <div className="projects-border-top flex flex-col border-t border-white/10 mt-10 origin-left">
           {projects.map((project, index) => (
             <div
               key={project.id}
-              className="group relative border-b border-white/10 py-12 cursor-pointer flex flex-col md:flex-row items-start md:items-center justify-between z-20"
+              className="project-item-row group relative border-b border-white/10 py-12 cursor-pointer flex flex-col md:flex-row items-start md:items-center justify-between z-20"
               onMouseEnter={() => {
                 setHoveredProject(index);
                 if (onCursorEnter) onCursorEnter();

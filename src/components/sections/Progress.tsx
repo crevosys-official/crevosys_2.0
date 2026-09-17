@@ -1,6 +1,15 @@
+"use client";
+
 import { StarsIcon } from "lucide-react";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 type ProgressItem = {
   title: string;
@@ -8,6 +17,46 @@ type ProgressItem = {
   about: string;
   step_details: string[];
 };
+
+const DEFAULT_PROGRESS: ProgressItem[] = [
+  {
+    title: "Plan",
+    title_bg: "#F1AED4",
+    about:
+      "Planning is crucial at Crevosys. We plan the entire process based on your needs and discuss face-to-face to ensure we fully understand your goals.",
+    step_details: [
+      "Understand client goals",
+      "Gather requirements",
+      "Create roadmap",
+      "Set timelines and resources",
+    ],
+  },
+  {
+    title: "Design",
+    title_bg: "#CCEF8E",
+    about:
+      "Design at Crevosys blends creativity and functionality. We create multiple Figma layouts and prototypes. Once approved, we proceed further.",
+    step_details: [
+      "Create Figma layouts",
+      "Design wireframes & prototypes",
+      "Collaborate for feedback",
+      "Finalize design after approval",
+    ],
+  },
+  {
+    title: "Build",
+    title_bg: "#86DFE8",
+    about:
+      "We turn the approved design into a functional product using top-tier coding practices, ensuring scalability and performance.",
+    step_details: [
+      "Convert design to code",
+      "Develop responsive apps",
+      "Test for quality",
+      "Deploy and support",
+    ],
+  },
+];
+
 interface ProgressProps {
   onCardHover?: (variant: "plan" | "design" | "build") => void;
   onCursorLeave?: () => void;
@@ -18,12 +67,13 @@ const headingClass =
   "text-white text-center md:text-7xl xl:text-8xl text-5xl font-heading uppercase font-bold tracking-wide flex flex-col justify-center items-center cursor-pointer";
 const flexCenterClass = "flex gap-4 mx-auto justify-center items-center";
 const transformContainerClass = "relative";
-const curveImageClass = "absolute bottom-1 w-full -rotate-1";
+const curveImageClass = "progress-curve absolute bottom-1 w-full -rotate-1 origin-left";
 
 const Progress: React.FC<ProgressProps> = ({ onCardHover, onCursorLeave }) => {
-  const [progressData, setProgressData] = useState<ProgressItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [progressData, setProgressData] = useState<ProgressItem[]>(DEFAULT_PROGRESS);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     fetch("/progress.json")
@@ -31,17 +81,86 @@ const Progress: React.FC<ProgressProps> = ({ onCardHover, onCursorLeave }) => {
         if (!res.ok) throw new Error("Failed to fetch progress data");
         return res.json();
       })
-      .then((data) => setProgressData(data))
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setProgressData(data);
+          ScrollTrigger.refresh();
+        }
+      })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, []);
 
+  useGSAP(
+    () => {
+      if (!sectionRef.current) return;
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 75%",
+          once: true,
+        },
+      });
+
+      // 1. Heading rows reveal
+      tl.fromTo(
+        ".progress-heading-line",
+        { opacity: 0, y: 50, filter: "blur(6px)" },
+        {
+          opacity: 1,
+          y: 0,
+          filter: "blur(0px)",
+          duration: 0.8,
+          stagger: 0.12,
+          ease: "power3.out",
+        }
+      )
+        // 2. Underline curve playful elastic overshoot
+        .fromTo(
+          ".progress-curve",
+          { scaleX: 0, opacity: 0 },
+          { scaleX: 1, opacity: 1, duration: 0.75, ease: "back.out(1.8)" },
+          "-=0.4"
+        )
+        // 3. Staggered progress cards entrance
+        .fromTo(
+          ".progress-card-item",
+          { opacity: 0, y: 60, scale: 0.94 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: "power3.out",
+          },
+          "-=0.3"
+        )
+        // 4. Sticker title tags pop in with spring
+        .fromTo(
+          ".progress-tag",
+          { scale: 0.5, opacity: 0, rotate: -15 },
+          {
+            scale: 1,
+            opacity: 1,
+            rotate: -5,
+            duration: 0.5,
+            stagger: 0.15,
+            ease: "back.out(2)",
+          },
+          "-=0.7"
+        );
+    },
+    { scope: sectionRef, dependencies: [progressData.length] }
+  );
+
   return (
-    <section className="py-16 md:container md:mx-auto xl:container xl:mx-auto">
+    <section ref={sectionRef} className="py-16 md:container md:mx-auto xl:container xl:mx-auto">
       {/* Heading */}
       <div className={headingClass}>
-        <h1>How We</h1>
-        <div className={flexCenterClass}>
+        <h1 className="progress-heading-line">How We</h1>
+        <div className={`${flexCenterClass} progress-heading-line`}>
           <div className={transformContainerClass}>
             <h1>Transform</h1>
             <Image
@@ -58,7 +177,7 @@ const Progress: React.FC<ProgressProps> = ({ onCardHover, onCursorLeave }) => {
             <h1>Your</h1>
           </div>
         </div>
-        <h1>Business</h1>
+        <h1 className="progress-heading-line">Business</h1>
       </div>
 
       {loading && (
@@ -83,11 +202,11 @@ const Progress: React.FC<ProgressProps> = ({ onCardHover, onCursorLeave }) => {
               return (
                 <div
                   key={index}
-                  className="relative bg-[#191919]/30 border-zinc-300/10 border text-white p-10 mb-10 md:mb-0 xl:mb-0 rounded-xl"
+                  className="progress-card-item relative bg-[#191919]/30 border-zinc-300/10 border text-white p-10 mb-10 md:mb-0 xl:mb-0 rounded-xl"
                   onMouseEnter={() => onCardHover?.(variant)}
                   onMouseLeave={onCursorLeave}>
                   <div
-                    className="w-fit -rotate-5 pt-2 px-4 rounded-md absolute -top-10 flex items-center justify-center"
+                    className="progress-tag w-fit -rotate-5 pt-2 px-4 rounded-md absolute -top-10 flex items-center justify-center"
                     style={{
                       backgroundColor: progress.title_bg || "#fff",
                     }}>

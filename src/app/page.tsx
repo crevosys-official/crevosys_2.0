@@ -11,6 +11,7 @@ import Progress from "@/components/sections/Progress";
 import GetTouch from "@/components/sections/GetTouch";
 import Image from "next/image";
 import React, { useState } from "react";
+import ScrollProvider from "@/components/providers/ScrollProvider";
 
 const Page = () => {
   const [cursorVariant, setCursorVariant] = useState<
@@ -18,8 +19,9 @@ const Page = () => {
   >("default");
 
   return (
-    <div
-      className="min-h-screen bg-[#000000]">
+    <ScrollProvider>
+      <div
+        className="min-h-screen bg-[#000000]">
       <div
         className={[
           "fixed inset-0 z-2 pointer-events-none",
@@ -71,6 +73,7 @@ const Page = () => {
       </div>
       <Footer />
     </div>
+    </ScrollProvider>
   );
 };
 
