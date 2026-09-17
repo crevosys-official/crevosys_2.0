@@ -3,7 +3,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import CustomCursor from "@/components/layout/CustomCursor";
 import Hero from "@/components/sections/Hero";
-import Integrations from "@/components/sections/Integrations";
+import Integrations from "@/components/sections/technology";
 import Services from "@/components/sections/Services";
 import Projects from "@/components/sections/Projects";
 import Testimonials from "@/components/sections/Testimonials";
@@ -46,10 +46,13 @@ const Page = () => {
         onCursorLeave={() => setCursorVariant("default")}
       />
 
-      {/* Integrations Section */}
-      <Integrations />
+     
 
       <Services />
+
+       {/* Integrations Section */}
+      <Integrations />
+      
       <Projects
         onCursorEnter={() => setCursorVariant("design")}
         onCursorLeave={() => setCursorVariant("default")}
