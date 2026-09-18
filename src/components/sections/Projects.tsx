@@ -6,7 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import Image from "next/image";
 import { AnimatePresence } from "framer-motion";
-import { ArrowUpRight, ExternalLink, Eye, FolderGit2, Layers } from "lucide-react";
+import { ArrowUpRight, ExternalLink, Eye, FolderGit2, Star } from "lucide-react";
 import { useLenis } from "lenis/react";
 import projectsData from "@/data/projects.json";
 import { Project } from "@/types/project";
@@ -160,32 +160,17 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
 
       <div className="max-w-7xl mx-auto px-5 lg:px-8">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 md:mb-20 gap-6">
-          <div>
-            <div className="projects-header-badge inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.05] border border-white/10 text-xs font-mono tracking-wider text-purple-400 uppercase mb-4">
-              <Layers className="w-3.5 h-3.5" />
-              Selected Portfolio Works
-            </div>
-            <h2 className="projects-header-title text-3xl md:text-5xl font-bold tracking-tight text-white mb-4">
-              Crafted with <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 bg-clip-text text-transparent">precision</span> & vision.
-            </h2>
-            <p className="projects-header-desc text-zinc-400 text-base md:text-lg max-w-2xl leading-relaxed">
-              Explore our archival stack of recent digital experiences, management systems, and high-conversion platforms.
-            </p>
+        <div className="flex flex-col gap-4 mb-14 md:mb-18 text-center">
+          <div className="projects-header-badge border-gray-600 border w-fit flex justify-center mx-auto px-4 py-1.5 rounded-full gap-2 items-center text-zinc-300 text-sm">
+            <Star className="w-3" />
+            Projects
           </div>
-
-          {/* Quick Stats Pill */}
-          <div className="hidden sm:flex items-center gap-6 px-6 py-3 rounded-2xl bg-zinc-950/60 border border-white/10 backdrop-blur-md self-start md:self-auto">
-            <div className="flex flex-col">
-              <span className="text-2xl font-bold text-white font-mono">{projects.length}</span>
-              <span className="text-[11px] text-zinc-400 uppercase tracking-wider font-mono">Projects</span>
-            </div>
-            <div className="w-[1px] h-8 bg-white/10" />
-            <div className="flex flex-col">
-              <span className="text-2xl font-bold text-purple-400 font-mono">100%</span>
-              <span className="text-[11px] text-zinc-400 uppercase tracking-wider font-mono">Shipped</span>
-            </div>
-          </div>
+          <h1 className="projects-header-title text-4xl font-heading tracking-wide text-center text-zinc-200 px-4">
+            Selected Works &amp; Case Studies
+          </h1>
+          <p className="projects-header-desc xl:w-1/2 md:w-2/3 w-full text-md tracking-wide text-gray-400 text-center flex mx-auto px-4">
+            Explore our curated portfolio of recent digital experiences, management systems, and high-impact platforms.
+          </p>
         </div>
 
         {/* Mobile Horizontal Quick Navigation (Visible only on < lg) */}
@@ -194,7 +179,7 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
             <button
               key={p.id}
               onClick={() => handleProjectSelect(idx)}
-              className={`px-4 py-2 rounded-full text-xs font-mono whitespace-nowrap transition-all duration-200 border flex items-center gap-2 ${
+              className={`px-4 py-2 rounded-full text-xs font-medium tracking-wide whitespace-nowrap transition-all duration-200 border flex items-center gap-2 ${
                 activeProjectIndex === idx
                   ? "bg-purple-600 text-white border-purple-500 shadow-[0_0_15px_rgba(168,85,247,0.4)]"
                   : "bg-white/[0.03] text-zinc-400 border-white/10 hover:border-white/20 hover:text-white"
@@ -240,7 +225,7 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
                   <div className="flex items-end justify-between">
                     {/* The Folder Tab Notch */}
                     <div
-                      className={`inline-flex items-center gap-3 px-5 py-2.5 rounded-t-2xl border-t border-x ${theme.tabBorder} ${theme.tabBg} backdrop-blur-xl text-xs font-mono font-medium text-white transition-colors duration-300 shadow-lg`}
+                      className={`inline-flex items-center gap-3 px-5 py-2.5 rounded-t-2xl border-t border-x ${theme.tabBorder} ${theme.tabBg} backdrop-blur-xl text-xs font-medium text-white transition-colors duration-300 shadow-lg`}
                       style={{
                         boxShadow: isActive ? `0 -4px 20px ${theme.glow}` : "none",
                       }}
@@ -249,9 +234,9 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
                         className="w-3.5 h-3.5 transition-colors duration-300"
                         style={{ color: theme.accent }}
                       />
-                      <span className="text-zinc-400 font-semibold tracking-wider">PROJECT</span>
+                      <span className="text-zinc-400 font-semibold tracking-wider uppercase text-[11px]">PROJECT</span>
                       <span
-                        className="font-bold px-1.5 py-0.5 rounded text-[11px]"
+                        className="font-bold px-2 py-0.5 rounded text-xs tracking-wider"
                         style={{
                           backgroundColor: `${theme.accent}25`,
                           color: theme.accent,
@@ -260,18 +245,18 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
                         {String(index + 1).padStart(2, "0")}
                       </span>
                       <span className="text-zinc-600 hidden sm:inline">•</span>
-                      <span className="text-zinc-300 tracking-wide hidden sm:inline">
+                      <span className="text-zinc-300 tracking-wide hidden sm:inline text-xs">
                         {project.category}
                       </span>
                     </div>
 
                     {/* Tab Top-Right Status Badge */}
-                    <div className="hidden sm:flex items-center gap-2 text-[11px] font-mono text-zinc-400 pb-1.5 px-3">
+                    <div className="hidden sm:flex items-center gap-2 text-xs text-zinc-400 tracking-wider uppercase pb-1.5 px-3">
                       <span
                         className="w-1.5 h-1.5 rounded-full animate-pulse"
                         style={{ backgroundColor: theme.accent }}
                       />
-                      <span>PROJECT ARCHIVE // {project.year}</span>
+                      <span>Archive // {project.year}</span>
                     </div>
                   </div>
 
@@ -302,11 +287,11 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
                           {/* Category Badge & Year */}
                           <div className="flex items-center gap-2.5 mb-3">
                             <span
-                              className={`px-2.5 py-1 rounded-full text-xs font-mono border ${theme.badgeBg}`}
+                              className={`px-3 py-1 rounded-full text-xs font-medium tracking-wide border ${theme.badgeBg}`}
                             >
                               {project.category}
                             </span>
-                            <span className="text-zinc-500 text-xs font-mono">
+                            <span className="text-zinc-400 text-xs tracking-wider">
                               {project.year}
                             </span>
                           </div>
@@ -314,15 +299,15 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
                           {/* Title */}
                           <h3
                             onClick={() => setSelectedProject(project)}
-                            className="text-2xl sm:text-3xl md:text-4xl font-bold text-white tracking-tight hover:text-purple-300 transition-colors duration-200 cursor-pointer flex items-center gap-3 group/title"
+                            className="text-3xl sm:text-4xl md:text-[40px] font-heading tracking-wide text-zinc-100 hover:text-white transition-colors duration-200 cursor-pointer flex items-center gap-3 group/title"
                           >
                             <span>{project.title}</span>
-                            <ArrowUpRight className="w-5 h-5 text-zinc-500 group-hover/title:text-purple-400 group-hover/title:translate-x-1 group-hover/title:-translate-y-1 transition-all duration-200" />
+                            <ArrowUpRight className="w-5 h-5 text-zinc-400 group-hover/title:text-white group-hover/title:translate-x-1 group-hover/title:-translate-y-1 transition-all duration-200" />
                           </h3>
                         </div>
 
                         {/* Description */}
-                        <p className="text-zinc-400 text-sm md:text-base leading-relaxed line-clamp-3">
+                        <p className="text-gray-400 text-sm md:text-base tracking-wide leading-relaxed line-clamp-3">
                           {project.description}
                         </p>
 
@@ -332,7 +317,7 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
                             {project.tech.map((techItem, tIndex) => (
                               <span
                                 key={tIndex}
-                                className="px-2.5 py-1 rounded-md text-[11px] font-mono bg-white/[0.04] text-zinc-300 border border-white/10 hover:border-white/20 transition-colors"
+                                className="px-2.5 py-1 rounded-md text-xs tracking-wide bg-white/[0.05] text-zinc-300 border border-white/10 hover:border-white/20 transition-colors"
                               >
                                 {techItem}
                               </span>
@@ -344,7 +329,7 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
                         <div className="flex flex-wrap items-center gap-3 pt-2">
                           <button
                             onClick={() => setSelectedProject(project)}
-                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-zinc-950 font-medium text-xs md:text-sm hover:bg-zinc-200 transition-colors shadow-lg active:scale-95"
+                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-zinc-950 font-medium text-xs md:text-sm tracking-wide hover:bg-zinc-200 transition-colors shadow-lg active:scale-95 cursor-pointer"
                           >
                             <Eye className="w-4 h-4" />
                             View Case Study
@@ -355,7 +340,7 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
                               href={project.live}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/[0.05] border border-white/10 text-white font-medium text-xs md:text-sm hover:bg-white/[0.1] hover:border-white/20 transition-colors active:scale-95"
+                              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/[0.05] border border-white/10 text-zinc-200 font-medium text-xs md:text-sm tracking-wide hover:bg-white/[0.1] hover:text-white hover:border-white/20 transition-colors active:scale-95"
                             >
                               <span>Live Preview</span>
                               <ExternalLink className="w-3.5 h-3.5 text-zinc-400" />
@@ -393,7 +378,7 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
                           </div>
 
                           {/* Image corner badge */}
-                          <div className="absolute bottom-3 right-3 px-2.5 py-1 rounded-md bg-black/70 backdrop-blur-md border border-white/10 text-[10px] font-mono text-zinc-300 pointer-events-none">
+                          <div className="absolute bottom-3 right-3 px-2.5 py-1 rounded-md bg-black/70 backdrop-blur-md border border-white/10 text-xs tracking-wide text-zinc-300 pointer-events-none">
                             {project.title}
                           </div>
                         </div>
@@ -415,17 +400,17 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
                 <div className="flex items-center justify-between pb-3.5 mb-2.5 border-b border-white/10">
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-purple-500 animate-pulse shadow-[0_0_8px_#a855f7]" />
-                    <span className="text-[11px] font-mono uppercase tracking-widest text-zinc-300 font-semibold">
+                    <span className="text-xs uppercase tracking-widest text-zinc-300 font-semibold">
                       Project Archive
                     </span>
                   </div>
-                  <span className="text-[11px] font-mono text-zinc-500">
+                  <span className="text-xs text-zinc-400 tracking-wider font-medium">
                     {String(activeProjectIndex + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}
                   </span>
                 </div>
 
                 {/* Instruction subtitle */}
-                <p className="text-[11px] text-zinc-500 font-mono px-1">
+                <p className="text-xs text-gray-400 tracking-wide px-1">
                   Hover or click below to browse:
                 </p>
               </div>
@@ -457,15 +442,15 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
               {/* Active Project Footer Card in Sidebar */}
               <div className="pt-3.5 border-t border-white/10 bg-white/[0.02] -mx-2 px-3 py-2.5 rounded-xl">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="text-[10px] text-zinc-500 font-mono tracking-wider">CURRENT VIEW</span>
-                  <span className="text-purple-400 font-mono font-medium text-xs">
+                  <span className="text-[11px] text-zinc-400 uppercase tracking-wider">CURRENT VIEW</span>
+                  <span className="text-purple-400 font-medium text-xs tracking-wider">
                     {projects[activeProjectIndex]?.year || "2026"}
                   </span>
                 </div>
-                <p className="text-xs text-white font-semibold mt-1 truncate">
+                <p className="text-sm font-heading tracking-wide text-white mt-1 truncate">
                   {projects[activeProjectIndex]?.title}
                 </p>
-                <p className="text-[11px] text-zinc-400 mt-0.5 truncate">
+                <p className="text-xs text-gray-400 mt-0.5 tracking-wide truncate">
                   {projects[activeProjectIndex]?.category}
                 </p>
               </div>

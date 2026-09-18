@@ -66,34 +66,34 @@ const ProjectModal: React.FC<ModalProps> = ({ project, onClose }) => {
         <div className="w-full md:w-1/2 p-8 md:p-14 overflow-y-auto no-scrollbar bg-gradient-to-br from-white/5 to-transparent shadow-inner" data-lenis-prevent>
           <div className="flex justify-between items-start mb-6">
             <div>
-              <span className="text-orange-500 font-semibold tracking-wider text-sm uppercase mb-2 block">
+              <span className="text-orange-500 font-semibold tracking-wider text-xs uppercase mb-2 block">
                 {project.category}
               </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-1">
+              <h2 className="text-3xl md:text-4xl font-heading tracking-wide text-white mb-1">
                 {project.title}
               </h2>
-              <span className="text-white/40 text-sm">{project.year}</span>
+              <span className="text-zinc-400 text-xs tracking-wider">{project.year}</span>
             </div>
             <button 
               onClick={onClose}
-              className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors group"
+              className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors group cursor-pointer"
             >
-              <X className="w-6 h-6 text-white group-hover:rotate-90 transition-transform duration-300" />
+              <X className="w-5 h-5 text-white group-hover:rotate-90 transition-transform duration-300" />
             </button>
           </div>
 
           <div className="mb-8">
-            <h3 className="text-white font-semibold mb-3">About Project</h3>
-            <p className="text-gray-400 leading-relaxed">
+            <h3 className="text-white font-heading tracking-wide text-lg mb-3">About Project</h3>
+            <p className="text-gray-400 text-sm md:text-base tracking-wide leading-relaxed">
               {project.description}
             </p>
           </div>
 
           <div className="mb-8">
-            <h3 className="text-white font-semibold mb-3">Technologies</h3>
+            <h3 className="text-white font-heading tracking-wide text-lg mb-3">Technologies</h3>
             <div className="flex flex-wrap gap-2">
               {project.tech.map((t, i) => (
-                <span key={i} className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-white/70">
+                <span key={i} className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs tracking-wide text-zinc-300">
                   {t}
                 </span>
               ))}
@@ -101,20 +101,22 @@ const ProjectModal: React.FC<ModalProps> = ({ project, onClose }) => {
           </div>
 
           <div className="flex flex-wrap gap-4 mt-auto">
-            <a 
-              href={project.live || "#"} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-8 rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 group shadow-[0_10px_30px_rgba(249,115,22,0.3)] hover:shadow-[0_15px_40px_rgba(249,115,22,0.4)] hover:-translate-y-1"
+            {project.live && project.live !== "#" ? (
+              <a 
+                href={project.live} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex-1 bg-gradient-to-b from-[#FFB16B] to-[#996A40] hover:brightness-110 text-white font-medium py-3.5 px-6 rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 group shadow-[0_10px_30px_rgba(255,177,107,0.25)] hover:-translate-y-0.5 text-sm tracking-wide"
+              >
+                <span>View Live Project</span>
+                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </a>
+            ) : null}
+            <button 
+              onClick={onClose}
+              className="flex-1 bg-white hover:bg-zinc-200 text-black font-medium py-3.5 px-6 rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 group hover:-translate-y-0.5 text-sm tracking-wide cursor-pointer"
             >
-              <span>View Live Project</span>
-              <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-            </a>
-            <button className="flex-1 bg-white hover:bg-zinc-200 text-black font-bold py-4 px-8 rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 group hover:-translate-y-1">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="text-black">
-                <path d="M8 5v14l11-7z" />
-              </svg>
-              <span>Video Demo</span>
+              <span>Close Case Study</span>
             </button>
           </div>
         </div>
