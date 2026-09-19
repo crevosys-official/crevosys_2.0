@@ -98,58 +98,58 @@ const Progress: React.FC<ProgressProps> = ({ onCardHover, onCursorLeave }) => {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 75%",
+          start: "top 85%",
           once: true,
         },
       });
 
-      // 1. Heading rows reveal
+      // 1. Heading rows reveal - snappy & responsive
       tl.fromTo(
         ".progress-heading-line",
-        { opacity: 0, y: 50, filter: "blur(6px)" },
+        { opacity: 0, y: 30, filter: "blur(4px)" },
         {
           opacity: 1,
           y: 0,
           filter: "blur(0px)",
-          duration: 0.8,
-          stagger: 0.12,
-          ease: "power3.out",
+          duration: 0.45,
+          stagger: 0.06,
+          ease: "power2.out",
         }
       )
-        // 2. Underline curve playful elastic overshoot
+        // 2. Underline curve quick overshoot
         .fromTo(
           ".progress-curve",
           { scaleX: 0, opacity: 0 },
-          { scaleX: 1, opacity: 1, duration: 0.75, ease: "back.out(1.8)" },
-          "-=0.4"
+          { scaleX: 1, opacity: 1, duration: 0.4, ease: "back.out(1.6)" },
+          "-=0.25"
         )
-        // 3. Staggered progress cards entrance
+        // 3. Fast staggered progress cards entrance
         .fromTo(
           ".progress-card-item",
-          { opacity: 0, y: 60, scale: 0.94 },
+          { opacity: 0, y: 30, scale: 0.96 },
           {
             opacity: 1,
             y: 0,
             scale: 1,
-            duration: 0.8,
-            stagger: 0.15,
-            ease: "power3.out",
+            duration: 0.45,
+            stagger: 0.08,
+            ease: "power2.out",
           },
-          "-=0.3"
+          "-=0.35"
         )
-        // 4. Sticker title tags pop in with spring
+        // 4. Sticker title tags pop in snappily
         .fromTo(
           ".progress-tag",
-          { scale: 0.5, opacity: 0, rotate: -15 },
+          { scale: 0.6, opacity: 0, rotate: -15 },
           {
             scale: 1,
             opacity: 1,
             rotate: -5,
-            duration: 0.5,
-            stagger: 0.15,
-            ease: "back.out(2)",
+            duration: 0.35,
+            stagger: 0.08,
+            ease: "back.out(1.8)",
           },
-          "-=0.7"
+          "-=0.45"
         );
     },
     { scope: sectionRef, dependencies: [progressData.length] }

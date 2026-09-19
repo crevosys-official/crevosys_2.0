@@ -76,31 +76,34 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
     () => {
       if (!containerRef.current) return;
 
-      // Header reveal animation
+      // Header reveal animation - snappy & responsive
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
-          start: "top 80%",
+          start: "top 85%",
           once: true,
         },
       });
 
+
+      
+
       tl.fromTo(
         ".projects-header-badge",
-        { opacity: 0, y: -20 },
-        { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }
+        { opacity: 0, y: -15 },
+        { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }
       )
         .fromTo(
           ".projects-header-title",
-          { opacity: 0, y: 30, filter: "blur(6px)" },
-          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.7, ease: "power3.out" },
-          "-=0.3"
+          { opacity: 0, y: 24, filter: "blur(4px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.42, ease: "power2.out" },
+          "-=0.2"
         )
         .fromTo(
           ".projects-header-desc",
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" },
-          "-=0.3"
+          { opacity: 0, y: 15 },
+          { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" },
+          "-=0.2"
         );
 
       // ScrollTrigger for each stacked card to detect which one is active

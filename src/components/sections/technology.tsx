@@ -235,11 +235,11 @@ export default function Integrations() {
         });
       }
 
-      // Entrance timeline triggered on scroll enter
+      // Entrance timeline triggered on scroll enter - snappy & responsive
       const entranceTl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 75%",
+          start: "top 85%",
           once: true,
         },
       });
@@ -251,8 +251,8 @@ export default function Integrations() {
           {
             opacity: 1,
             y: 0,
-            duration: 0.8,
-            ease: "power3.out",
+            duration: 0.45,
+            ease: "power2.out",
           },
           0
         );
@@ -263,13 +263,13 @@ export default function Integrations() {
         entranceTl.fromTo(
           glowLineRef.current,
           { strokeDashoffset: 1304, opacity: 0 },
-          { strokeDashoffset: 0, opacity: 0.9, duration: 1.2, ease: "power2.out" },
-          0.1
+          { strokeDashoffset: 0, opacity: 0.9, duration: 0.7, ease: "power2.out" },
+          0.05
         );
         entranceTl.to(
           glowLineRef.current,
-          { opacity: 0.15, duration: 0.7, ease: "power2.out" },
-          1.0
+          { opacity: 0.15, duration: 0.45, ease: "power2.out" },
+          0.6
         );
       }
 
@@ -280,11 +280,11 @@ export default function Integrations() {
           opacity: 1,
           scale: 1,
           y: 0,
-          stagger: 0.08,
-          duration: 0.65,
-          ease: "back.out(1.6)",
+          stagger: 0.05,
+          duration: 0.45,
+          ease: "back.out(1.5)",
         },
-        0.2
+        0.1
       );
 
       // 4. Smoothly start spinning like an orbital wheel once revealed
@@ -292,10 +292,10 @@ export default function Integrations() {
         speedRef.current,
         {
           value: 1,
-          duration: 1.3,
+          duration: 0.8,
           ease: "power2.inOut",
         },
-        "-=0.2"
+        "-=0.1"
       );
 
       // Continuous orbital rotation ticker

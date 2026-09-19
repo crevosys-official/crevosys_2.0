@@ -179,49 +179,49 @@ const Testimonials: React.FC<TestimonialsProps> = ({
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 75%",
+          start: "top 85%",
           once: true,
         },
       });
 
-      // 1. Header reveal
+      // 1. Header reveal - snappy & responsive
       tl.fromTo(
         ".testimonial-badge",
-        { opacity: 0, y: -20, scale: 0.9 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "power3.out" }
+        { opacity: 0, y: -15, scale: 0.95 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: "power2.out" }
       )
         .fromTo(
           ".testimonial-title",
-          { opacity: 0, y: 35, filter: "blur(6px)" },
-          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.75, ease: "power3.out" },
-          "-=0.35"
+          { opacity: 0, y: 25, filter: "blur(4px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.42, ease: "power2.out" },
+          "-=0.2"
         )
         .fromTo(
           ".testimonial-desc",
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" },
-          "-=0.35"
+          { opacity: 0, y: 15 },
+          { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" },
+          "-=0.2"
         )
         // 2. Animated Avatars cluster
         .fromTo(
           ".testimonial-avatars",
-          { opacity: 0, scale: 0.85, y: 15 },
-          { opacity: 1, scale: 1, y: 0, duration: 0.6, ease: "back.out(1.5)" },
+          { opacity: 0, scale: 0.88, y: 10 },
+          { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: "back.out(1.5)" },
           "-=0.2"
         )
-        // 3. Feedback cards
+        // 3. Fast Feedback cards reveal
         .fromTo(
           ".testimonial-card-item",
-          { opacity: 0, y: 45, scale: 0.95 },
+          { opacity: 0, y: 25, scale: 0.97 },
           {
             opacity: 1,
             y: 0,
             scale: 1,
-            duration: 0.7,
-            stagger: 0.1,
-            ease: "power3.out",
+            duration: 0.45,
+            stagger: 0.06,
+            ease: "power2.out",
           },
-          "-=0.3"
+          "-=0.35"
         );
 
       // Decorative parallax
