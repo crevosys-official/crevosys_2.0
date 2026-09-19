@@ -1,7 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -9,20 +10,6 @@ import { useGSAP } from "@gsap/react";
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
-
-// Module-level SVG cache to ensure instant retrieval on navigation
-let cachedSvgPromise: Promise<string> | null = null;
-const getSpringSvg = (): Promise<string> => {
-  if (!cachedSvgPromise && typeof window !== "undefined") {
-    cachedSvgPromise = fetch("/spring.svg")
-      .then((res) => res.text())
-      .catch((err) => {
-        console.error("Failed to load /spring.svg", err);
-        return "";
-      });
-  }
-  return cachedSvgPromise || Promise.resolve("");
-};
 
 // Headline word sets
 const LINE_1_WORDS = ["Transform", "your", "Data", "into"];
@@ -39,21 +26,6 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
   const shapeTiltRef = useRef<HTMLDivElement>(null);
   const shapeFloatRef = useRef<HTMLDivElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
-  const springContainerRef = useRef<HTMLDivElement>(null);
-  const [svgHtml, setSvgHtml] = useState<string>("");
-
-  // Pre-load /spring.svg from public/ on component mount
-  useEffect(() => {
-    let isMounted = true;
-    getSpringSvg().then((text) => {
-      if (isMounted && text) {
-        setSvgHtml(text);
-      }
-    });
-    return () => {
-      isMounted = false;
-    };
-  }, []);
 
   useGSAP(
     () => {
@@ -301,214 +273,6 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
     { scope: heroRef }
   );
 
-  // =========================================================================
-  // 5. GSAP SPRING SVG TRAIL & DRAWING ANIMATION ON LOAD
-  // Luminous comet trail and progressive extrusion along the 3D helical coil
-  // =========================================================================
-  useEffect(() => {
-    if (!svgHtml || !springContainerRef.current) return;
-
-    const container = springContainerRef.current;
-    const svg = container.querySelector("svg");
-    if (!svg) return;
-
-    const paths = Array.from(svg.querySelectorAll("path"));
-    if (!paths.length) return;
-
-    // Extract tip coordinates from path "M x,y" commands
-    const coords: [number, number][] = paths.map((path) => {
-      const d = path.getAttribute("d") || "";
-      const match = d.match(/M([0-9.]+),([0-9.]+)/);
-      return match ? [parseFloat(match[1]), parseFloat(match[2])] : [0, 0];
-    });
-
-    // If user already scrolled down midway, reveal immediately without replay
-    if (window.scrollY > 30) {
-      paths.forEach((p) => {
-        p.style.visibility = "visible";
-        p.style.opacity = "1";
-        p.style.filter = "";
-      });
-      return;
-    }
-
-    // Hide all paths initially for trail reveal
-    paths.forEach((p) => {
-      p.style.visibility = "hidden";
-      p.style.opacity = "0";
-      p.style.filter = "";
-    });
-
-    // Generate continuous spine path d string connecting centers
-    const spineD = coords
-      .map(([x, y], i) => `${i === 0 ? "M" : "L"} ${x} ${y}`)
-      .join(" ");
-
-    // Remove any previous trail container
-    const oldTrail = svg.querySelector("#spring-trail-system");
-    if (oldTrail) oldTrail.remove();
-
-    // Create Trail System Group
-    const trailGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
-    trailGroup.setAttribute("id", "spring-trail-system");
-    trailGroup.style.pointerEvents = "none";
-
-    // Defs for gradients & filters
-    const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
-    defs.innerHTML = `
-      <linearGradient id="trail-glow-grad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1000" y2="0">
-        <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.9" />
-        <stop offset="35%" stop-color="#c084fc" stop-opacity="0.95" />
-        <stop offset="75%" stop-color="#ec4899" stop-opacity="0.9" />
-        <stop offset="100%" stop-color="#ffffff" stop-opacity="1" />
-      </linearGradient>
-      <radialGradient id="spark-head-glow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
-        <stop offset="25%" stop-color="#e879f9" stop-opacity="0.95"/>
-        <stop offset="60%" stop-color="#818cf8" stop-opacity="0.6"/>
-        <stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/>
-      </radialGradient>
-      <filter id="trail-blur-heavy" x="-50%" y="-50%" width="200%" height="200%">
-        <feGaussianBlur stdDeviation="6" result="blur" />
-        <feMerge>
-          <feMergeNode in="blur"/>
-          <feMergeNode in="SourceGraphic"/>
-        </feMerge>
-      </filter>
-      <filter id="trail-blur-light" x="-30%" y="-30%" width="160%" height="160%">
-        <feGaussianBlur stdDeviation="2.5" />
-      </filter>
-    `;
-    trailGroup.appendChild(defs);
-
-    // 1. Outer ambient glow beam
-    const glowPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    glowPath.setAttribute("d", spineD);
-    glowPath.setAttribute("fill", "none");
-    glowPath.setAttribute("stroke", "url(#trail-glow-grad)");
-    glowPath.setAttribute("stroke-width", "14");
-    glowPath.setAttribute("stroke-linecap", "round");
-    glowPath.setAttribute("filter", "url(#trail-blur-heavy)");
-    trailGroup.appendChild(glowPath);
-
-    // 2. Focused vibrant core beam
-    const corePath = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    corePath.setAttribute("d", spineD);
-    corePath.setAttribute("fill", "none");
-    corePath.setAttribute("stroke", "#ffffff");
-    corePath.setAttribute("stroke-width", "3.5");
-    corePath.setAttribute("stroke-linecap", "round");
-    corePath.setAttribute("filter", "url(#trail-blur-light)");
-    trailGroup.appendChild(corePath);
-
-    // 3. Leading Spark Particles
-    const sparkG = document.createElementNS("http://www.w3.org/2000/svg", "g");
-    sparkG.setAttribute("id", "spring-spark-head");
-    sparkG.innerHTML = `
-      <circle r="26" fill="url(#spark-head-glow)" />
-      <circle r="10" fill="#f472b6" opacity="0.8" filter="url(#trail-blur-light)" />
-      <circle r="5" fill="#ffffff" />
-    `;
-    trailGroup.appendChild(sparkG);
-
-    svg.appendChild(trailGroup);
-
-    const totalLen = glowPath.getTotalLength();
-    const trailLen = 320; // length of the light trail in px
-    glowPath.style.strokeDasharray = `${trailLen} ${totalLen + trailLen * 2}`;
-    corePath.style.strokeDasharray = `${trailLen * 0.65} ${totalLen + trailLen * 2}`;
-
-    // Initial position
-    glowPath.style.strokeDashoffset = `${trailLen}`;
-    corePath.style.strokeDashoffset = `${trailLen * 0.65}`;
-    const [startX, startY] = coords[0];
-    sparkG.setAttribute("transform", `translate(${startX}, ${startY})`);
-
-    const TRAIL_WAKE = 55; // number of slices trailing behind head
-    let lastSettled = 0;
-    const animState = { progress: 0 };
-
-    const trailTimeline = gsap.timeline({
-      delay: 0.1,
-      onComplete: () => {
-        // Ensure every slice is fully visible and clean
-        paths.forEach((p) => {
-          p.style.visibility = "visible";
-          p.style.opacity = "1";
-          p.style.filter = "";
-        });
-        // Fade out the trail beam at the end
-        gsap.to(trailGroup, {
-          opacity: 0,
-          duration: 0.5,
-          ease: "power2.out",
-          onComplete: () => {
-            trailGroup.remove();
-          },
-        });
-      },
-    });
-
-    trailTimeline.to(animState, {
-      progress: 1,
-      duration: 2.4,
-      ease: "power2.inOut",
-      onUpdate: () => {
-        const p = animState.progress;
-        const targetIdx = Math.min(paths.length, Math.floor(p * paths.length));
-
-        // Advance the glowing stroke dashoffset along the spine
-        const offset = trailLen - p * (totalLen + trailLen);
-        glowPath.style.strokeDashoffset = `${offset}`;
-        corePath.style.strokeDashoffset = `${offset + trailLen * 0.15}`;
-
-        // Move spark head to current tip
-        if (targetIdx > 0 && targetIdx <= paths.length) {
-          const [cx, cy] = coords[targetIdx - 1];
-          sparkG.setAttribute("transform", `translate(${cx}, ${cy})`);
-        }
-
-        // Settle slices that have fallen behind the wake
-        const wakeStart = Math.max(0, targetIdx - TRAIL_WAKE);
-        for (let i = lastSettled; i < wakeStart; i++) {
-          paths[i].style.visibility = "visible";
-          paths[i].style.opacity = "1";
-          paths[i].style.filter = "";
-        }
-        lastSettled = wakeStart;
-
-        // Animate the active trailing wake
-        for (let i = wakeStart; i < targetIdx; i++) {
-          const distFromHead = targetIdx - i;
-          const wakeFactor = 1 - distFromHead / TRAIL_WAKE; // 0 at tail of wake, 1 at head
-          paths[i].style.visibility = "visible";
-          paths[i].style.opacity = `${0.35 + wakeFactor * 0.65}`;
-          if (wakeFactor > 0.45) {
-            const glowIntensity = Math.round(wakeFactor * 16);
-            paths[i].style.filter = `brightness(${1 + wakeFactor * 0.75}) drop-shadow(0 0 ${glowIntensity}px rgba(192, 132, 252, 0.8))`;
-          } else {
-            paths[i].style.filter = "";
-          }
-        }
-      },
-    });
-
-    // Fast-forward trail animation if user scrolls while intro is active
-    const handleScroll = () => {
-      if (trailTimeline.isActive()) {
-        trailTimeline.progress(1);
-      }
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true, once: true });
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      trailTimeline.kill();
-      oldTrail?.remove();
-      trailGroup.remove();
-    };
-  }, [svgHtml]);
-
   return (
     <section
       ref={heroRef}
@@ -616,7 +380,7 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
         </div>
       </div>
 
-      {/* === 3D Hero Spring SVG with GSAP Drawing Animation & Parallax === */}
+      {/* === 3D Hero Shape with GSAP Scroll Parallax & Organic Float === */}
       <div className="hero-shape-wrapper relative w-full flex items-end justify-center pointer-events-none mt-auto overflow-hidden will-change-transform">
         {/* Ambient glow matching the 3D shape gradient */}
         <div
@@ -637,10 +401,13 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
               className="w-full flex items-end justify-center will-change-transform"
               style={{ transformStyle: "preserve-3d" }}
             >
-              <div
-                ref={springContainerRef}
-                dangerouslySetInnerHTML={{ __html: svgHtml }}
-                className="w-[130vw] min-w-[1300px] max-w-none h-auto select-none pointer-events-none scale-125 sm:scale-135 md:scale-140 lg:scale-145 translate-y-[12%] sm:translate-y-[15%] md:translate-y-[32%] drop-shadow-[0_-15px_45px_rgba(0,0,0,0.65)] [&>svg]:w-full [&>svg]:h-auto [&>svg]:overflow-visible aspect-[950/385]"
+              <Image
+                src="/elements/hero_shape.png"
+                alt="Hero 3D Shape"
+                width={2905}
+                height={1119}
+                priority
+                className="w-[130vw] min-w-[1300px] max-w-none h-auto object-contain object-bottom select-none pointer-events-none scale-125 sm:scale-135 md:scale-140 lg:scale-145 translate-y-[12%] sm:translate-y-[15%] md:translate-y-[32%] drop-shadow-[0_-15px_45px_rgba(0,0,0,0.65)]"
               />
             </div>
           </div>
