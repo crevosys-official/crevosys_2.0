@@ -5,12 +5,10 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import Image from "next/image";
-import { AnimatePresence } from "framer-motion";
-import { ArrowUpRight, ExternalLink, Eye, FolderGit2, Star } from "lucide-react";
+import { ExternalLink, FolderGit2, Star } from "lucide-react";
 import { useLenis } from "lenis/react";
 import projectsData from "@/data/projects.json";
 import { Project } from "@/types/project";
-import ProjectModal from "@/components/sections/ProjectModal";
 import LineSidebar from "./LineSidebar";
 
 if (typeof window !== "undefined") {
@@ -67,7 +65,6 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
   const containerRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [activeProjectIndex, setActiveProjectIndex] = useState<number>(0);
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   const lenis = useLenis();
 
@@ -84,9 +81,6 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
           once: true,
         },
       });
-
-
-      
 
       tl.fromTo(
         ".projects-header-badge",
@@ -248,7 +242,7 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
                         {String(index + 1).padStart(2, "0")}
                       </span>
                       <span className="text-zinc-600 hidden sm:inline">•</span>
-                      <span className="text-zinc-300 tracking-wide hidden sm:inline text-xs">
+                      <span className="text-zinc-300 tracking-wide hidden sm:inline text-xs font-medium">
                         {project.category}
                       </span>
                     </div>
@@ -263,9 +257,9 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
                     </div>
                   </div>
 
-                  {/* Folder Card Body */}
+                  {/* Folder Card Body - Full Card Image Showcase */}
                   <div
-                    className="relative rounded-2xl rounded-tl-none bg-[#0e1017]/95 backdrop-blur-2xl border border-white/10 p-6 md:p-9 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.85)] hover:border-white/20 transition-all duration-300 group overflow-hidden lg:h-[480px] xl:h-[500px] flex flex-col justify-center"
+                    className="relative rounded-2xl rounded-tl-none bg-[#0e1017] border border-white/10 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.85)] hover:border-white/20 transition-all duration-300 group overflow-hidden h-[360px] sm:h-[440px] lg:h-[480px] xl:h-[500px]"
                     style={{
                       borderTopColor: isActive ? `${theme.accent}60` : undefined,
                       boxShadow: isActive
@@ -275,118 +269,63 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
                   >
                     {/* Subtle internal gradient accent line at top of card */}
                     <div
-                      className="absolute top-0 left-0 right-0 h-[2px] opacity-70 transition-opacity duration-300"
+                      className="absolute top-0 left-0 right-0 h-[2px] opacity-70 z-20 transition-opacity duration-300 pointer-events-none"
                       style={{
                         background: `linear-gradient(90deg, ${theme.accent} 0%, transparent 80%)`,
                       }}
                     />
 
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
-                      
-                      {/* Left: Project Details & Story */}
-                      <div className="lg:col-span-6 flex flex-col justify-between space-y-5">
-                        
-                        <div>
-                          {/* Category Badge & Year */}
-                          <div className="flex items-center gap-2.5 mb-3">
-                            <span
-                              className={`px-3 py-1 rounded-full text-xs font-medium tracking-wide border ${theme.badgeBg}`}
-                            >
-                              {project.category}
-                            </span>
-                            <span className="text-zinc-400 text-xs tracking-wider">
-                              {project.year}
-                            </span>
-                          </div>
+                    {/* Full Card Image */}
+                    <Image
+                      src={project.image}
+                      alt={project.title}
+                      fill
+                      className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 900px"
+                      priority={index === 0}
+                    />
 
-                          {/* Title */}
-                          <h3
-                            onClick={() => setSelectedProject(project)}
-                            className="text-3xl sm:text-4xl md:text-[40px] font-heading tracking-wide text-zinc-100 hover:text-white transition-colors duration-200 cursor-pointer flex items-center gap-3 group/title"
-                          >
-                            <span>{project.title}</span>
-                            <ArrowUpRight className="w-5 h-5 text-zinc-400 group-hover/title:text-white group-hover/title:translate-x-1 group-hover/title:-translate-y-1 transition-all duration-200" />
-                          </h3>
-                        </div>
+                    {/* Subtle aesthetic gradient overlay to blend nicely with dark theme */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/50 pointer-events-none transition-opacity duration-300 group-hover:opacity-50" />
 
-                        {/* Description */}
-                        <p className="text-gray-400 text-sm md:text-base tracking-wide leading-relaxed line-clamp-3">
-                          {project.description}
-                        </p>
-
-                        {/* Tech Stack Pills */}
-                        {project.tech && project.tech.length > 0 && (
-                          <div className="flex flex-wrap gap-1.5 pt-1">
-                            {project.tech.map((techItem, tIndex) => (
-                              <span
-                                key={tIndex}
-                                className="px-2.5 py-1 rounded-md text-xs tracking-wide bg-white/[0.05] text-zinc-300 border border-white/10 hover:border-white/20 transition-colors"
-                              >
-                                {techItem}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-
-                        {/* Action Buttons Row */}
-                        <div className="flex flex-wrap items-center gap-3 pt-2">
-                          <button
-                            onClick={() => setSelectedProject(project)}
-                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-zinc-950 font-medium text-xs md:text-sm tracking-wide hover:bg-zinc-200 transition-colors shadow-lg active:scale-95 cursor-pointer"
-                          >
-                            <Eye className="w-4 h-4" />
-                            View Case Study
-                          </button>
-
-                          {project.live && project.live !== "#" && (
-                            <a
-                              href={project.live}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/[0.05] border border-white/10 text-zinc-200 font-medium text-xs md:text-sm tracking-wide hover:bg-white/[0.1] hover:text-white hover:border-white/20 transition-colors active:scale-95"
-                            >
-                              <span>Live Preview</span>
-                              <ExternalLink className="w-3.5 h-3.5 text-zinc-400" />
-                            </a>
-                          )}
-                        </div>
-
+                    {/* Top: Website Name / Category Badge */}
+                    <div className="absolute top-5 left-5 sm:top-6 sm:left-6 z-20 flex items-center gap-2 max-w-[calc(100%-40px)]">
+                      <div className="inline-flex items-center gap-2 sm:gap-2.5 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl bg-black/75 backdrop-blur-md border border-white/15 shadow-xl text-xs sm:text-sm">
+                        <span
+                          className="w-2 h-2 rounded-full shrink-0 animate-pulse"
+                          style={{ backgroundColor: theme.accent }}
+                        />
+                        <span className="font-semibold text-white tracking-wide truncate">
+                          {project.title}
+                        </span>
+                        <span className="text-zinc-500 font-medium">/</span>
+                        <span className="text-zinc-300 tracking-wide truncate text-[11px] sm:text-xs">
+                          {project.category}
+                        </span>
                       </div>
+                    </div>
 
-                      {/* Right: Project Visual Showcase */}
-                      <div className="lg:col-span-6 relative">
-                        <div
-                          onClick={() => setSelectedProject(project)}
-                          className="relative aspect-[16/10] w-full rounded-xl overflow-hidden border border-white/10 bg-zinc-950 cursor-pointer group/img shadow-2xl transition-all duration-500 hover:border-white/30"
+                    {/* Live Preview Button */}
+                    <div className="absolute bottom-5 right-5 sm:bottom-6 sm:right-6 z-20">
+                      {project.live && project.live !== "#" ? (
+                        <a
+                          href={project.live}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-zinc-950 font-semibold text-xs sm:text-sm tracking-wide transition-all duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.6)] hover:bg-zinc-100 hover:shadow-[0_12px_30px_rgba(255,255,255,0.25)] hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-md group/btn"
                         >
-                          {/* Project Image */}
-                          <Image
-                            src={project.image}
-                            alt={project.title}
-                            fill
-                            className="object-cover object-center transition-transform duration-700 ease-out group-hover/img:scale-105"
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 550px"
-                            loading="lazy"
-                          />
-
-                          {/* Subtle dark vignette overlay */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none" />
-
-                          {/* Hover Overlay Button */}
-                          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 bg-black/40 backdrop-blur-[2px]">
-                            <span className="px-4 py-2 rounded-full bg-white/90 text-black text-xs font-semibold tracking-wide flex items-center gap-2 shadow-2xl transform translate-y-2 group-hover/img:translate-y-0 transition-transform duration-300">
-                              <Eye className="w-3.5 h-3.5" />
-                              Inspect Project
-                            </span>
-                          </div>
-
-                          {/* Image corner badge */}
-                          <div className="absolute bottom-3 right-3 px-2.5 py-1 rounded-md bg-black/70 backdrop-blur-md border border-white/10 text-xs tracking-wide text-zinc-300 pointer-events-none">
-                            {project.title}
-                          </div>
-                        </div>
-                      </div>
-
+                          <span>Live Preview</span>
+                          <ExternalLink className="w-4 h-4 text-zinc-800 transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
+                        </a>
+                      ) : (
+                        <button
+                          disabled
+                          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/20 text-zinc-400 font-medium text-xs sm:text-sm tracking-wide backdrop-blur-md border border-white/10 cursor-not-allowed"
+                        >
+                          <span>Live Preview</span>
+                          <ExternalLink className="w-4 h-4 text-zinc-400" />
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -463,17 +402,6 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
 
         </div>
       </div>
-
-      {/* Project Modal */}
-      <AnimatePresence>
-        {selectedProject && (
-          <ProjectModal
-            project={selectedProject}
-            isOpen={!!selectedProject}
-            onClose={() => setSelectedProject(null)}
-          />
-        )}
-      </AnimatePresence>
     </section>
   );
 };
