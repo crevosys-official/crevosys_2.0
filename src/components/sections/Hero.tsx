@@ -137,6 +137,7 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
       // Plays cinematic reveal when at top; skips if already scrolled midway
       // =========================================================================
       const isAlreadyScrolled = window.scrollY > 30;
+      const preloaderActive = typeof document !== "undefined" && !!document.getElementById("site-preloader");
 
       if (isAlreadyScrolled) {
         gsap.set(".hero-reveal-word", { yPercent: 0, rotateX: 0, opacity: 1, filter: "blur(0px)" });
@@ -146,6 +147,7 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
         gsap.set(".hero-shape-wrapper", { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" });
       } else {
         const introTl = gsap.timeline({
+          paused: preloaderActive,
           defaults: { ease: "power4.out" },
           onComplete: () => {
             ScrollTrigger.refresh();
@@ -201,6 +203,13 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
             { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 1.5, ease: "power3.out" },
             "-=1.1"
           );
+
+        if (preloaderActive) {
+          const onOpening = () => {
+            introTl.play();
+          };
+          window.addEventListener("preloader-opening", onOpening, { once: true });
+        }
 
         // Fast-forward intro if user scrolls immediately
         const handleEarlyScroll = () => {
