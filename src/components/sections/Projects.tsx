@@ -1,21 +1,20 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import Image from "next/image";
+import { ExternalLink, Star, ArrowUpRight } from "lucide-react";
 import { AnimatePresence } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
 import projectsData from "@/data/projects.json";
 import { Project } from "@/types/project";
-import ProjectModal from "@/components/sections/ProjectModal";
+import ProjectModal from "./ProjectModal";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-// Cast the imported JSON to the Project type array
 const projects = projectsData as Project[];
 
 interface ProjectsProps {
@@ -25,10 +24,9 @@ interface ProjectsProps {
 
 const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
-  const [hoveredProject, setHoveredProject] = useState<number | null>(null);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
+  // GSAP reveal for section header
   useGSAP(
     () => {
       if (!containerRef.current) return;
@@ -36,157 +34,171 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
-          start: "top 78%",
+          start: "top 85%",
           once: true,
         },
       });
 
-      // 1. Header reveal
       tl.fromTo(
-        ".projects-header-title",
-        { opacity: 0, y: 35, filter: "blur(6px)" },
-        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.8, ease: "power3.out" }
+        ".projects-header-badge",
+        { opacity: 0, y: -15 },
+        { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }
       )
         .fromTo(
+          ".projects-header-title",
+          { opacity: 0, y: 24, filter: "blur(4px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.42, ease: "power2.out" },
+          "-=0.2"
+        )
+        .fromTo(
           ".projects-header-desc",
-          { opacity: 0, y: 22 },
-          { opacity: 1, y: 0, duration: 0.65, ease: "power3.out" },
-          "-=0.4"
-        )
-        .fromTo(
-          ".projects-border-top",
-          { scaleX: 0 },
-          { scaleX: 1, transformOrigin: "left center", duration: 0.8, ease: "power2.out" },
-          "-=0.3"
-        )
-        // 2. Stagger project items reveal
-        .fromTo(
-          ".project-item-row",
-          { opacity: 0, y: 40 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.7,
-            stagger: 0.12,
-            ease: "power3.out",
-          },
-          "-=0.4"
+          { opacity: 0, y: 15 },
+          { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" },
+          "-=0.2"
         );
     },
     { scope: containerRef }
   );
 
-  useEffect(() => {
-    const container = containerRef.current;
-    const imgElement = imageRef.current;
-    if (!container || !imgElement) return;
-
-    // gsap quickTo for floating image
-    const xMove = gsap.quickTo(imgElement, "x", { duration: 0.6, ease: "power3" });
-    const yMove = gsap.quickTo(imgElement, "y", { duration: 0.6, ease: "power3" });
-
-    const handleMouseMove = (e: MouseEvent) => {
-      const imgWidth = imgElement.offsetWidth || 300;
-      const imgHeight = imgElement.offsetHeight || 300;
-      const x = e.clientX - imgWidth / 2;
-      const y = e.clientY - imgHeight / 2;
-      
-      xMove(x);
-      yMove(y);
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
   return (
-    <section className="py-24 relative" id="portfolio" ref={containerRef}>
-      <div className="max-w-7xl mx-auto px-5 lg:px-10">
-        <div className="flex flex-col mb-16">
-          <h2 className="projects-header-title text-3xl md:text-4xl font-bold text-white mb-4">
-            Featured Work
-          </h2>
-          <p className="projects-header-desc text-gray-400 text-lg max-w-2xl">
-            A selection of our most recent and successful projects. We craft digital experiences that drive growth and innovation.
+    <section
+      className="py-24 md:py-32 relative overflow-visible"
+      id="portfolio"
+      ref={containerRef}
+    >
+      {/* Background ambient lighting */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-purple-600/10 rounded-full blur-[160px] pointer-events-none -z-10" />
+      <div className="absolute bottom-1/4 right-10 w-[600px] h-[500px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none -z-10" />
+
+      <div className="max-w-6xl mx-auto px-5 lg:px-8">
+        {/* Section Header */}
+        <div className="flex flex-col gap-4 mb-16 md:mb-24 text-center">
+          <div className="projects-header-badge border-gray-600 border w-fit flex justify-center mx-auto px-4 py-1.5 rounded-full gap-2 items-center text-zinc-300 text-sm">
+            <Star className="w-3" />
+            Projects
+          </div>
+          <h1 className="projects-header-title text-4xl sm:text-5xl font-heading tracking-wide text-center text-zinc-200 px-4">
+            Selected Works &amp; Case Studies
+          </h1>
+          <p className="projects-header-desc xl:w-1/2 md:w-2/3 w-full text-md tracking-wide text-gray-400 text-center flex mx-auto px-4">
+            Explore our curated portfolio of recent digital experiences, management systems, and high-impact platforms.
           </p>
         </div>
 
-        <div className="projects-border-top flex flex-col border-t border-white/10 mt-10 origin-left">
-          {projects.map((project, index) => (
-            <div
-              key={project.id}
-              className="project-item-row group relative border-b border-white/10 py-12 cursor-pointer flex flex-col md:flex-row items-start md:items-center justify-between z-20"
-              onMouseEnter={() => {
-                setHoveredProject(index);
-                if (onCursorEnter) onCursorEnter();
-              }}
-              onMouseLeave={() => {
-                setHoveredProject(null);
-                if (onCursorLeave) onCursorLeave();
-              }}
-              onClick={() => setSelectedProject(project)}
-            >
-              {/* Left text column relative to list item */}
-              <div className="flex flex-col pointer-events-none">
-                <span className="text-indigo-400 text-sm font-semibold tracking-widest mb-3 block md:hidden">
-                  {project.category.toUpperCase()}
-                </span>
-                <h3 className="text-2xl md:text-3xl font-bold text-white group-hover:text-orange-500 transition-all duration-300 transform group-hover:translate-x-6 drop-shadow-xl">
-                  {project.title}
-                </h3>
-              </div>
-              
-              {/* Right content - reveals more clearly on hover */}
-              <div className="hidden md:flex items-center gap-12 pointer-events-none transition-all duration-300 group-hover:-translate-x-6">
-                <span className="text-gray-400 text-lg">{project.category}</span>
-                <span className="text-white/40 text-lg font-light">{project.year}</span>
-                <div className="w-14 h-14 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-black group-hover:border-white transition-colors duration-300">
-                  <ArrowUpRight className="w-6 h-6" />
+        {/* Scroll Card Stack Container */}
+        <div className="relative pb-24 sm:pb-32 flex flex-col">
+          {projects.map((project, index) => {
+            // Calculated sticky top offset so each stacked card layers cleanly
+            const stickyTop = 85 + index * 26;
+
+            return (
+              <div
+                key={project.id}
+                style={{
+                  top: `${stickyTop}px`,
+                  zIndex: index + 1,
+                }}
+                onClick={() => setSelectedProject(project)}
+                onMouseEnter={() => {
+                  if (onCursorEnter) onCursorEnter();
+                }}
+                onMouseLeave={() => {
+                  if (onCursorLeave) onCursorLeave();
+                }}
+                className="sticky mb-16 sm:mb-20 md:mb-24 last:mb-0 group relative h-[380px] sm:h-[480px] md:h-[560px] lg:h-[620px] w-full rounded-3xl overflow-hidden border border-white/10 bg-[#0e1017] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)] hover:border-white/25 hover:shadow-[0_30px_70px_-15px_rgba(168,85,247,0.2)] transition-all duration-500 cursor-pointer will-change-transform"
+              >
+                {/* Default State: Clean Image edge-to-edge */}
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1150px"
+                  priority={index < 2}
+                />
+
+                {/* Subtle vignette gradient to integrate with dark background */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20 opacity-60 group-hover:opacity-0 transition-opacity duration-500 pointer-events-none" />
+
+                {/* Hover Overlay: Dark blurred glass revealing information */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/85 to-black/40 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-400 ease-out p-6 sm:p-10 md:p-12 flex flex-col justify-between z-10">
+                  
+                  {/* Top: Category pill & Year/Index */}
+                  <div className="flex items-center justify-between gap-3 transform -translate-y-2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-400 ease-out">
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/15 backdrop-blur-md text-xs sm:text-sm font-medium text-zinc-200">
+                      <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse" />
+                      <span>{project.category}</span>
+                    </div>
+
+                    <span className="text-xs sm:text-sm font-mono text-zinc-400 tracking-wider bg-black/60 border border-white/10 px-3.5 py-1.5 rounded-full backdrop-blur-md">
+                      {project.year} • 0{index + 1}
+                    </span>
+                  </div>
+
+                  {/* Bottom: Information & Action Links */}
+                  <div className="flex flex-col gap-3.5 sm:gap-4.5 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-400 ease-out max-w-3xl">
+                    <h3 className="text-2xl sm:text-4xl md:text-5xl font-heading tracking-wide text-white">
+                      {project.title}
+                    </h3>
+
+                    <p className="text-zinc-300 text-xs sm:text-base line-clamp-2 sm:line-clamp-3 leading-relaxed">
+                      {project.description}
+                    </p>
+
+                    {/* Tech Badges */}
+                    <div className="flex flex-wrap gap-2 pt-1">
+                      {project.tech.map((item, i) => (
+                        <span
+                          key={i}
+                          className="px-3 py-1 rounded-lg text-xs font-medium bg-white/10 border border-white/10 text-zinc-300 backdrop-blur-sm"
+                        >
+                          {item}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex items-center gap-3 pt-3">
+                      {project.live && project.live !== "#" && (
+                        <a
+                          href={project.live}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="inline-flex items-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl bg-white text-zinc-950 font-semibold text-xs sm:text-sm tracking-wide transition-all duration-300 shadow-[0_10px_25px_rgba(0,0,0,0.5)] hover:bg-zinc-100 hover:scale-105 active:scale-95 cursor-pointer"
+                        >
+                          <span>Live Preview</span>
+                          <ExternalLink className="w-4 h-4 text-zinc-900" />
+                        </a>
+                      )}
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedProject(project);
+                        }}
+                        className="inline-flex items-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl bg-white/10 text-white font-medium text-xs sm:text-sm tracking-wide border border-white/15 backdrop-blur-md transition-all duration-300 hover:bg-white/20 hover:border-white/30 cursor-pointer"
+                      >
+                        <span>View Case Study</span>
+                        <ArrowUpRight className="w-4 h-4 text-zinc-300" />
+                      </button>
+                    </div>
+
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
-      {/* GSAP Floating Image Setup - Strictly follows pointer and transitions opacity */}
-      <div
-        ref={imageRef}
-        className="fixed top-0 left-0 pointer-events-none z-[100] w-[240px] h-[180px] md:w-[350px] md:h-[260px] overflow-hidden rounded-2xl shadow-[0_0_60px_rgba(0,0,0,0.6)] flex items-center justify-center will-change-transform"
-        style={{
-          opacity: hoveredProject !== null ? 1 : 0,
-          visibility: hoveredProject !== null ? 'visible' : 'hidden',
-          transition: "opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.5s ease",
-        }}
-      >
-        {/* Ensures the scale wrapper allows a slight inner zoom effect if desired */}
-        <div className="relative w-full h-full bg-zinc-900 border border-white/10 scale-105">
-          {projects.map((project, i) => (
-            <div
-              key={project.id}
-              className="absolute inset-0 transition-opacity duration-700 ease-out"
-              style={{ opacity: hoveredProject === i ? 1 : 0 }}
-            >
-              <Image
-                src={project.image}
-                alt={project.title}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 240px, 350px"
-                loading="lazy"
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Project Modal */}
+      {/* Full Project Modal */}
       <AnimatePresence>
         {selectedProject && (
-          <ProjectModal 
-            project={selectedProject} 
-            isOpen={!!selectedProject} 
-            onClose={() => setSelectedProject(null)} 
+          <ProjectModal
+            project={selectedProject}
+            isOpen={!!selectedProject}
+            onClose={() => setSelectedProject(null)}
           />
         )}
       </AnimatePresence>

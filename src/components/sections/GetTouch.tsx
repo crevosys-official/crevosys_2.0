@@ -24,44 +24,44 @@ const GetTouch = () => {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 78%",
+          start: "top 85%",
           once: true,
         },
       });
 
-      // 1. Badge & Arrow reveal
+      // 1. Badge & Arrow reveal - snappy & responsive
       tl.fromTo(
         ".get-touch-badge",
-        { opacity: 0, y: -20, scale: 0.9 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "power3.out" }
+        { opacity: 0, y: -15, scale: 0.95 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: "power2.out" }
       )
         // 2. Horizontal divider expansively lines out
         .fromTo(
           ".get-touch-divider",
           { scaleX: 0, opacity: 0 },
-          { scaleX: 1, opacity: 1, duration: 0.8, ease: "power2.out" },
-          "-=0.3"
+          { scaleX: 1, opacity: 1, duration: 0.45, ease: "power2.out" },
+          "-=0.2"
         )
         // 3. Huge headline lifts and reveals
         .fromTo(
           ".get-touch-title",
-          { opacity: 0, y: 45, filter: "blur(8px)" },
-          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.85, ease: "power3.out" },
-          "-=0.4"
+          { opacity: 0, y: 25, filter: "blur(4px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.45, ease: "power2.out" },
+          "-=0.25"
         )
         // 4. Subtitle
         .fromTo(
           ".get-touch-desc",
-          { opacity: 0, y: 22 },
-          { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" },
-          "-=0.4"
+          { opacity: 0, y: 15 },
+          { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" },
+          "-=0.2"
         )
         // 5. Button scale bounce
         .fromTo(
           ".get-touch-btn",
-          { opacity: 0, scale: 0.85, y: 15 },
-          { opacity: 1, scale: 1, y: 0, duration: 0.6, ease: "back.out(1.8)" },
-          "-=0.3"
+          { opacity: 0, scale: 0.9, y: 10 },
+          { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: "back.out(1.8)" },
+          "-=0.2"
         );
 
       // 6. Floating color line shape parallax drift

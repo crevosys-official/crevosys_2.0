@@ -70,40 +70,40 @@ const Services = () => {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 80%",
+          start: "top 85%",
           once: true,
         },
       });
 
-      // 1. Header elements reveal
+      // 1. Header elements reveal - snappy & responsive
       tl.fromTo(
         ".services-badge",
-        { opacity: 0, y: -20, scale: 0.9 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "power3.out" }
+        { opacity: 0, y: -15, scale: 0.95 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: "power2.out" }
       )
         .fromTo(
           ".services-title",
-          { opacity: 0, y: 35, filter: "blur(6px)" },
-          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.75, ease: "power3.out" },
-          "-=0.35"
+          { opacity: 0, y: 24, filter: "blur(4px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.42, ease: "power2.out" },
+          "-=0.2"
         )
         .fromTo(
           ".services-desc",
-          { opacity: 0, y: 22 },
-          { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" },
-          "-=0.35"
+          { opacity: 0, y: 16 },
+          { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" },
+          "-=0.2"
         )
-        // 2. Service cards staggered cascade
+        // 2. Service cards fast cascade
         .fromTo(
           ".service-card-item",
-          { opacity: 0, y: 55, scale: 0.93 },
+          { opacity: 0, y: 30, scale: 0.96 },
           {
             opacity: 1,
             y: 0,
             scale: 1,
-            duration: 0.75,
-            stagger: 0.12,
-            ease: "power3.out",
+            duration: 0.45,
+            stagger: 0.06,
+            ease: "power2.out",
           },
           "-=0.25"
         );
