@@ -85,7 +85,7 @@ export default function Preloader() {
         duration: 0.28,
         ease: "power2.in",
         onComplete: () => {
-          // Immediately update content and gradient classes
+          // Immediately update text and styling
           el.textContent = FLIP_WORDS[newIndex].text;
           el.className = `inline-block font-extrabold text-3xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r ${FLIP_WORDS[newIndex].gradient} will-change-transform`;
           el.style.filter = `drop-shadow(0 0 25px ${FLIP_WORDS[newIndex].glow})`;
@@ -228,19 +228,45 @@ export default function Preloader() {
       {/* Top Split Shutter */}
       <div
         ref={topPanelRef}
-        className="absolute top-0 left-0 w-full h-[50.5vh] bg-[#000000] will-change-transform shadow-[0_15px_50px_rgba(0,0,0,0.9)]"
+        className="absolute top-0 left-0 w-full h-[50.5vh] bg-[#030305] overflow-hidden will-change-transform shadow-[0_15px_50px_rgba(0,0,0,0.95)]"
       >
-        {/* Ambient Top Glow */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[380px] bg-gradient-to-b from-blue-600/[0.08] via-purple-600/[0.04] to-transparent blur-[140px] pointer-events-none" />
+        {/* Subtle Grid Pattern (Top Half) */}
+        <div
+          className="absolute inset-0 opacity-[0.06] pointer-events-none"
+          style={{
+            backgroundImage: `linear-gradient(to right, rgba(255, 255, 255, 0.4) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.4) 1px, transparent 1px)`,
+            backgroundSize: "48px 48px",
+            backgroundPosition: "center bottom",
+            maskImage: "radial-gradient(ellipse 80% 80% at 50% 100%, #000 30%, transparent 90%)",
+            WebkitMaskImage: "radial-gradient(ellipse 80% 80% at 50% 100%, #000 30%, transparent 90%)",
+          }}
+        />
+
+        {/* Ambient Top Aurora Gradients */}
+        <div className="absolute -top-[20%] left-1/2 -translate-x-1/2 w-[850px] h-[450px] bg-gradient-to-b from-indigo-600/[0.12] via-purple-600/[0.07] to-transparent blur-[130px] rounded-full pointer-events-none" />
+        <div className="absolute bottom-0 left-[15%] w-[450px] h-[250px] bg-blue-600/[0.07] blur-[110px] rounded-full pointer-events-none" />
       </div>
 
       {/* Bottom Split Shutter */}
       <div
         ref={bottomPanelRef}
-        className="absolute bottom-0 left-0 w-full h-[50.5vh] bg-[#000000] will-change-transform shadow-[0_-15px_50px_rgba(0,0,0,0.9)]"
+        className="absolute bottom-0 left-0 w-full h-[50.5vh] bg-[#030305] overflow-hidden will-change-transform shadow-[0_-15px_50px_rgba(0,0,0,0.95)]"
       >
-        {/* Ambient Bottom Glow */}
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[380px] bg-gradient-to-t from-orange-600/[0.07] via-purple-600/[0.04] to-transparent blur-[140px] pointer-events-none" />
+        {/* Subtle Grid Pattern (Bottom Half) */}
+        <div
+          className="absolute inset-0 opacity-[0.06] pointer-events-none"
+          style={{
+            backgroundImage: `linear-gradient(to right, rgba(255, 255, 255, 0.4) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.4) 1px, transparent 1px)`,
+            backgroundSize: "48px 48px",
+            backgroundPosition: "center top",
+            maskImage: "radial-gradient(ellipse 80% 80% at 50% 0%, #000 30%, transparent 90%)",
+            WebkitMaskImage: "radial-gradient(ellipse 80% 80% at 50% 0%, #000 30%, transparent 90%)",
+          }}
+        />
+
+        {/* Ambient Bottom Warm Gradients */}
+        <div className="absolute -bottom-[20%] left-1/2 -translate-x-1/2 w-[850px] h-[450px] bg-gradient-to-t from-[#ff6a00]/[0.09] via-purple-600/[0.06] to-transparent blur-[130px] rounded-full pointer-events-none" />
+        <div className="absolute top-0 right-[15%] w-[450px] h-[250px] bg-[#ff7520]/[0.07] blur-[110px] rounded-full pointer-events-none" />
       </div>
 
       {/* ========================================================================= */}
@@ -250,7 +276,15 @@ export default function Preloader() {
         ref={centerTextRef}
         className="absolute inset-0 z-30 flex items-center justify-center px-4 pointer-events-none"
       >
-        <div className="flex items-center justify-center text-center font-sans">
+        {/* Dynamic Ambient Glow behind active word */}
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[260px] rounded-full pointer-events-none transition-all duration-700 blur-[90px] opacity-35"
+          style={{
+            background: FLIP_WORDS[wordIndex].glow,
+          }}
+        />
+
+        <div className="relative z-10 flex items-center justify-center text-center font-sans">
           {/* Static Prefix "We" */}
           <span className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-tight text-zinc-400 mr-2.5 sm:mr-4 md:mr-5 select-none">
             We
