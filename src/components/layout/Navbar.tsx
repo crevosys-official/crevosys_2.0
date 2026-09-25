@@ -16,17 +16,13 @@ const NAV_LINKS = [
   { title: "Team", href: "/team" },
 ];
 
-const SVG_W = 1131;
-const SVG_H = 861;
-const SVG_CX = SVG_W / 2;
-
-// SVG Bezier Morph Paths
-const OPEN_HIDDEN = `M${SVG_W},0 Q${SVG_CX},0 0,0 L0,0 L${SVG_W},0 Z`;
-const OPEN_BULGE = `M${SVG_W},345 Q${SVG_CX},620 0,345 L0,0 L${SVG_W},0 Z`;
-const OPEN_FULL = `M${SVG_W},${SVG_H} Q${SVG_CX},${SVG_H} 0,${SVG_H} L0,0 L${SVG_W},0 Z`;
-const CLOSE_START = `M${SVG_W},0 Q${SVG_CX},0 0,0 L0,${SVG_H} L${SVG_W},${SVG_H} Z`;
-const CLOSE_BULGE = `M${SVG_W},350 Q${SVG_CX},130 0,350 L0,${SVG_H} L${SVG_W},${SVG_H} Z`;
-const CLOSE_HIDDEN = `M${SVG_W},${SVG_H} Q${SVG_CX},${SVG_H} 0,${SVG_H} L0,${SVG_H} L${SVG_W},${SVG_H} Z`;
+// SVG Bezier Morph Paths (Normalized for clipPathUnits="objectBoundingBox")
+const OPEN_HIDDEN = "M1,0 Q0.5,0 0,0 L0,0 L1,0 Z";
+const OPEN_BULGE = "M1,0.40 Q0.5,0.72 0,0.40 L0,0 L1,0 Z";
+const OPEN_FULL = "M1,1 Q0.5,1 0,1 L0,0 L1,0 Z";
+const CLOSE_START = "M1,0 Q0.5,0 0,0 L0,1 L1,1 Z";
+const CLOSE_BULGE = "M1,0.41 Q0.5,0.15 0,0.41 L0,1 L1,1 Z";
+const CLOSE_HIDDEN = "M1,1 Q0.5,1 0,1 L0,1 L1,1 Z";
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -218,23 +214,22 @@ export default function Navigation() {
     <nav ref={containerRef} className="fixed inset-0 z-50 pointer-events-none w-full h-full font-sans">
       {/* Top Header Bar (Hides on scroll down, reveals on scroll up) */}
       <div
-        className={`fixed top-0 left-0 right-0 z-50 pointer-events-none transition-all duration-300 ease-in-out ${
-          isVisible || isOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
-        }`}
+        className={`fixed top-0 left-0 right-0 z-50 pointer-events-none transition-all duration-300 ease-in-out ${isVisible || isOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
+          } ${isOpen ? "" : ""}`}
       >
-        <div className="w-full max-w-7xl mx-auto px-6 sm:px-10 md:px-12 py-6 sm:py-8 flex items-center justify-between">
+        <div className="w-full max-w-7xl mx-auto px-5 sm:px-8 md:px-12 py-3.5 sm:py-6 md:py-8 flex items-center justify-between">
           {/* Top Main Nav Logo */}
           <div className="pointer-events-auto">
-            <Link href="/" className="flex items-center gap-2.5 sm:gap-3 flex-shrink-0 group">
+            <Link href="/" className="flex items-center gap-2 sm:gap-3 flex-shrink-0 group">
               <Image
                 src="/crevoicon.png"
                 alt="Crevosys"
-                className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 object-contain transition-transform duration-200 group-hover:scale-105"
+                className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 object-contain transition-transform duration-200 group-hover:scale-105"
                 height={40}
                 width={40}
                 priority
               />
-              <span className="text-white font-bold text-lg sm:text-xl md:text-2xl tracking-tight font-sans select-none">
+              <span className="text-white font-bold text-base sm:text-xl md:text-2xl tracking-tight font-sans select-none">
                 Crevosys
               </span>
             </Link>
@@ -245,7 +240,7 @@ export default function Navigation() {
             {/* GET IN TOUCH Button */}
             <Link
               href="/contact"
-              className="group relative inline-flex items-center justify-center px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wider uppercase text-white bg-white/[0.08] hover:bg-white/[0.16] border border-white/15 hover:border-white/30 backdrop-blur-md transition-all duration-300 shadow-[0_2px_12px_rgba(0,0,0,0.3)] active:scale-95"
+              className="group relative hidden md:inline-flex items-center justify-center px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wider uppercase text-white bg-white/[0.08] hover:bg-white/[0.16] border border-white/15 hover:border-white/30 backdrop-blur-md transition-all duration-300 shadow-[0_2px_12px_rgba(0,0,0,0.3)] active:scale-95"
             >
               <span>GET IN TOUCH</span>
             </Link>
@@ -254,7 +249,7 @@ export default function Navigation() {
             <button
               onClick={handleToggle}
               aria-label="Toggle menu"
-              className="group relative flex items-center gap-2.5 sm:gap-3 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wider uppercase text-[#f0eeee] hover:text-white bg-white/[0.08] hover:bg-white/[0.16] border border-white/15 hover:border-white/30 backdrop-blur-md transition-all duration-300 shadow-[0_2px_12px_rgba(0,0,0,0.3)] active:scale-95 cursor-pointer"
+              className="group relative flex items-center gap-2 sm:gap-3 px-3.5 sm:px-5 py-1.5 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wider uppercase text-[#f0eeee] hover:text-white bg-white/[0.08] hover:bg-white/[0.16] border border-white/15 hover:border-white/30 backdrop-blur-md transition-all duration-300 shadow-[0_2px_12px_rgba(0,0,0,0.3)] active:scale-95 cursor-pointer"
             >
               <span className="relative">
                 <span className="nav-toggle-menu block">Menu</span>
@@ -287,71 +282,75 @@ export default function Navigation() {
       {/* Menu Fullscreen Overlay */}
       <div
         data-lenis-prevent
-        className={`fixed inset-0 w-full h-[100svh] transition-opacity duration-300 ${
+        className={`fixed inset-0 w-full h-[100svh] overflow-y-auto overflow-x-hidden transition-opacity duration-300 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden ${
           isOpen
             ? "pointer-events-auto opacity-100 visible"
             : "pointer-events-none opacity-0 invisible"
         }`}
       >
-        {/* Morphing SVG Background */}
+        {/* Hidden SVG Definition for Morphing Clip Path */}
         <svg
-          className="absolute inset-0 w-full h-full pointer-events-none -z-10"
-          viewBox={`0 0 ${SVG_W} ${SVG_H}`}
-          preserveAspectRatio="none"
-          xmlns="http://www.w3.org/2000/svg"
+          className="absolute w-0 h-0 pointer-events-none overflow-hidden"
+          aria-hidden="true"
         >
           <defs>
-            <clipPath id="menu-clip">
+            <clipPath id="menu-clip" clipPathUnits="objectBoundingBox">
               <path ref={menuPathRef} d={OPEN_HIDDEN} />
             </clipPath>
           </defs>
-          <foreignObject
-            x="0"
-            y="0"
-            width={SVG_W}
-            height={SVG_H}
-            clipPath="url(#menu-clip)"
-            className="w-full h-full"
-          >
-            <div className="relative w-full h-full bg-black overflow-hidden">
-              <div className="relative w-full h-full opacity-30 scale-105">
-                <Image
-                  src="/elements/menuBG.jpg"
-                  alt="Menu Background"
-                  fill
-                  priority
-                  className="object-cover"
-                />
-              </div>
-            </div>
-          </foreignObject>
         </svg>
 
+        {/* Morphing Background Container with Cropped Background Image */}
+        <div
+          className="fixed inset-0 w-full h-full pointer-events-none -z-10 bg-black overflow-hidden"
+          style={{
+            clipPath: "url(#menu-clip)",
+            WebkitClipPath: "url(#menu-clip)",
+          }}
+        >
+          <div className="relative w-full h-full opacity-15 scale-105">
+            <Image
+              src="/elements/menuBG.jpg"
+              alt="Menu Background"
+              fill
+              priority
+              className="object-cover object-center"
+              sizes="100vw"
+            />
+          </div>
+        </div>
+
         {/* Content Container (Aligned with max-w-7xl grid) */}
-        <div className="w-full max-w-7xl mx-auto px-6 sm:px-10 md:px-12 pt-28 pb-10 sm:pb-16 flex flex-col-reverse lg:flex-row gap-8 justify-between h-full text-[#f0eeee]">
-          {/* Left Column (Info / Contact) */}
-          <div className="flex-1 flex flex-col justify-end">
-            <p className="menu-info-item text-[#a374ff] text-xs uppercase tracking-[0.25rem] font-semibold mb-4">
+        <div className="w-full max-w-7xl mx-auto px-5 sm:px-8 md:px-12 pt-20 sm:pt-24 md:pt-32 pb-8 sm:pb-12 md:pb-16 flex flex-col lg:flex-row gap-8 lg:gap-12 justify-between min-h-full text-[#f0eeee]">
+          {/* Info / Contact Section (Left on Desktop, Below Links on Mobile) */}
+          <div className="order-2 lg:order-1 flex-1 flex flex-col justify-end pt-6 lg:pt-0 border-t border-white/10 lg:border-t-0">
+            <p className="menu-info-item text-[#a374ff] text-[11px] sm:text-xs uppercase tracking-[0.25rem] font-semibold mb-2 sm:mb-4">
               Get in Touch
             </p>
-            <h3 className="menu-info-item text-2xl md:text-4xl font-normal leading-tight tracking-tight">
+            <a
+              href="mailto:crevosysofficial@gmail.com"
+              className="menu-info-item block text-lg sm:text-2xl md:text-3xl lg:text-4xl font-normal leading-tight tracking-tight hover:text-[#a374ff] transition-colors break-words"
+            >
               crevosysofficial@gmail.com
-            </h3>
-            <h3 className="menu-info-item text-2xl md:text-4xl font-normal leading-tight tracking-tight">
+            </a>
+            <a
+              href="tel:+8801601321799"
+              className="menu-info-item block text-lg sm:text-2xl md:text-3xl lg:text-4xl font-normal leading-tight tracking-tight hover:text-[#a374ff] transition-colors mt-1"
+            >
               +8801601321799
-            </h3>
-            <div className="my-3"></div>
-            <h6 className="menu-info-item text-base md:text-xl text-neutral-300">
+            </a>
+            <div className="my-2 sm:my-3"></div>
+            <h6 className="menu-info-item text-xs sm:text-base md:text-lg text-neutral-400">
               Online Based IT Agency
             </h6>
-            <h6 className="menu-info-item text-base md:text-xl text-neutral-300">
+            <h6 className="menu-info-item text-xs sm:text-base md:text-lg text-neutral-400">
               Bangladesh - 2025
             </h6>
-            <div className="menu-info-item mt-10 sm:mt-14">
-              <h6 className="text-[#a374ff] font-semibold text-xs uppercase tracking-[0.2rem] mb-3">
+            <div className="menu-info-item mt-6 sm:mt-10 lg:mt-14">
+              <h6 className="text-[#a374ff] font-semibold text-[11px] sm:text-xs uppercase tracking-[0.2rem] mb-2 sm:mb-3">
                 Follow Us
               </h6>
-              <div className="flex flex-wrap gap-6 text-sm text-neutral-300">
+              <div className="flex flex-wrap gap-4 sm:gap-6 text-xs sm:text-sm text-neutral-300">
                 <a
                   href="https://www.instagram.com/"
                   target="_blank"
@@ -380,16 +379,16 @@ export default function Navigation() {
             </div>
           </div>
 
-          {/* Right Column (Positioned on the Right, Text Left-Aligned) */}
-          <div className="flex-1 lg:flex-[1.5] flex flex-col justify-end items-start lg:items-end">
-            <div className="w-auto flex flex-col items-start text-left">
-              <ul className="list-none space-y-2 flex flex-col items-start text-left">
+          {/* Navigation Links Section (Right on Desktop, Top on Mobile) */}
+          <div className="order-1 lg:order-2 flex-1 lg:flex-[1.5] flex flex-col justify-start lg:justify-end items-start lg:items-end">
+            <div className="w-full lg:w-auto flex flex-col items-start text-left">
+              <ul className="list-none space-y-1.5 sm:space-y-2.5 lg:space-y-3 flex flex-col items-start text-left w-full">
                 {NAV_LINKS.map((link) => (
                   <li key={link.title} className="w-full text-left">
                     <Link
                       href={link.href}
                       onClick={() => isOpen && handleToggle()}
-                      className="menu-link-wrapper block w-max overflow-hidden text-4xl sm:text-6xl md:text-7xl font-bold leading-tight uppercase hover:text-[#a374ff] transition-colors text-left"
+                      className="menu-link-wrapper block w-max overflow-hidden text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight uppercase hover:text-[#a374ff] transition-colors text-left tracking-tight"
                     >
                       {link.title.split("").map((char, index) => (
                         <span
