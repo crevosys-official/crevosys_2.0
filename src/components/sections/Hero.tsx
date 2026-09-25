@@ -318,7 +318,7 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
         {/* 2-Line Luxury Heading with Masked Word-Reveal */}
         <h1
           aria-label="Transform your Data into Powerful and Smart Solutions"
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-[4.75rem] font-semibold text-white tracking-[-0.035em] leading-[1.08] max-w-5xl select-text"
+          className="text-3xl sm:text-5xl md:text-6xl lg:text-[4.75rem] font-semibold text-white tracking-[-0.035em] leading-[1.08] max-w-5xl select-text"
         >
           {/* Line 1 */}
           <span className="block overflow-hidden pb-1 sm:pb-2">

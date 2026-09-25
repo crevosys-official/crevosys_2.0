@@ -15,32 +15,33 @@ interface IntegrationItem {
   id: string;
   name: string;
   icon: string;
+  category?: string;
   isWhite?: boolean;
 }
 
 const INTEGRATION_ITEMS: IntegrationItem[] = [
-  { id: "item-1", name: "Flutter", icon: "/icons/Flutter-Dark.svg" },
-  { id: "item-2", name: "Firebase", icon: "/icons/Firebase-Dark.svg" },
-  { id: "item-3", name: "MongoDB", icon: "/icons/MongoDB.svg" },
-  { id: "item-4", name: "Tailwind CSS", icon: "/icons/TailwindCSS-Dark.svg" },
-  { id: "item-5", name: "TypeScript", icon: "/icons/TypeScript.svg" },
-  { id: "item-6", name: "React", icon: "/icons/React-Dark.svg" },
-  { id: "item-7", name: "Next.js", icon: "/icons/NextJS-Dark.svg" },
-  { id: "item-8", name: "Node.js", icon: "/icons/NodeJS-Dark.svg" },
-  { id: "item-9", name: "Figma", icon: "/icons/Figma-Dark.svg" },
-  { id: "item-10", name: "Supabase", icon: "/icons/Supabase-Dark.svg" },
-  { id: "item-11", name: "GitHub", icon: "/icons/Github-Dark.svg" },
-  { id: "item-12", name: "Express.js", icon: "/icons/ExpressJS-Dark.svg" },
-  { id: "item-13", name: "Redux", icon: "/icons/Redux.svg" },
-  { id: "item-14", name: "VS Code", icon: "/icons/VSCode-Dark.svg" },
-  { id: "item-15", name: "Android Studio", icon: "/icons/AndroidStudio-Dark.svg" },
-  { id: "item-16", name: "HTML5", icon: "/icons/HTML.svg" },
-  { id: "item-17", name: "CSS3", icon: "/icons/CSS.svg" },
-  { id: "item-18", name: "Bootstrap", icon: "/icons/Bootstrap.svg" },
-  { id: "item-19", name: "Blender", icon: "/icons/Blender-Dark.svg" },
-  { id: "item-20", name: "Photoshop", icon: "/icons/Photoshop.svg" },
-  { id: "item-21", name: "Illustrator", icon: "/icons/Illustrator.svg" },
-  { id: "item-22", name: "Clerk", icon: "/icons/clerk.png" },
+  { id: "item-1", name: "Flutter", icon: "/icons/Flutter-Dark.svg", category: "Mobile" },
+  { id: "item-2", name: "Firebase", icon: "/icons/Firebase-Dark.svg", category: "Backend" },
+  { id: "item-3", name: "MongoDB", icon: "/icons/MongoDB.svg", category: "Database" },
+  { id: "item-4", name: "Tailwind CSS", icon: "/icons/TailwindCSS-Dark.svg", category: "Styling" },
+  { id: "item-5", name: "TypeScript", icon: "/icons/TypeScript.svg", category: "Language" },
+  { id: "item-6", name: "React", icon: "/icons/React-Dark.svg", category: "Frontend" },
+  { id: "item-7", name: "Next.js", icon: "/icons/NextJS-Dark.svg", category: "Framework" },
+  { id: "item-8", name: "Node.js", icon: "/icons/NodeJS-Dark.svg", category: "Runtime" },
+  { id: "item-9", name: "Figma", icon: "/icons/Figma-Dark.svg", category: "Design" },
+  { id: "item-10", name: "Supabase", icon: "/icons/Supabase-Dark.svg", category: "Backend" },
+  { id: "item-11", name: "GitHub", icon: "/icons/Github-Dark.svg", category: "DevOps" },
+  { id: "item-12", name: "Express.js", icon: "/icons/ExpressJS-Dark.svg", category: "API" },
+  { id: "item-13", name: "Redux", icon: "/icons/Redux.svg", category: "State" },
+  { id: "item-14", name: "VS Code", icon: "/icons/VSCode-Dark.svg", category: "Editor" },
+  { id: "item-15", name: "Android Studio", icon: "/icons/AndroidStudio-Dark.svg", category: "Mobile IDE" },
+  { id: "item-16", name: "HTML5", icon: "/icons/HTML.svg", category: "Web" },
+  { id: "item-17", name: "CSS3", icon: "/icons/CSS.svg", category: "Styling" },
+  { id: "item-18", name: "Bootstrap", icon: "/icons/Bootstrap.svg", category: "UI Kit" },
+  { id: "item-19", name: "Blender", icon: "/icons/Blender-Dark.svg", category: "3D Graphics" },
+  { id: "item-20", name: "Photoshop", icon: "/icons/Photoshop.svg", category: "Design" },
+  { id: "item-21", name: "Illustrator", icon: "/icons/Illustrator.svg", category: "Vector" },
+  { id: "item-22", name: "Clerk", icon: "/icons/clerk.png", category: "Auth" },
 ];
 
 const TOTAL_ITEMS = INTEGRATION_ITEMS.length; // 22
@@ -66,15 +67,11 @@ function getAngleFade(theta: number) {
 
   if (theta > 142) {
     // Reveal side fade: angle goes from 185 down to 142
-    // At 185: opacity = 0
-    // At 142: opacity = 1
     const t = Math.max(0, Math.min(1, (185 - theta) / 43));
     opacity = t;
     scale = 0.65 + 0.35 * t;
   } else if (theta < 38) {
     // Ending side fade: angle goes from 38 down to -5
-    // At 38: opacity = 1
-    // At -5: opacity = 0
     const t = Math.max(0, Math.min(1, (theta - (-5)) / 43));
     opacity = t;
     scale = 0.65 + 0.35 * t;
@@ -94,11 +91,21 @@ interface TechBadgeProps {
   item: IntegrationItem;
   index: number;
   isHovered: boolean;
+  isSelected: boolean;
   onHover: (name: string | null) => void;
+  onSelect: (item: IntegrationItem) => void;
   innerRef: (el: HTMLDivElement | null) => void;
 }
 
-function TechBadge({ item, index, isHovered, onHover, innerRef }: TechBadgeProps) {
+function TechBadge({
+  item,
+  index,
+  isHovered,
+  isSelected,
+  onHover,
+  onSelect,
+  innerRef,
+}: TechBadgeProps) {
   // Initial position at rotation = 0
   const initialBaseAngle = START_ANGLE + index * ANGLE_STEP;
   const initialTheta = normalizeAngle(initialBaseAngle);
@@ -118,35 +125,49 @@ function TechBadge({ item, index, isHovered, onHover, innerRef }: TechBadgeProps
         visibility: initialFade.visible ? "visible" : "hidden",
         transform: `translate(-50%, -50%) scale(${initialFade.scale})`,
       }}
-      className="absolute pointer-events-auto z-20 group"
+      className="absolute pointer-events-auto z-20 group cursor-pointer"
       onMouseEnter={() => onHover(item.name)}
       onMouseLeave={() => onHover(null)}
+      onClick={(e) => {
+        e.stopPropagation();
+        onSelect(item);
+      }}
     >
       <div className="badge-reveal-wrapper">
         <motion.div
           whileHover={{ scale: 1.18, y: -4 }}
+          whileTap={{ scale: 0.95 }}
+          animate={isSelected ? { scale: 1.15, y: -3 } : undefined}
           transition={{ type: "spring", stiffness: 400, damping: 20 }}
-          className={`relative w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-[72px] lg:h-[72px] rounded-full flex items-center justify-center transition-all cursor-pointer ${
+          className={`relative w-9 h-9 sm:w-11 sm:h-11 md:w-15 md:h-15 lg:w-[68px] lg:h-[68px] rounded-full flex items-center justify-center transition-all ${
             item.isWhite
               ? "bg-white text-zinc-900 shadow-[0_4px_24px_rgba(255,255,255,0.45)]"
+              : isSelected
+              ? "bg-[#1f1936] border-2 border-purple-400 text-zinc-100 shadow-[0_0_25px_rgba(168,85,247,0.7)] backdrop-blur-sm"
               : "bg-[#161226]/90 border border-white/20 text-zinc-100 shadow-[0_6px_20px_rgba(0,0,0,0.65)] hover:border-purple-400/70 hover:shadow-[0_0_25px_rgba(168,85,247,0.45)] backdrop-blur-sm"
           }`}
         >
-          <div className="relative w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 lg:w-10 lg:h-10 flex items-center justify-center">
+          <div className="relative w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 lg:w-9 lg:h-9 flex items-center justify-center">
             <Image
               src={item.icon}
               alt={item.name}
-              width={44}
-              height={44}
+              width={38}
+              height={38}
               className="w-full h-full object-contain rounded-md"
             />
           </div>
 
-          {/* Hover ripple */}
-          <div className="absolute inset-0 rounded-full border border-purple-400/0 group-hover:border-purple-400/60 group-hover:scale-125 transition-all duration-300 pointer-events-none" />
+          {/* Hover / Active ring */}
+          <div
+            className={`absolute inset-0 rounded-full transition-all duration-300 pointer-events-none ${
+              isSelected
+                ? "border-2 border-purple-400 scale-110"
+                : "border border-purple-400/0 group-hover:border-purple-400/60 group-hover:scale-125"
+            }`}
+          />
         </motion.div>
 
-        {/* Tooltip */}
+        {/* Desktop Tooltip */}
         <AnimatePresence>
           {isHovered && (
             <motion.div
@@ -154,9 +175,14 @@ function TechBadge({ item, index, isHovered, onHover, innerRef }: TechBadgeProps
               animate={{ opacity: 1, y: -6, scale: 1 }}
               exit={{ opacity: 0, y: 6, scale: 0.9 }}
               transition={{ duration: 0.15 }}
-              className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2.5 py-1 rounded-md bg-zinc-900/95 border border-purple-500/30 text-[11px] font-medium text-purple-200 whitespace-nowrap shadow-xl backdrop-blur-md pointer-events-none z-40"
+              className="hidden md:block absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2.5 py-1 rounded-md bg-zinc-900/95 border border-purple-500/30 text-[11px] font-medium text-purple-200 whitespace-nowrap shadow-xl backdrop-blur-md pointer-events-none z-40"
             >
               {item.name}
+              {item.category && (
+                <span className="text-zinc-400 text-[10px] ml-1.5 font-normal">
+                  ({item.category})
+                </span>
+              )}
             </motion.div>
           )}
         </AnimatePresence>
@@ -189,11 +215,14 @@ function CurvedGlassOverlay({
 
 export default function Integrations() {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const [selectedItem, setSelectedItem] = useState<IntegrationItem | null>(null);
+  const [isPaused, setIsPaused] = useState(false);
 
   const sectionRef = useRef<HTMLElement>(null);
   const glowLineRef = useRef<SVGPathElement>(null);
   const dashedLineRef = useRef<SVGPathElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const mobileHeaderRef = useRef<HTMLDivElement>(null);
   const badgeRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const rotationRef = useRef(0);
@@ -203,12 +232,38 @@ export default function Integrations() {
   // Handle smooth pause / resume on hover
   const handleBadgeHover = (name: string | null) => {
     setHoveredItem(name);
-    isHoveredRef.current = !!name;
-    gsap.to(speedRef.current, {
-      value: name ? 0 : 1,
-      duration: name ? 0.35 : 0.6,
-      ease: "power2.out",
-    });
+    // Only alter speed from hover if user hasn't explicitly selected/paused an item
+    if (!selectedItem) {
+      isHoveredRef.current = !!name;
+      gsap.to(speedRef.current, {
+        value: name ? 0 : 1,
+        duration: name ? 0.35 : 0.6,
+        ease: "power2.out",
+      });
+    }
+  };
+
+  // Handle tap / click on a badge for mobile touch support
+  const handleBadgeSelect = (item: IntegrationItem | null) => {
+    if (!item || selectedItem?.id === item.id) {
+      setSelectedItem(null);
+      setIsPaused(false);
+      isHoveredRef.current = false;
+      gsap.to(speedRef.current, {
+        value: 1,
+        duration: 0.6,
+        ease: "power2.out",
+      });
+    } else {
+      setSelectedItem(item);
+      setIsPaused(true);
+      isHoveredRef.current = true;
+      gsap.to(speedRef.current, {
+        value: 0,
+        duration: 0.35,
+        ease: "power2.out",
+      });
+    }
   };
 
   useGSAP(
@@ -228,8 +283,9 @@ export default function Integrations() {
         y: 24,
       });
 
-      if (contentRef.current) {
-        gsap.set(contentRef.current, {
+      const textTargets = [mobileHeaderRef.current, contentRef.current].filter(Boolean);
+      if (textTargets.length > 0) {
+        gsap.set(textTargets, {
           opacity: 0,
           y: 28,
         });
@@ -244,10 +300,10 @@ export default function Integrations() {
         },
       });
 
-      // 1. Central content lifts & reveals
-      if (contentRef.current) {
+      // 1. Text headers lift & reveal
+      if (textTargets.length > 0) {
         entranceTl.to(
-          contentRef.current,
+          textTargets,
           {
             opacity: 1,
             y: 0,
@@ -382,9 +438,9 @@ export default function Integrations() {
     <section
       ref={sectionRef}
       id="integrations"
-      className="relative w-full overflow-hidden bg-[#000000] pt-12 sm:pt-20 lg:pt-28 pb-0 select-none"
+      className="relative w-full overflow-hidden bg-[#000000] pt-12 sm:pt-16 md:pt-20 lg:pt-28 pb-6 sm:pb-8 md:pb-0 md:-mb-8 select-none"
     >
-      {/* Responsive SVG Clip Paths */}
+      {/* Responsive SVG Clip Paths (for desktop glass overlays) */}
       <svg className="absolute w-0 h-0 pointer-events-none" aria-hidden="true">
         <defs>
           <clipPath id="leftGlassClip" clipPathUnits="objectBoundingBox">
@@ -397,7 +453,7 @@ export default function Integrations() {
       </svg>
 
       {/* Ambient Background Glow */}
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div
           className="absolute left-1/2 bottom-0 -translate-x-1/2 w-[850px] max-w-[95vw] h-[480px] rounded-full blur-[110px] opacity-40"
           style={{
@@ -413,13 +469,50 @@ export default function Integrations() {
         />
       </div>
 
+      {/* Mobile Section Header (< md) */}
+      <div
+        ref={mobileHeaderRef}
+        className="md:hidden relative z-20 flex flex-col items-center text-center px-4 max-w-lg mx-auto mb-4 sm:mb-6"
+      >
+        {/* Pill Badge */}
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-teal-500/40 bg-teal-950/40 text-teal-300 text-xs font-semibold tracking-wider uppercase shadow-[0_0_16px_rgba(20,184,166,0.22)] backdrop-blur-md mb-3">
+          <svg
+            className="w-3.5 h-3.5 stroke-teal-300 fill-none"
+            viewBox="0 0 24 24"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <polyline points="16 18 22 12 16 6" />
+            <polyline points="8 6 2 12 8 18" />
+          </svg>
+          <span>SKILLS &amp; TOOLS</span>
+        </div>
+
+        {/* Headline */}
+        <h2 className="text-2xl sm:text-3xl font-medium text-white tracking-tight leading-[1.2]">
+          Tools &amp; Technologies
+          <br />
+          We Work With
+        </h2>
+
+        {/* Subheading */}
+        <p className="mt-2.5 text-zinc-400 text-xs sm:text-sm font-normal max-w-sm mx-auto leading-relaxed">
+          We leverage modern frameworks, scalable cloud services, and battle-tested tools to craft high-impact digital solutions.
+        </p>
+      </div>
+
       {/* Arc Stage Container */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative w-full mx-auto aspect-[2/1] min-h-[360px] sm:min-h-0 flex items-center justify-center">
+      <div className="relative z-10 max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div
+          onClick={() => handleBadgeSelect(null)}
+          className="relative w-full mx-auto aspect-[2/1] flex items-center justify-center cursor-default"
+        >
           {/* 1. Road Track & Radial Ambient Dome */}
           <svg
             className="absolute inset-0 w-full h-full pointer-events-none z-10"
             viewBox="0 0 1000 500"
+            preserveAspectRatio="xMidYMid meet"
             fill="none"
           >
             <defs>
@@ -497,21 +590,23 @@ export default function Integrations() {
                   badgeRefs.current[index] = el;
                 }}
                 isHovered={hoveredItem === item.name}
+                isSelected={selectedItem?.id === item.id}
                 onHover={handleBadgeHover}
+                onSelect={handleBadgeSelect}
               />
             ))}
           </div>
 
-          {/* 3. Curved Liquid Glass Lenses */}
-          <div className="absolute inset-0 pointer-events-none z-30">
+          {/* 3. Curved Liquid Glass Lenses (Desktop/Tablet >= md) */}
+          <div className="absolute inset-0 pointer-events-none z-30 hidden md:block">
             <CurvedGlassOverlay clipId="leftGlassClip" direction="br" />
             <CurvedGlassOverlay clipId="rightGlassClip" direction="bl" />
           </div>
 
-          {/* 4. Central Content & CTA */}
+          {/* 4. Desktop Central Content & CTA (>= md) */}
           <div
             ref={contentRef}
-            className="relative z-30 flex flex-col items-center text-center px-4 max-w-xl mx-auto mt-20 sm:mt-24 md:mt-26"
+            className="hidden md:flex relative z-30 flex-col items-center text-center px-4 max-w-xl mx-auto mt-20 sm:mt-24 md:mt-26"
           >
             {/* Pill Badge */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-teal-500/40 bg-teal-950/40 text-teal-300 text-xs font-semibold tracking-wider uppercase shadow-[0_0_16px_rgba(20,184,166,0.22)] backdrop-blur-md mb-3 sm:mb-4">
@@ -529,7 +624,7 @@ export default function Integrations() {
             </div>
 
             {/* Headline */}
-            <h2 className="text-2xl sm:text-4xl md:text-[44px] lg:text-[48px] font-medium text-white tracking-tight leading-[1.18] sm:leading-[1.15]">
+            <h2 className="text-3xl md:text-[44px] lg:text-[48px] font-medium text-white tracking-tight leading-[1.18] sm:leading-[1.15]">
               Tools &amp; Technologies
               <br />
               We Work With
@@ -540,9 +635,53 @@ export default function Integrations() {
               We leverage modern frameworks, scalable cloud services, and battle-tested tools to craft high-impact digital solutions.
             </p>
           </div>
+
+          {/* 5. Mobile Central Interactive Indicator (< md) */}
+          <div className="md:hidden absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center z-30 pointer-events-auto">
+            <motion.div
+              key={selectedItem?.id || "empty"}
+              initial={{ opacity: 0, y: 5, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.2 }}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleBadgeSelect(selectedItem);
+              }}
+              className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/90 border border-purple-500/30 text-zinc-200 shadow-[0_4px_24px_rgba(168,85,247,0.3)] backdrop-blur-md cursor-pointer active:scale-95 transition-transform"
+            >
+              {selectedItem ? (
+                <>
+                  <div className="w-4 h-4 relative flex items-center justify-center">
+                    <Image
+                      src={selectedItem.icon}
+                      alt={selectedItem.name}
+                      width={16}
+                      height={16}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  <span className="text-xs font-medium text-white">{selectedItem.name}</span>
+                  {selectedItem.category && (
+                    <span className="text-[10px] text-purple-300/80 border-l border-white/10 pl-2">
+                      {selectedItem.category}
+                    </span>
+                  )}
+                </>
+              ) : (
+                <>
+                  <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
+                  <span className="text-xs font-medium text-zinc-300">Tap icon to inspect</span>
+                </>
+              )}
+            </motion.div>
+            <span className="text-[9px] text-zinc-500 mt-1 font-mono tracking-wider uppercase">
+              {isPaused ? "Paused • Tap to resume" : "Orbital Tech Radar"}
+            </span>
+          </div>
         </div>
       </div>
     </section>
   );
 }
+
 

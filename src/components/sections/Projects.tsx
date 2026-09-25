@@ -62,7 +62,7 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
 
   return (
     <section
-      className="py-24 md:py-32 relative overflow-visible"
+      className="pt-6 sm:pt-12 md:pt-16 lg:pt-28 pb-6 sm:pb-8 md:pb-0 relative overflow-visible"
       id="portfolio"
       ref={containerRef}
     >
