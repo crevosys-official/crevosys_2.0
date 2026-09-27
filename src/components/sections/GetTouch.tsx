@@ -94,16 +94,17 @@ const GetTouch = () => {
         Let&apos;s get started <br />
         with our team
       </h1>
-      <p className="get-touch-desc text-center my-5 text-gray-500 text-sm md:text-base">
-        Use customer data to build great and solid product <br /> experiences
+      <p className="get-touch-desc text-center tracking-wide my-5 text-gray-500 text-sm md:text-base">
+        Use customer data to build great and solid product experiences
         that convert.
       </p>
       <div className="get-touch-btn flex justify-center">
-        <Link href="/contact">
-          <Button className="flex mx-auto p-5 text-md bg-gradient-to-b from-[#FFB16B] to-[#996A40] hover:brightness-110 transition cursor-pointer">
-            Let&apos;s get in touch
-          </Button>
-        </Link>
+        <Link href="/contact" className="focus:outline-none">
+            <button className="group relative px-6 sm:px-7 py-2.5 sm:py-3 rounded-full text-sm font-semibold text-white bg-gradient-to-b from-[#ff7520] via-[#f75200] to-[#cb3c00] shadow-[0_0_26px_rgba(247,82,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.4)] hover:shadow-[0_0_36px_rgba(247,82,0,0.8)] hover:brightness-110 active:scale-[0.98] transition-all duration-300 border border-orange-400/40 cursor-pointer overflow-hidden">
+              <span className="relative z-10">Get Connect with us</span>
+              <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none" />
+            </button>
+          </Link>
       </div>
       <Image
         ref={shapeRef}

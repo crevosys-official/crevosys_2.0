@@ -22,6 +22,8 @@ interface Feedback {
   sender_profile: string;
   sender_name: string;
   sender_country: string;
+  date?: string;
+  rating?: number;
 }
 
 const DEFAULT_FEEDBACK: Feedback[] = [
@@ -29,33 +31,41 @@ const DEFAULT_FEEDBACK: Feedback[] = [
     feedback:
       "Working with this team was a fantastic experience! They delivered our project ahead of schedule and exceeded our expectations.",
     sender_profile:
-      "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3387&q=80",
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80",
     sender_name: "John Doe",
     sender_country: "USA",
+    date: "Oct 24, 2024",
+    rating: 5,
   },
   {
     feedback:
       "Their attention to detail and creative approach truly set them apart. Highly recommended for any design needs.",
     sender_profile:
-      "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YXZhdGFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80",
     sender_name: "Robert Johnson",
     sender_country: "Canada",
+    date: "Oct 19, 2024",
+    rating: 5,
   },
   {
     feedback:
       "Excellent communication and top-notch technical skills. I would definitely work with them again in the future.",
     sender_profile:
-      "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YXZhdGFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=800&q=80",
     sender_name: "Jane Smith",
     sender_country: "UK",
+    date: "Oct 11, 2024",
+    rating: 5,
   },
   {
     feedback:
       "They turned our vision into reality with professionalism and creativity. The results speak for themselves!",
     sender_profile:
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGF2YXRhcnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60",
-    sender_name: "Sahid Ahmed",
-    sender_country: "Bangladesh",
+      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=800&q=80",
+    sender_name: "Emily Davis",
+    sender_country: "Australia",
+    date: "Oct 04, 2024",
+    rating: 5,
   },
 ];
 
@@ -65,28 +75,28 @@ const people = [
     name: "John Doe",
     designation: "Software Engineer",
     image:
-      "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3387&q=80",
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: 2,
     name: "Robert Johnson",
     designation: "Product Manager",
     image:
-      "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YXZhdGFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: 3,
     name: "Jane Smith",
     designation: "Data Scientist",
     image:
-      "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YXZhdGFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: 4,
     name: "Emily Davis",
     designation: "UX Designer",
     image:
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGF2YXRhcnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60",
+      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: 5,
@@ -104,13 +114,13 @@ const people = [
   },
 ];
 
-// rating component
-const StarRating: React.FC = () => (
-  <span className="flex gap-1 items-center my-3 bg-zinc-700/50 w-fit p-2 rounded-full text-md">
-    {[...Array(5)].map((_, i) => (
-      <Star key={i} className="w-5 text-[#FF8905] fill-[#FF8905]" />
+// Rating component - small, clean, and elegant
+const StarRating: React.FC<{ rating?: number }> = ({ rating = 5 }) => (
+  <div className="flex items-center gap-1">
+    {[...Array(rating)].map((_, i) => (
+      <Star key={i} className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
     ))}
-  </span>
+  </div>
 );
 
 // Feedback card component
@@ -120,7 +130,7 @@ const FeedbackCard: React.FC<{
   showAll: boolean;
 }> = ({ review, index, showAll }) => (
   <motion.div
-    className="testimonial-card-item bg-zinc-800/30 border border-white/40 p-12 rounded-xl md:w-full mx-5 md:mx-0 xl:mx-0 backdrop-blur-md"
+    className="testimonial-card-item group relative flex flex-col justify-between bg-zinc-900/50 hover:bg-zinc-800/60 border border-white/10 hover:border-white/25 p-6 md:p-7 rounded-2xl mx-4 md:mx-0 backdrop-blur-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-amber-500/5 hover:-translate-y-1"
     initial={{ opacity: 0, y: 40 }}
     animate={{ opacity: 1, y: 0 }}
     exit={{ opacity: 0, y: 40 }}
@@ -128,22 +138,44 @@ const FeedbackCard: React.FC<{
       duration: 0.4,
       delay: showAll ? index * 0.08 : 0,
     }}>
-    <StarRating />
-    <p className="text-zinc-400 pb-5">{review.feedback}</p>
-    <hr className="border-zinc-200/10 border my-2" />
-    <div className="text-sm text-zinc-400">
-      <div className="flex gap-4 items-center">
+    <div className="flex flex-col">
+      {/* Top: Date above the small stars */}
+      <div className="flex flex-col gap-1.5 mb-4">
+        <div className="flex items-center justify-between">
+          <span className="text-xs font-medium text-zinc-400 tracking-wide">
+            {review.date || "Oct 2024"}
+          </span>
+          <span className="text-[10px] font-medium tracking-wider uppercase px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+            Verified
+          </span>
+        </div>
+        <StarRating rating={review.rating || 5} />
+      </div>
+
+      {/* Review feedback text */}
+      <p className="text-zinc-300 text-sm leading-relaxed font-normal">
+        &ldquo;{review.feedback}&rdquo;
+      </p>
+    </div>
+
+    <div>
+      <hr className="border-white/10 my-4" />
+      <div className="flex items-center gap-3">
         <Image
-          className="w-10 h-10 object-cover rounded-full"
+          className="w-10 h-10 object-cover rounded-full ring-2 ring-white/10"
           src={review.sender_profile}
-          alt="profile"
-          height={80}
-          width={80}
+          alt={review.sender_name}
+          height={40}
+          width={40}
           loading="lazy"
         />
-        <div>
-          <h1 className="text-lg font-bold text-white">{review.sender_name}</h1>
-          <p>{review.sender_country}</p>
+        <div className="min-w-0 flex-1">
+          <h3 className="text-sm font-semibold text-white truncate">
+            {review.sender_name}
+          </h3>
+          <p className="text-xs text-zinc-400 truncate">
+            {review.sender_country}
+          </p>
         </div>
       </div>
     </div>

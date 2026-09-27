@@ -30,11 +30,6 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
   useGSAP(
     () => {
       if (!heroRef.current) return;
-
-      // =========================================================================
-      // 1. SCROLL-DRIVEN PARALLAX TIMELINE
-      // Handles upward exit on scroll down & reverse-reveal on scroll up
-      // =========================================================================
       const scrollTl = gsap.timeline({
         scrollTrigger: {
           trigger: heroRef.current,
