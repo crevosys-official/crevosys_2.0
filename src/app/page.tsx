@@ -8,6 +8,7 @@ import Services from "@/components/sections/Services";
 import Projects from "@/components/sections/Projects";
 import Testimonials from "@/components/sections/Testimonials";
 import Progress from "@/components/sections/Progress";
+import ScrollFaq from "@/components/sections/Faq";
 import GetTouch from "@/components/sections/GetTouch";
 import Image from "next/image";
 import React, { useState } from "react";
@@ -68,7 +69,11 @@ const Page = () => {
           onCardHover={(variant) => setCursorVariant(variant)}
           onCursorLeave={() => setCursorVariant("default")}
         />
+      </div>
 
+      <ScrollFaq />
+
+      <div className=" md:px-16 xl:px-20 px-5">
         <GetTouch />
       </div>
       <Footer />

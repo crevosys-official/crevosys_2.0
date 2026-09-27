@@ -246,4 +246,13 @@ body::-webkit-scrollbar,
   opacity: 0;
 }
 
+@keyframes typing-pulse {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-0.25rem); }
+}
+
+.animate-typing-pulse {
+  animation: typing-pulse 1s infinite ease-in-out;
+}
+
 
