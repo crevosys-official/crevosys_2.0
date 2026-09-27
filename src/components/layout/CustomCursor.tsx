@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 
 interface CustomCursorProps {
   variant:
@@ -13,89 +13,115 @@ interface CustomCursorProps {
     | "build";
 }
 
+const VARIANTS_CONFIG = {
+  default: {
+    size: 12,
+    opacity: 0.45,
+    backgroundColor: "#ff8804",
+    blur: "blur(0px)",
+  },
+  hero: {
+    size: 180,
+    opacity: 0.38,
+    backgroundColor: "#ff8804",
+    blur: "blur(0px)",
+  },
+  about: {
+    size: 120,
+    opacity: 0.38,
+    backgroundColor: "#ff8804",
+    blur: "blur(0px)",
+  },
+  testimonials: {
+    size: 100,
+    opacity: 0.2,
+    backgroundColor: "#ff8804",
+    blur: "blur(12px)",
+  },
+  plan: {
+    size: 100,
+    opacity: 0.25,
+    backgroundColor: "#F1AED4",
+    blur: "blur(0px)",
+  },
+  design: {
+    size: 100,
+    opacity: 0.25,
+    backgroundColor: "#CCEF8E",
+    blur: "blur(0px)",
+  },
+  build: {
+    size: 100,
+    opacity: 0.25,
+    backgroundColor: "#86DFE8",
+    blur: "blur(0px)",
+  },
+};
+
 const CustomCursor: React.FC<CustomCursorProps> = ({ variant }) => {
-  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+  const [isVisible, setIsVisible] = useState(false);
+  const rawX = useMotionValue(-100);
+  const rawY = useMotionValue(-100);
+
+  // Fast, lag-free springs for natural feel
+  const x = useSpring(rawX, { damping: 28, stiffness: 450 });
+  const y = useSpring(rawY, { damping: 28, stiffness: 450 });
 
   useEffect(() => {
-    const move = (e: MouseEvent) =>
-      setCursorPosition({ x: e.clientX, y: e.clientY });
-    window.addEventListener("mousemove", move);
-    return () => window.removeEventListener("mousemove", move);
-  }, []);
+    // Only enable cursor on devices that support hover/fine pointer
+    if (window.matchMedia("(pointer: coarse)").matches) {
+      return;
+    }
 
-  const variants = {
-    default: {
-      x: cursorPosition.x - 16,
-      y: cursorPosition.y - 16,
-      height: 10,
-      width: 10,
-      opacity: 0.4,
-      backgroundColor: "#ff8804",
-    },
-    hero: {
-      x: cursorPosition.x - 90,
-      y: cursorPosition.y - 90,
-      height: 180,
-      width: 180,
-      opacity: 0.4,
-      backgroundColor: "#ff8804",
-    },
-    about: {
-      x: cursorPosition.x - 80,
-      y: cursorPosition.y - 60,
-      height: 120,
-      width: 120,
-      opacity: 0.4,
-      backgroundColor: "#ff8804",
-    },
-    testimonials: {
-      x: cursorPosition.x - 80,
-      y: cursorPosition.y - 60,
-      height: 100,
-      width: 100,
-      opacity: 0.2,
-      backgroundColor: "#ff8804",
-    },
-    // for progress component
-    plan: {
-      x: cursorPosition.x - 80,
-      y: cursorPosition.y - 60,
-      height: 100,
-      width: 100,
-      opacity: 0.2,
-      backgroundColor: "#F1AED4",
-    },
-    design: {
-      x: cursorPosition.x - 80,
-      y: cursorPosition.y - 60,
-      height: 100,
-      width: 100,
-      opacity: 0.2,
-      backgroundColor: "#CCEF8E",
-    },
-    build: {
-      x: cursorPosition.x - 80,
-      y: cursorPosition.y - 60,
-      height: 100,
-      width: 100,
-      opacity: 0.2,
-      backgroundColor: "#86DFE8",
-    },
-  };
+    const move = (e: MouseEvent) => {
+      rawX.set(e.clientX);
+      rawY.set(e.clientY);
+      if (!isVisible) setIsVisible(true);
+    };
+
+    const handleMouseLeave = () => setIsVisible(false);
+    const handleMouseEnter = () => setIsVisible(true);
+
+    window.addEventListener("mousemove", move, { passive: true });
+    document.addEventListener("mouseleave", handleMouseLeave);
+    document.addEventListener("mouseenter", handleMouseEnter);
+
+    return () => {
+      window.removeEventListener("mousemove", move);
+      document.removeEventListener("mouseleave", handleMouseLeave);
+      document.removeEventListener("mouseenter", handleMouseEnter);
+    };
+  }, [isVisible, rawX, rawY]);
+
+  const cfg = VARIANTS_CONFIG[variant] || VARIANTS_CONFIG.default;
 
   return (
     <motion.div
-      className="cursor"
-      variants={variants}
-      animate={variant}
       style={{
+        x,
+        y,
+        translateX: "-50%",
+        translateY: "-50%",
         borderRadius: "50%",
         position: "fixed",
         top: 0,
         left: 0,
         pointerEvents: "none",
-        zIndex: 2,
-        filter: variant === "testimonials" ? "blur(12px)" : "blur(0px)",
+        zIndex: 9999,
+        willChange: "transform, width, height",
+      }}
+      animate={{
+        width: cfg.size,
+        height: cfg.size,
+        opacity: isVisible ? cfg.opacity : 0,
+        backgroundColor: cfg.backgroundColor,
+        filter: cfg.blur,
+      }}
+      transition={{
+        type: "spring",
+        damping: 30,
+        stiffness: 300,
+        mass: 0.6,
       }}
     />
   );

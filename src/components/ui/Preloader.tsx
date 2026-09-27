@@ -41,8 +41,20 @@ export default function Preloader() {
   const progressBarRef = useRef<HTMLDivElement>(null);
 
   const lenis = useLenis();
+  const initializedRef = useRef(false);
+
+  // Dedicated Lenis scroll lock that doesn't restart the GSAP timeline
+  useEffect(() => {
+    if (lenis && !isComplete) {
+      lenis.stop();
+    }
+  }, [lenis, isComplete]);
 
   useEffect(() => {
+    // Prevent duplicate animation in React StrictMode or upon Lenis state changes
+    if (initializedRef.current) return;
+    initializedRef.current = true;
+
     // Lock scroll during preloading
     if (lenis) {
       lenis.stop();
@@ -51,26 +63,6 @@ export default function Preloader() {
     document.documentElement.style.overflow = "hidden";
 
     const wordEl = wordRef.current;
-    if (wordEl) {
-      // Initial 3D flip entrance for "Plan,"
-      gsap.fromTo(
-        wordEl,
-        {
-          rotateX: 90,
-          y: 30,
-          opacity: 0,
-          filter: "blur(6px)",
-        },
-        {
-          rotateX: 0,
-          y: 0,
-          opacity: 1,
-          filter: "blur(0px)",
-          duration: 0.55,
-          ease: "back.out(1.4)",
-        }
-      );
-    }
 
     const flipToWord = (newIndex: number) => {
       const el = wordRef.current;
@@ -79,13 +71,12 @@ export default function Preloader() {
       // 3D Flip Out
       gsap.to(el, {
         rotateX: -90,
-        y: -30,
+        y: -24,
         opacity: 0,
         filter: "blur(6px)",
         duration: 0.28,
         ease: "power2.in",
         onComplete: () => {
-          // Immediately update text and styling
           el.textContent = FLIP_WORDS[newIndex].text;
           el.className = `inline-block font-extrabold text-3xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r ${FLIP_WORDS[newIndex].gradient} will-change-transform`;
           el.style.filter = `drop-shadow(0 0 25px ${FLIP_WORDS[newIndex].glow})`;
@@ -97,7 +88,7 @@ export default function Preloader() {
             el,
             {
               rotateX: 90,
-              y: 30,
+              y: 24,
               opacity: 0,
               filter: "blur(6px)",
             },
@@ -106,7 +97,7 @@ export default function Preloader() {
               y: 0,
               opacity: 1,
               filter: "blur(0px)",
-              duration: 0.42,
+              duration: 0.4,
               ease: "back.out(1.4)",
             }
           );
@@ -117,12 +108,34 @@ export default function Preloader() {
     const counterObj = { value: 0 };
     const masterTl = gsap.timeline();
 
-    // 1. Percentage counter animation (0 -> 100% over 2.4s)
+    // Initial entrance for "Plan," (Part of the synchronized timeline - exactly ONCE)
+    if (wordEl) {
+      masterTl.fromTo(
+        wordEl,
+        {
+          rotateX: 90,
+          y: 26,
+          opacity: 0,
+          filter: "blur(6px)",
+        },
+        {
+          rotateX: 0,
+          y: 0,
+          opacity: 1,
+          filter: "blur(0px)",
+          duration: 0.5,
+          ease: "back.out(1.4)",
+        },
+        0
+      );
+    }
+
+    // 1. Percentage counter animation (0 -> 100% over 2.3s)
     masterTl.to(
       counterObj,
       {
         value: 100,
-        duration: 2.4,
+        duration: 2.3,
         ease: "power1.inOut",
         onUpdate: () => {
           const current = Math.round(counterObj.value);
@@ -135,17 +148,17 @@ export default function Preloader() {
       0
     );
 
-    // 2. Synchronized 3D Word Flips
-    masterTl.call(() => flipToWord(1), [], 0.6); // 25% -> Design,
-    masterTl.call(() => flipToWord(2), [], 1.2); // 50% -> Build,
-    masterTl.call(() => flipToWord(3), [], 1.8); // 75% -> Automate.
+    // 2. Synchronized 3D Word Flips:
+    // Initial is "Plan," (at 0s). Then Design -> Build -> Automate.
+    masterTl.call(() => flipToWord(1), [], 0.6); // -> Design,
+    masterTl.call(() => flipToWord(2), [], 1.2); // -> Build,
+    masterTl.call(() => flipToWord(3), [], 1.8); // -> Automate.
 
     // 3. Pause at 100%
-    masterTl.to({}, { duration: 0.3 });
+    masterTl.to({}, { duration: 0.25 });
 
-    // 4. GSAP Opening Animation
+    // 4. Trigger Hero entrance animation
     masterTl.add(() => {
-      // Trigger Hero entrance animation
       window.dispatchEvent(new CustomEvent("preloader-opening"));
     });
 
@@ -153,22 +166,22 @@ export default function Preloader() {
     masterTl.to(
       centerTextRef.current,
       {
-        y: -40,
+        y: -35,
         opacity: 0,
-        scale: 0.95,
-        duration: 0.5,
+        scale: 0.96,
+        duration: 0.45,
         ease: "power3.in",
       },
-      "+=0.05"
+      "+=0.04"
     );
 
     // Fade bottom-right counter
     masterTl.to(
       cornerLoaderRef.current,
       {
-        y: 20,
+        y: 16,
         opacity: 0,
-        duration: 0.4,
+        duration: 0.35,
         ease: "power2.in",
       },
       "<"
@@ -179,23 +192,23 @@ export default function Preloader() {
       topPanelRef.current,
       {
         yPercent: -100,
-        duration: 1.1,
+        duration: 1.05,
         ease: "power4.inOut",
       },
-      "-=0.15"
+      "-=0.1"
     );
 
     masterTl.to(
       bottomPanelRef.current,
       {
         yPercent: 100,
-        duration: 1.1,
+        duration: 1.05,
         ease: "power4.inOut",
       },
       "<"
     );
 
-    // 5. Cleanup
+    // 5. Complete and cleanup
     masterTl.add(() => {
       if (lenis) {
         lenis.start();
@@ -214,7 +227,8 @@ export default function Preloader() {
       document.body.style.overflow = "";
       document.documentElement.style.overflow = "";
     };
-  }, [lenis]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (isComplete) return null;
 
@@ -222,51 +236,25 @@ export default function Preloader() {
     <div
       ref={containerRef}
       id="site-preloader"
-      className="fixed inset-0 z-[99999] pointer-events-auto select-none overflow-hidden"
+      className="fixed inset-0 z-[99999] pointer-events-auto select-none overflow-hidden bg-transparent"
       aria-label="Site Loading"
     >
-      {/* Top Split Shutter */}
+      {/* Top Split Shutter: Seamless solid background with no harsh seam shadows or cutoffs */}
       <div
         ref={topPanelRef}
-        className="absolute top-0 left-0 w-full h-[50.5vh] bg-[#030305] overflow-hidden will-change-transform shadow-[0_15px_50px_rgba(0,0,0,0.95)]"
+        className="absolute top-0 left-0 w-full h-[51%] bg-[#030305] overflow-hidden will-change-transform"
       >
-        {/* Subtle Grid Pattern (Top Half) */}
-        <div
-          className="absolute inset-0 opacity-[0.06] pointer-events-none"
-          style={{
-            backgroundImage: `linear-gradient(to right, rgba(255, 255, 255, 0.4) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.4) 1px, transparent 1px)`,
-            backgroundSize: "48px 48px",
-            backgroundPosition: "center bottom",
-            maskImage: "radial-gradient(ellipse 80% 80% at 50% 100%, #000 30%, transparent 90%)",
-            WebkitMaskImage: "radial-gradient(ellipse 80% 80% at 50% 100%, #000 30%, transparent 90%)",
-          }}
-        />
-
-        {/* Ambient Top Aurora Gradients */}
-        <div className="absolute -top-[20%] left-1/2 -translate-x-1/2 w-[850px] h-[450px] bg-gradient-to-b from-indigo-600/[0.12] via-purple-600/[0.07] to-transparent blur-[130px] rounded-full pointer-events-none" />
-        <div className="absolute bottom-0 left-[15%] w-[450px] h-[250px] bg-blue-600/[0.07] blur-[110px] rounded-full pointer-events-none" />
+        {/* Subtle Ambient Top Aurora Glow */}
+        <div className="absolute -top-[25%] left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-b from-indigo-600/[0.14] via-purple-600/[0.08] to-transparent blur-[140px] rounded-full pointer-events-none" />
       </div>
 
-      {/* Bottom Split Shutter */}
+      {/* Bottom Split Shutter: Seamless solid background perfectly meeting top panel */}
       <div
         ref={bottomPanelRef}
-        className="absolute bottom-0 left-0 w-full h-[50.5vh] bg-[#030305] overflow-hidden will-change-transform shadow-[0_-15px_50px_rgba(0,0,0,0.95)]"
+        className="absolute bottom-0 left-0 w-full h-[51%] bg-[#030305] overflow-hidden will-change-transform"
       >
-        {/* Subtle Grid Pattern (Bottom Half) */}
-        <div
-          className="absolute inset-0 opacity-[0.06] pointer-events-none"
-          style={{
-            backgroundImage: `linear-gradient(to right, rgba(255, 255, 255, 0.4) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.4) 1px, transparent 1px)`,
-            backgroundSize: "48px 48px",
-            backgroundPosition: "center top",
-            maskImage: "radial-gradient(ellipse 80% 80% at 50% 0%, #000 30%, transparent 90%)",
-            WebkitMaskImage: "radial-gradient(ellipse 80% 80% at 50% 0%, #000 30%, transparent 90%)",
-          }}
-        />
-
-        {/* Ambient Bottom Warm Gradients */}
-        <div className="absolute -bottom-[20%] left-1/2 -translate-x-1/2 w-[850px] h-[450px] bg-gradient-to-t from-[#ff6a00]/[0.09] via-purple-600/[0.06] to-transparent blur-[130px] rounded-full pointer-events-none" />
-        <div className="absolute top-0 right-[15%] w-[450px] h-[250px] bg-[#ff7520]/[0.07] blur-[110px] rounded-full pointer-events-none" />
+        {/* Subtle Ambient Bottom Glow */}
+        <div className="absolute -bottom-[25%] left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-t from-[#ff6a00]/[0.10] via-purple-600/[0.06] to-transparent blur-[140px] rounded-full pointer-events-none" />
       </div>
 
       {/* ========================================================================= */}
@@ -278,7 +266,7 @@ export default function Preloader() {
       >
         {/* Dynamic Ambient Glow behind active word */}
         <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[260px] rounded-full pointer-events-none transition-all duration-700 blur-[90px] opacity-35"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] h-[250px] rounded-full pointer-events-none transition-all duration-700 blur-[85px] opacity-35"
           style={{
             background: FLIP_WORDS[wordIndex].glow,
           }}
