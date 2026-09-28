@@ -246,7 +246,7 @@ export default function AboutPage() {
 
       <main className="relative z-10 pt-2 sm:pt-1 pb-24 overflow-hidden">
         {/* ─────────────────── FOUNDERS SHOWCASE ─────────────────── */}
-        <section className="py-24 sm:py-32 relative">
+        <section className="pt-24 sm:pt-32 pb-14 sm:pb-18 relative">
           {/* Subtle background glow */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,rgba(249,115,22,0.04),transparent_100%)] pointer-events-none" />
 
@@ -307,26 +307,6 @@ export default function AboutPage() {
                       </p>
                     </div>
                   ))}
-                </div>
-
-                <div className="flex items-center gap-4">
-                  <Link href="/team">
-                    <Button
-                      size="lg"
-                      className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-400 hover:to-amber-400 text-black font-semibold rounded-full px-8 gap-2 shadow-[0_0_20px_rgba(249,115,22,0.35)] transition-all cursor-pointer"
-                    >
-                      Meet Our Full Team <ArrowRight className="w-4 h-4" />
-                    </Button>
-                  </Link>
-                  <Link href="/services">
-                    <Button
-                      variant="outline"
-                      size="lg"
-                      className="border-white/10 hover:border-white/20 bg-zinc-900/60 hover:bg-zinc-800 text-zinc-300 hover:text-white rounded-full px-7 transition-all cursor-pointer"
-                    >
-                      Explore Capabilities
-                    </Button>
-                  </Link>
                 </div>
               </motion.div>
 
@@ -560,7 +540,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        
+
 
         {/* ─────────────────── THE STORY / TIMELINE ─────────────────── */}
         <section className="py-24 sm:py-32 container mx-auto px-4 sm:px-6 relative">
