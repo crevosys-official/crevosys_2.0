@@ -47,43 +47,6 @@ export const CREVOSYS_MEMBERS: TeamMember[] = [
 
 export const DEFAULT_MEMBERS: TeamMember[] = CREVOSYS_MEMBERS;
 
-export const DEMO_MEMBERS: TeamMember[] = [
-  {
-    id: 1,
-    name: "VALERIA VANCE",
-    role: "MERN Stack Developer & UI/UX Designer",
-    education: "Metropolitan University, Sylhet",
-    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&auto=format&fit=crop&q=80",
-  },
-  {
-    id: 2,
-    name: "MAYA LINDSAY",
-    role: "Frontend Architect & Creative Technologist",
-    education: "Metropolitan University, Sylhet",
-    image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&auto=format&fit=crop&q=80",
-  },
-  {
-    id: 3,
-    name: "ZARA ADEBAYO",
-    role: "Full Stack Engineer & Cloud Architect",
-    education: "Metropolitan University, Sylhet",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&auto=format&fit=crop&q=80",
-  },
-  {
-    id: 4,
-    name: "JESSICA COULTER",
-    role: "Product Designer & Design Systems Lead",
-    education: "Metropolitan University, Sylhet",
-    image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=600&auto=format&fit=crop&q=80",
-  },
-  {
-    id: 5,
-    name: "CHLOE MOREAU",
-    role: "Backend Developer & API Specialist",
-    education: "Metropolitan University, Sylhet",
-    image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&auto=format&fit=crop&q=80",
-  },
-];
 
 export default function TeamSquadSection({
   title = "THE SQUAD",
