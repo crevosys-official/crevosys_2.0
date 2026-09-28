@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Anton&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -32,6 +33,7 @@
 :root {
   --font-primary: "Inter Tight", sans-serif;
   --font-secondary: "Bebas Neue", sans-serif;
+  --font-anton: "Anton", sans-serif;
   --font-heading: "HeadingNow", sans-serif;
   --font-heading2: "HeadingNow2", sans-serif;
   --font-heading3: "HeadingNow3", sans-serif;
@@ -74,6 +76,7 @@
   --color-foreground: var(--foreground);
   --font-primary: var(--font-primary);
   --font-secondary: var(--font-secondary);
+  --font-anton: var(--font-anton);
   --font-heading: var(--font-heading);
   --font-heading2: var(--font-heading2);
   --font-heading3: var(--font-heading3);

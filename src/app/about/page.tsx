@@ -5,6 +5,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Image from "next/image";
 import Link from "next/link";
+import TeamSquadSection, { CREVOSYS_MEMBERS } from "@/components/sections/TeamSquadSection";
 import { motion, useScroll, useTransform } from "framer-motion";
 import {
   Star,
@@ -412,6 +413,11 @@ export default function AboutPage() {
               </motion.div>
             ))}
           </motion.div>
+        </section>
+
+        {/* ─────────────────── THE SQUAD / TEAM SECTION ─────────────────── */}
+        <section className=" relative w-full overflow-hidden">
+          <TeamSquadSection />
         </section>
 
         {/* ─────────────────── MISSION & VISION ─────────────────── */}
