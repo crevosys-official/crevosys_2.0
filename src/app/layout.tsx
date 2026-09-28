@@ -3,6 +3,7 @@ import "./globals.css";
 import { ReactLenis } from "@/lib/lenis";
 import { Toaster } from "@/components/ui/sonner";
 import Preloader from "@/components/ui/Preloader";
+import ScrollToTop from "@/components/layout/ScrollToTop";
 
 export const metadata: Metadata = {
   title: "Home | CrevoSys",
@@ -20,6 +21,7 @@ export default function RootLayout({
         <body className={` antialiased`}>
           <Preloader />
           {children}
+          <ScrollToTop />
           <Toaster />
         </body>
       </ReactLenis>

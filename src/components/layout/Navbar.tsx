@@ -13,7 +13,6 @@ const NAV_LINKS = [
   { title: "Services", href: "/services" },
   { title: "Contact", href: "/contact" },
   { title: "Works", href: "/works" },
-  { title: "Team", href: "/team" },
 ];
 
 // SVG Bezier Morph Paths (Normalized for clipPathUnits="objectBoundingBox")

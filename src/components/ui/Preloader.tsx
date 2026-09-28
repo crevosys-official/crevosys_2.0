@@ -3,6 +3,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useLenis } from "@/lib/lenis";
+import { usePathname } from "next/navigation";
+
+// In-memory flag ensuring the preloader only runs once per page enter/reload session
+let hasPlayedPreloader = false;
 
 const FLIP_WORDS = [
   {
@@ -28,9 +32,10 @@ const FLIP_WORDS = [
 ];
 
 export default function Preloader() {
+  const pathname = usePathname();
   const [percent, setPercent] = useState(0);
   const [wordIndex, setWordIndex] = useState(0);
-  const [isComplete, setIsComplete] = useState(false);
+  const [isComplete, setIsComplete] = useState(pathname !== "/" || hasPlayedPreloader);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const topPanelRef = useRef<HTMLDivElement>(null);
@@ -45,15 +50,29 @@ export default function Preloader() {
 
   // Dedicated Lenis scroll lock that doesn't restart the GSAP timeline
   useEffect(() => {
-    if (lenis && !isComplete) {
+    if (lenis && !isComplete && pathname === "/" && !hasPlayedPreloader) {
       lenis.stop();
     }
-  }, [lenis, isComplete]);
+  }, [lenis, isComplete, pathname]);
 
   useEffect(() => {
-    // Prevent duplicate animation in React StrictMode or upon Lenis state changes
+    // If not on home page ("/") or preloader has already played, skip immediately
+    if (pathname !== "/" || hasPlayedPreloader) {
+      setIsComplete(true);
+      if (lenis) {
+        lenis.start();
+      }
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+      window.dispatchEvent(new CustomEvent("preloader-opening"));
+      window.dispatchEvent(new CustomEvent("preloader-done"));
+      return;
+    }
+
+    // Prevent duplicate animation in React StrictMode
     if (initializedRef.current) return;
     initializedRef.current = true;
+    hasPlayedPreloader = true;
 
     // Lock scroll during preloading
     if (lenis) {
@@ -230,7 +249,7 @@ export default function Preloader() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (isComplete) return null;
+  if (isComplete || pathname !== "/") return null;
 
   return (
     <div
