@@ -258,4 +258,114 @@ body::-webkit-scrollbar,
   animation: typing-pulse 1s infinite ease-in-out;
 }
 
+/* ==========================================================================
+   CrevoSys Bespoke Luxury Toast System (Sonner)
+   ========================================================================== */
+[data-sonner-toaster] {
+  --normal-bg: rgba(12, 12, 18, 0.95);
+  --normal-border: rgba(255, 255, 255, 0.1);
+  --normal-text: #ffffff;
+  font-family: var(--font-primary), sans-serif;
+  z-index: 999999 !important;
+}
+
+[data-sonner-toast] {
+  background: rgba(12, 12, 18, 0.94) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.8), 0 0 25px -5px rgba(255, 106, 0, 0.08) !important;
+}
+
+[data-sonner-toast] [data-title] {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  font-size: 13.5px !important;
+  letter-spacing: -0.01em !important;
+}
+
+[data-sonner-toast] [data-description] {
+  color: rgba(244, 244, 245, 0.7) !important;
+  font-size: 12px !important;
+  line-height: 1.5 !important;
+}
+
+/* Success Toast: Emerald Luxury Glow */
+[data-sonner-toast][data-type="success"] {
+  background: linear-gradient(135deg, rgba(5, 20, 14, 0.96) 0%, rgba(8, 28, 20, 0.94) 100%) !important;
+  border-color: rgba(16, 185, 129, 0.35) !important;
+  box-shadow: 0 16px 45px -10px rgba(0, 0, 0, 0.8), 0 0 25px -3px rgba(16, 185, 129, 0.25) !important;
+}
+
+[data-sonner-toast][data-type="success"] [data-title] {
+  color: #ffffff !important;
+}
+
+[data-sonner-toast][data-type="success"] [data-description] {
+  color: #a7f3d0 !important;
+}
+
+/* Error Toast: Rose Luxury Glow */
+[data-sonner-toast][data-type="error"] {
+  background: linear-gradient(135deg, rgba(26, 8, 11, 0.96) 0%, rgba(35, 11, 16, 0.94) 100%) !important;
+  border-color: rgba(244, 63, 94, 0.35) !important;
+  box-shadow: 0 16px 45px -10px rgba(0, 0, 0, 0.8), 0 0 25px -3px rgba(244, 63, 94, 0.25) !important;
+}
+
+[data-sonner-toast][data-type="error"] [data-title] {
+  color: #ffffff !important;
+}
+
+[data-sonner-toast][data-type="error"] [data-description] {
+  color: #fecdd3 !important;
+}
+
+/* Warning Toast: Amber Glow */
+[data-sonner-toast][data-type="warning"] {
+  background: linear-gradient(135deg, rgba(25, 15, 6, 0.96) 0%, rgba(36, 21, 8, 0.94) 100%) !important;
+  border-color: rgba(245, 158, 11, 0.35) !important;
+  box-shadow: 0 16px 45px -10px rgba(0, 0, 0, 0.8), 0 0 25px -3px rgba(245, 158, 11, 0.25) !important;
+}
+
+[data-sonner-toast][data-type="warning"] [data-title] {
+  color: #ffffff !important;
+}
+
+[data-sonner-toast][data-type="warning"] [data-description] {
+  color: #fef08a !important;
+}
+
+/* Info Toast: Cyan/Sky Blue Glow */
+[data-sonner-toast][data-type="info"] {
+  background: linear-gradient(135deg, rgba(5, 17, 30, 0.96) 0%, rgba(8, 25, 45, 0.94) 100%) !important;
+  border-color: rgba(14, 165, 233, 0.35) !important;
+  box-shadow: 0 16px 45px -10px rgba(0, 0, 0, 0.8), 0 0 25px -3px rgba(14, 165, 233, 0.25) !important;
+}
+
+[data-sonner-toast][data-type="info"] [data-title] {
+  color: #ffffff !important;
+}
+
+[data-sonner-toast][data-type="info"] [data-description] {
+  color: #bae6fd !important;
+}
+
+/* Close Button Styling */
+[data-sonner-toast] [data-close-button] {
+  background: rgba(25, 25, 35, 0.9) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #a1a1aa !important;
+  border-radius: 9999px !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-sonner-toast] [data-close-button]:hover {
+  background: rgba(40, 40, 55, 1) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+
 
