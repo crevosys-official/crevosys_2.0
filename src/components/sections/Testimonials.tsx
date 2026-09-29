@@ -360,13 +360,13 @@ const Testimonials: React.FC<TestimonialsProps> = ({
           <div className="flex justify-center pb-8">
             {!showAll ? (
               <button
-                className="mt-4 px-6 py-2 bg-zinc-700 text-white rounded-full hover:bg-zinc-600 transition cursor-pointer"
+                className="mt-4 px-6 py-2 bg-zinc-800 text-white rounded-full hover:bg-zinc-600 transition cursor-pointer"
                 onClick={() => setShowAll(true)}>
                 More
               </button>
             ) : (
               <button
-                className="mt-4 px-6 py-2 bg-zinc-700 text-white rounded-full hover:bg-zinc-600 transition flex items-center gap-2 cursor-pointer"
+                className="mt-4 px-6 py-2 bg-zinc-800 text-white rounded-full hover:bg-zinc-600 transition flex items-center gap-2 cursor-pointer"
                 onClick={() => setShowAll(false)}>
                 <ArrowUp />
                 Show Less

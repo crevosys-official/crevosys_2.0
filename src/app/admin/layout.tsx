@@ -38,7 +38,7 @@ export default function AdminLayout({
 
         {/* Main Workspace Body */}
         <div className="flex-1 lg:pl-72 flex flex-col min-h-screen relative z-10 pt-16 lg:pt-0">
-          <main className="flex-1 p-5 sm:p-8 md:p-10 max-w-7xl w-full mx-auto">
+          <main className="flex-1 px-4 sm:px-6 lg:px-8 py-6 sm:py-8 max-w-[1600px] w-full mx-auto">
             {children}
           </main>
         </div>
