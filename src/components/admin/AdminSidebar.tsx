@@ -18,6 +18,7 @@ import {
   ArrowUpRight,
   Menu,
   X,
+  Lock,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -37,6 +38,16 @@ export default function AdminSidebar() {
   const sidebarRef = useRef<HTMLDivElement>(null);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState("Dashboard");
+  const [isLocking, setIsLocking] = useState(false);
+
+  const handleLock = async () => {
+    setIsLocking(true);
+    try {
+      await fetch("/api/admin/auth/logout", { method: "POST" });
+    } finally {
+      window.location.reload();
+    }
+  };
 
   useGSAP(
     () => {
@@ -231,14 +242,27 @@ export default function AdminSidebar() {
               </div>
             </div>
 
-            {/* Back to Live Site Button */}
-            <Link
-              href="/"
-              title="View Public Site"
-              className="p-2 rounded-lg text-zinc-400 hover:text-white hover:bg-white/[0.06] transition-colors border border-transparent hover:border-white/10"
-            >
-              <ArrowUpRight size={16} />
-            </Link>
+            <div className="flex items-center gap-1">
+              {/* Lock Admin Screen Button */}
+              <button
+                type="button"
+                onClick={handleLock}
+                disabled={isLocking}
+                title="Lock Admin Screen"
+                className="p-2 rounded-lg text-zinc-400 hover:text-red-400 hover:bg-red-500/10 transition-colors border border-transparent hover:border-red-500/20 cursor-pointer disabled:opacity-50"
+              >
+                <Lock size={15} />
+              </button>
+
+              {/* Back to Live Site Button */}
+              <Link
+                href="/"
+                title="View Public Site"
+                className="p-2 rounded-lg text-zinc-400 hover:text-white hover:bg-white/[0.06] transition-colors border border-transparent hover:border-white/10"
+              >
+                <ArrowUpRight size={16} />
+              </Link>
+            </div>
           </div>
         </div>
       </aside>
