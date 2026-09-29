@@ -142,7 +142,7 @@ const ContactLayout = () => {
                 value={form.name}
                 onChange={handleChange}
                 placeholder="John Doe"
-                className="border border-zinc-700 p-3 w-full rounded-xl bg-zinc-900/50 focus:border-orange-400 outline-none transition-colors"
+                className="border border-zinc-800 p-3 w-full rounded-xl bg-zinc-900/50 focus:border-orange-400 outline-none transition-colors"
                 required
               />
             </div>
@@ -154,7 +154,7 @@ const ContactLayout = () => {
                 value={form.email}
                 onChange={handleChange}
                 placeholder="john@example.com"
-                className="border border-zinc-700 p-3 w-full rounded-xl bg-zinc-900/50 focus:border-orange-400 outline-none transition-colors"
+                className="border border-zinc-800 p-3 w-full rounded-xl bg-zinc-900/50 focus:border-orange-400 outline-none transition-colors"
                 required
               />
             </div>
@@ -168,7 +168,7 @@ const ContactLayout = () => {
                 value={form.phone}
                 onChange={handleChange}
                 placeholder="+1 234 567 890"
-                className="border border-zinc-700 p-3 w-full rounded-xl bg-zinc-900/50 focus:border-orange-400 outline-none transition-colors"
+                className="border border-zinc-800 p-3 w-full rounded-xl bg-zinc-900/50 focus:border-orange-400 outline-none transition-colors"
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -177,7 +177,7 @@ const ContactLayout = () => {
                 name="source"
                 value={form.source}
                 onChange={handleChange}
-                className="border border-zinc-700 p-3 w-full rounded-xl bg-zinc-900/50 focus:border-orange-400 outline-none transition-colors appearance-none"
+                className="border border-zinc-800 p-3 w-full rounded-xl bg-zinc-900/50 focus:border-orange-400 outline-none transition-colors appearance-none"
                 required>
                 <option value="" disabled className="bg-zinc-900">
                   Select an option
@@ -197,7 +197,7 @@ const ContactLayout = () => {
               value={form.message}
               onChange={handleChange}
               placeholder="Tell us about your project..."
-              className="border border-zinc-700 w-full p-3 bg-zinc-900/50 rounded-xl resize-none focus:border-orange-400 outline-none transition-colors"
+              className="border border-zinc-800 w-full p-3 bg-zinc-900/50 rounded-xl resize-none focus:border-orange-400 outline-none transition-colors"
               rows={4}
               required
             />
