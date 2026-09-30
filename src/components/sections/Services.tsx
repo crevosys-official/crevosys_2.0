@@ -13,34 +13,43 @@ if (typeof window !== "undefined") {
 }
 
 // Define the type for a service card
-type ServiceCard = {
+export type ServiceCard = {
+  _id?: string;
+  id?: number | string;
   icon: string;
   title: string;
+  slug?: string;
   description: string;
+  order?: number;
+  isActive?: boolean;
 };
 
 const DEFAULT_SERVICES: ServiceCard[] = [
   {
     icon: "/card_icons/Icon.png",
     title: "Development",
+    slug: "development",
     description:
       "Development and building amazing digital products with best user experiences strategy.",
   },
   {
     icon: "/card_icons/Marketing.png",
     title: "Marketing",
+    slug: "marketing",
     description:
       "Marketing services starts and ends within a strategy builds wireframe & solid prototyping posts design.",
   },
   {
     icon: "/card_icons/Design.png",
     title: "Design",
+    slug: "design",
     description:
       "We design professional looking yet simple Logo are search engine and user friendly.",
   },
   {
     icon: "/card_icons/automation.png",
     title: "Automation",
+    slug: "automation",
     description:
       "Streamline and optimize your business processes with our cutting-edge AI automation solutions.",
   },
@@ -52,15 +61,18 @@ const Services = () => {
   const lightRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
-    fetch("services.json")
+    fetch("/api/services?active=true")
       .then((res) => res.json())
-      .then((data: ServiceCard[]) => {
-        if (Array.isArray(data) && data.length > 0) {
-          setService(data);
+      .then((resData) => {
+        const items = Array.isArray(resData) ? resData : resData?.data;
+        if (Array.isArray(items) && items.length > 0) {
+          setService(items);
           ScrollTrigger.refresh();
         }
       })
-      .catch((err) => console.error("Failed to fetch services:", err));
+      .catch((err) => {
+        console.error("Failed to fetch services from MongoDB, using defaults:", err);
+      });
   }, []);
 
   useGSAP(
@@ -161,34 +173,48 @@ const Services = () => {
 
         <div className="container mx-auto grid md:grid-cols-2 xl:grid-cols-4 xl:gap-5 md:gap-7 gap-5 px-4 md:px-0 mb-10 md:mb-0">
           {service.map((serviceCard, index) => {
-            const slug = serviceCard.title.toLowerCase().replace(/\s+/g, "-");
+            const slug =
+              serviceCard.slug ||
+              serviceCard.title.toLowerCase().replace(/\s+/g, "-");
+            const variants: ("blue" | "pink" | "yellow" | "default")[] = [
+              "blue",
+              "pink",
+              "yellow",
+              "default",
+            ];
+            const variant = variants[index % variants.length];
+
             return (
-              <div key={index} className="service-card-item">
+              <div
+                key={serviceCard._id || serviceCard.id || index}
+                className="service-card-item">
                 <Link href={`/services/${slug}`}>
                   <PixelCard
-                    variant="blue"
+                    variant={variant}
                     className="my-1 md:my-2 xl:my-10 w-full cursor-pointer hover:border-zinc-200/20">
-                    <div className="absolute inset-0 justify-between p-10 bg-zinc-800/20 flex flex-col gap-5">
+                    <div className="absolute inset-0 justify-between p-8 xl:p-10 bg-zinc-800/20 flex flex-col gap-5">
                       <div>
-                        <Image
-                          className="md:w-32 md:h-32 w-24 h-24"
-                          height={100}
-                          width={100}
-                          src={serviceCard.icon}
-                          alt="serviceCardImage"
-                          loading="lazy"
-                        />
-                        <h1 className="text-3xl text-white mt-2">
+                        <div className="relative md:w-32 md:h-32 w-24 h-24 mb-2 flex items-center justify-start">
+                          <Image
+                            className="object-contain filter drop-shadow-md"
+                            fill
+                            sizes="(max-width: 768px) 96px, 128px"
+                            src={serviceCard.icon || "/card_icons/Icon.png"}
+                            alt={serviceCard.title}
+                            loading="lazy"
+                          />
+                        </div>
+                        <h2 className="text-2xl md:text-3xl text-white font-semibold mt-2 line-clamp-1">
                           {serviceCard.title}
-                        </h1>
-                        <p className="text-gray-500 text-md mt-1">
+                        </h2>
+                        <p className="text-gray-400 text-sm md:text-md mt-2 line-clamp-3 leading-relaxed">
                           {serviceCard.description}
                         </p>
                       </div>
-                      <p className="flex gap-3 text-white hover:text-blue-500 items-center group-hover:text-white">
+                      <p className="flex gap-3 text-white hover:text-blue-500 items-center group-hover:text-white text-sm font-medium mt-auto pt-2">
                         Service Plan
                         <span className="group-hover:text-orange-500 group-hover:animate-bounce">
-                          <MoveRight />
+                          <MoveRight size={18} />
                         </span>
                       </p>
                     </div>
