@@ -231,11 +231,6 @@ export default function AdminSidebar() {
           {/* Admin User Card */}
           <div className="flex items-center justify-between pt-0.5">
             <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#ff6a00] to-[#9333ea] p-[1px] flex items-center justify-center shadow-[0_2px_10px_rgba(255,106,0,0.25)]">
-                <div className="w-full h-full rounded-[11px] bg-[#0d0d12] flex items-center justify-center text-white text-xs font-bold">
-                  CS
-                </div>
-              </div>
               <div className="flex flex-col">
                 <span className="text-xs font-semibold text-white tracking-tight">
                   Crevosys Admin
