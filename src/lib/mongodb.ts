@@ -15,7 +15,7 @@ declare global {
   var mongooseCache: MongooseCache | undefined;
 }
 
-let cached: MongooseCache = global.mongooseCache || { conn: null, promise: null };
+const cached: MongooseCache = global.mongooseCache || { conn: null, promise: null };
 
 if (!global.mongooseCache) {
   global.mongooseCache = cached;
@@ -23,12 +23,19 @@ if (!global.mongooseCache) {
 
 export async function connectDB(): Promise<typeof mongoose> {
   if (cached.conn) {
-    return cached.conn;
+    if (cached.conn.connection.name !== "crevosys") {
+      await mongoose.disconnect();
+      cached.conn = null;
+      cached.promise = null;
+    } else {
+      return cached.conn;
+    }
   }
 
   if (!cached.promise) {
     const opts = {
       bufferCommands: false,
+      dbName: "crevosys",
     };
 
     cached.promise = mongoose

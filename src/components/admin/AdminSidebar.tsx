@@ -24,8 +24,7 @@ import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
-  { label: "Workspace", href: "/admin#workspace", icon: Briefcase },
-  { label: "Services", href: "/admin#services", icon: Sparkles },
+  { label: "Services", href: "/admin/services", icon: Sparkles },
   { label: "Projects", href: "/admin#projects", icon: FolderKanban },
   { label: "Tools & skills", href: "/admin#tools-skills", icon: Wrench },
   { label: "Feedbacks", href: "/admin#feedbacks", icon: MessageSquareQuote },
@@ -37,7 +36,7 @@ export default function AdminSidebar() {
   const pathname = usePathname();
   const sidebarRef = useRef<HTMLDivElement>(null);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState("Dashboard");
+  const [selectedItem, setSelectedItem] = useState("");
   const [isLocking, setIsLocking] = useState(false);
 
   const handleLock = async () => {
@@ -170,7 +169,12 @@ export default function AdminSidebar() {
 
           {NAV_ITEMS.map((item) => {
             const Icon = item.icon;
-            const isActive = selectedItem === item.label;
+            const isActive =
+              item.href === "/admin"
+                ? pathname === "/admin"
+                : pathname === item.href ||
+                  (item.href.startsWith("/admin/") && pathname.startsWith(item.href)) ||
+                  selectedItem === item.label;
 
             return (
               <Link
