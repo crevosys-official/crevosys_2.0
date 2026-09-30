@@ -92,7 +92,7 @@ const ProjectModal: React.FC<ModalProps> = ({ project, onClose }) => {
           <div className="mb-8">
             <h3 className="text-white font-heading tracking-wide text-lg mb-3">Technologies</h3>
             <div className="flex flex-wrap gap-2">
-              {project.tech.map((t, i) => (
+              {(project.tech || []).map((t, i) => (
                 <span key={i} className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs tracking-wide text-zinc-300">
                   {t}
                 </span>

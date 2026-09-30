@@ -25,10 +25,10 @@ import { cn } from "@/lib/utils";
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { label: "Services", href: "/admin/services", icon: Sparkles },
-  { label: "Projects", href: "/admin#projects", icon: FolderKanban },
-  { label: "Tools & skills", href: "/admin#tools-skills", icon: Wrench },
-  { label: "Feedbacks", href: "/admin#feedbacks", icon: MessageSquareQuote },
-  { label: "Teams", href: "/admin#teams", icon: Users },
+  { label: "Projects", href: "/admin/projects", icon: FolderKanban },
+  { label: "Tools & skills", href: "/admin/tools", icon: Wrench },
+  { label: "Feedbacks", href: "/admin/feedbacks", icon: MessageSquareQuote },
+  { label: "Teams", href: "/admin/teams", icon: Users },
   { label: "About Stats", href: "/admin#about-stats", icon: BarChart3 },
 ];
 
@@ -231,11 +231,6 @@ export default function AdminSidebar() {
           {/* Admin User Card */}
           <div className="flex items-center justify-between pt-0.5">
             <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#ff6a00] to-[#9333ea] p-[1px] flex items-center justify-center shadow-[0_2px_10px_rgba(255,106,0,0.25)]">
-                <div className="w-full h-full rounded-[11px] bg-[#0d0d12] flex items-center justify-center text-white text-xs font-bold">
-                  CS
-                </div>
-              </div>
               <div className="flex flex-col">
                 <span className="text-xs font-semibold text-white tracking-tight">
                   Crevosys Admin

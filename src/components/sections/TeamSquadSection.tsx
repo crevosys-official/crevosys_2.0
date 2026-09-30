@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useLayoutEffect, useEffect, useCallback } from "react";
+import React, { useRef, useLayoutEffect, useEffect, useState, useCallback } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 
@@ -52,7 +52,28 @@ export default function TeamSquadSection({
   title = "THE SQUAD",
   members = DEFAULT_MEMBERS,
 }: TeamSquadSectionProps) {
+  const [squad, setSquad] = useState<TeamMember[]>(members);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    fetch("/api/teams?active=true&leadership=true")
+      .then((res) => res.json())
+      .then((resData) => {
+        const data = Array.isArray(resData) ? resData : resData?.data;
+        if (Array.isArray(data) && data.length > 0) {
+          setSquad(
+            data.map((m: any) => ({
+              id: m._id || m.id,
+              name: m.name,
+              role: m.role || `${m.designation} • ${m.position}`,
+              education: m.education || "Metropolitan University, Sylhet",
+              image: m.picture,
+            }))
+          );
+        }
+      })
+      .catch((err) => console.error("Failed to load squad from MongoDB:", err));
+  }, []);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const slideRefs = useRef<Map<string | number, HTMLDivElement>>(new Map());
   const currentIndexRef = useRef<number | "default">("default");
@@ -80,7 +101,7 @@ export default function TeamSquadSection({
 
     const prevIndex = currentIndexRef.current;
     const { defaultSize, expandedSize } = getCardSizes();
-    const staggerOrigin = getStaggerOrigin(newIndex, members.length);
+    const staggerOrigin = getStaggerOrigin(newIndex, squad.length);
 
     // 1. Animate Out Previous Text immediately
     const prevSlideEl = slideRefs.current.get(prevIndex);
@@ -309,7 +330,7 @@ export default function TeamSquadSection({
       }
 
       // Hide all member slides initially
-      members.forEach((_, idx) => {
+      squad.forEach((_, idx) => {
         const slide = slideRefs.current.get(idx);
         if (slide) {
           gsap.set(slide, { visibility: "hidden" });
@@ -347,7 +368,7 @@ export default function TeamSquadSection({
     }, containerRef);
 
     return () => ctx.revert();
-  }, [members, getCardSizes]);
+  }, [squad, getCardSizes]);
 
   // Split string into 3D masked character boxes
   const renderSplitChars = (text: string) => {
@@ -382,7 +403,7 @@ export default function TeamSquadSection({
         onMouseLeave={resetDefault}
         className="relative z-10 mb-8 sm:mb-12 flex items-center justify-center gap-2.5 sm:gap-3.5 md:gap-4.5 px-4 py-2"
       >
-        {members.map((member, index) => (
+        {squad.map((member, index) => (
           <div
             key={member.id}
             ref={(el) => {
@@ -421,7 +442,7 @@ export default function TeamSquadSection({
         </div>
 
         {/* Dynamic Member Slides */}
-        {members.map((member, index) => (
+        {squad.map((member, index) => (
           <div
             key={member.id}
             ref={(el) => {

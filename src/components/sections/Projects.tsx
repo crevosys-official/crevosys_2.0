@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -15,8 +15,6 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const projects = projectsData as Project[];
-
 interface ProjectsProps {
   onCursorEnter?: () => void;
   onCursorLeave?: () => void;
@@ -24,7 +22,25 @@ interface ProjectsProps {
 
 const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [projects, setProjects] = useState<Project[]>(projectsData as Project[]);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+
+  useEffect(() => {
+    fetch("/api/projects?active=true")
+      .then((res) => res.json())
+      .then((resData) => {
+        const items = Array.isArray(resData) ? resData : resData?.data;
+        if (Array.isArray(items) && items.length > 0) {
+          setProjects(items);
+          setTimeout(() => {
+            ScrollTrigger.refresh();
+          }, 150);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to fetch projects from MongoDB, using defaults:", err);
+      });
+  }, []);
 
   // GSAP reveal for section header
   useGSAP(
@@ -93,7 +109,7 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
 
             return (
               <div
-                key={project.id}
+                key={project._id || project.id || index}
                 style={{
                   top: `${stickyTop}px`,
                   zIndex: index + 1,
@@ -147,7 +163,7 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
 
                     {/* Tech Badges */}
                     <div className="flex flex-wrap gap-2 pt-1">
-                      {project.tech.map((item, i) => (
+                      {(project.tech || []).map((item, i) => (
                         <span
                           key={i}
                           className="px-3 py-1 rounded-lg text-xs font-medium bg-white/10 border border-white/10 text-zinc-300 backdrop-blur-sm"

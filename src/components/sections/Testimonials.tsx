@@ -193,15 +193,18 @@ const Testimonials: React.FC<TestimonialsProps> = ({
   const bgImage2Ref = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
-    fetch("/feedback.json")
+    fetch("/api/feedbacks?active=true")
       .then((res) => res.json())
-      .then((data) => {
+      .then((resData) => {
+        const data = Array.isArray(resData) ? resData : resData?.data;
         if (Array.isArray(data) && data.length > 0) {
           setFeedback(data);
-          ScrollTrigger.refresh();
+          setTimeout(() => {
+            ScrollTrigger.refresh();
+          }, 150);
         }
       })
-      .catch((err) => console.error("Failed to load feedback:", err));
+      .catch((err) => console.error("Failed to load feedback from MongoDB, using defaults:", err));
   }, []);
 
   useGSAP(
