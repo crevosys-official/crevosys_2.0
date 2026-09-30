@@ -13,7 +13,6 @@ import UpcomingMeetingsSchedule from "@/components/admin/overview/UpcomingMeetin
 import ReliabilityGaugeCard from "@/components/admin/overview/ReliabilityGaugeCard";
 import AiAssistantCard from "@/components/admin/overview/AiAssistantCard";
 import SystemHealthAndActivity from "@/components/admin/overview/SystemHealthAndActivity";
-import ServicesManagement from "@/components/admin/overview/ServicesManagement";
 
 export default function AdminDashboardPage() {
   const pageRef = useRef<HTMLDivElement>(null);
@@ -88,9 +87,6 @@ export default function AdminDashboardPage() {
 
           {/* Top Performing Projects & Verified Feedback Table */}
           <FeedbackAndProductsTable />
-
-          {/* MongoDB Managed Services Catalog */}
-          <ServicesManagement />
 
           {/* Crash Analysis & Telemetry Log */}
           <div id="crash-analysis">

@@ -25,10 +25,10 @@ import { cn } from "@/lib/utils";
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { label: "Services", href: "/admin/services", icon: Sparkles },
-  { label: "Projects", href: "/admin#projects", icon: FolderKanban },
-  { label: "Tools & skills", href: "/admin#tools-skills", icon: Wrench },
-  { label: "Feedbacks", href: "/admin#feedbacks", icon: MessageSquareQuote },
-  { label: "Teams", href: "/admin#teams", icon: Users },
+  { label: "Projects", href: "/admin/projects", icon: FolderKanban },
+  { label: "Tools & skills", href: "/admin/tools", icon: Wrench },
+  { label: "Feedbacks", href: "/admin/feedbacks", icon: MessageSquareQuote },
+  { label: "Teams", href: "/admin/teams", icon: Users },
   { label: "About Stats", href: "/admin#about-stats", icon: BarChart3 },
 ];
 

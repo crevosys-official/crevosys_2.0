@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import gsap from "gsap";
@@ -90,6 +90,7 @@ const RIGHT_GLASS_CLIP_PATH =
 interface TechBadgeProps {
   item: IntegrationItem;
   index: number;
+  totalCount: number;
   isHovered: boolean;
   isSelected: boolean;
   onHover: (name: string | null) => void;
@@ -100,14 +101,16 @@ interface TechBadgeProps {
 function TechBadge({
   item,
   index,
+  totalCount,
   isHovered,
   isSelected,
   onHover,
   onSelect,
   innerRef,
 }: TechBadgeProps) {
-  // Initial position at rotation = 0
-  const initialBaseAngle = START_ANGLE + index * ANGLE_STEP;
+  // Initial position at rotation = 0 calculated dynamically from totalCount
+  const step = 360 / Math.max(totalCount, 1);
+  const initialBaseAngle = START_ANGLE + index * step;
   const initialTheta = normalizeAngle(initialBaseAngle);
   const initialFade = getAngleFade(initialTheta);
 
@@ -214,6 +217,7 @@ function CurvedGlassOverlay({
 }
 
 export default function Integrations() {
+  const [items, setItems] = useState<IntegrationItem[]>(INTEGRATION_ITEMS);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [selectedItem, setSelectedItem] = useState<IntegrationItem | null>(null);
   const [isPaused, setIsPaused] = useState(false);
@@ -224,6 +228,32 @@ export default function Integrations() {
   const contentRef = useRef<HTMLDivElement>(null);
   const mobileHeaderRef = useRef<HTMLDivElement>(null);
   const badgeRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const itemsRef = useRef<IntegrationItem[]>(INTEGRATION_ITEMS);
+
+  useEffect(() => {
+    itemsRef.current = items;
+  }, [items]);
+
+  useEffect(() => {
+    fetch("/api/tools?active=true")
+      .then((res) => res.json())
+      .then((resData) => {
+        const loaded = Array.isArray(resData) ? resData : resData?.data;
+        if (Array.isArray(loaded) && loaded.length > 0) {
+          const mapped: IntegrationItem[] = loaded.map((t: any) => ({
+            id: t._id || t.id,
+            name: t.name,
+            icon: t.icon,
+            category: t.category,
+            isWhite: t.isWhite,
+          }));
+          setItems(mapped);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to fetch tools from MongoDB, using defaults:", err);
+      });
+  }, []);
 
   const rotationRef = useRef(0);
   const speedRef = useRef({ value: 0 }); // Starts at 0 until scroll entrance finishes
@@ -371,12 +401,16 @@ export default function Integrations() {
           dashedLineRef.current.style.strokeDashoffset = `${-rot * 3.62}px`;
         }
 
-        // Update each badge along the circular orbit
-        for (let i = 0; i < TOTAL_ITEMS; i++) {
+        // Update each badge along the circular orbit dynamically
+        const currentItems = itemsRef.current;
+        const total = currentItems.length || TOTAL_ITEMS;
+        const angleStep = 360 / Math.max(total, 1);
+
+        for (let i = 0; i < total; i++) {
           const el = badgeRefs.current[i];
           if (!el) continue;
 
-          const baseAngle = START_ANGLE + i * ANGLE_STEP;
+          const baseAngle = START_ANGLE + i * angleStep;
           const theta = normalizeAngle(baseAngle - rot);
 
           // If underneath the fold / horizon, keep completely hidden
@@ -581,11 +615,12 @@ export default function Integrations() {
 
           {/* 2. Interactive Orbiting Tech Badges */}
           <div className="absolute inset-0 pointer-events-none z-20">
-            {INTEGRATION_ITEMS.map((item, index) => (
+            {items.map((item, index) => (
               <TechBadge
                 key={item.id}
                 item={item}
                 index={index}
+                totalCount={items.length}
                 innerRef={(el) => {
                   badgeRefs.current[index] = el;
                 }}
