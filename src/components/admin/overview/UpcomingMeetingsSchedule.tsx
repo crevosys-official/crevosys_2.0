@@ -43,8 +43,8 @@ const MEETINGS_DATA: ScheduleMeeting[] = [
     attendees: [
       { name: "MD Abu Sahid", avatar: "/Team/sahid_withoutGlow.webp" },
       { name: "Joyant Sheikhar", avatar: "/Team/joyant_withoutGlow.webp" },
-      { name: "Mahbuba Khanom", avatar: "/Team/mumu_withoutGlow.webp" },
       { name: "Abid Shahriar", avatar: "/Team/abid_withoutGlow.webp" },
+      { name: "Nahid Jenifa", avatar: "/Team/jenifa_withoutGlow.webp" },
     ],
     status: "scheduled",
   },
@@ -56,7 +56,7 @@ const MEETINGS_DATA: ScheduleMeeting[] = [
     platform: "Zoom",
     meetUrl: "https://zoom.us/j/9823482394",
     attendees: [
-      { name: "Mahbuba Khanom", avatar: "/Team/mumu_withoutGlow.webp" },
+      { name: "Nahid Jenifa", avatar: "/Team/jenifa_withoutGlow.webp" },
       { name: "MD Abu Sahid", avatar: "/Team/sahid_withoutGlow.webp" },
     ],
     status: "scheduled",

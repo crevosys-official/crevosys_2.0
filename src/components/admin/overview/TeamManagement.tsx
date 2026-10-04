@@ -32,7 +32,6 @@ import { TeamMemberItem } from "@/types/team";
 const PRESET_TEAM_PICTURES = [
   { name: "Sahid (CEO)", path: "/Team/sahid_withoutGlow.webp", role: "CEO" },
   { name: "Joyant (CTO)", path: "/Team/joyant_withoutGlow.webp", role: "CTO" },
-  { name: "Mumu (CBO)", path: "/Team/mumu_withoutGlow.webp", role: "CBO" },
   { name: "Abid (COO)", path: "/Team/abid_withoutGlow.webp", role: "COO" },
   { name: "Sumon (CMO)", path: "/Team/sumon_withoutGlow.webp", role: "CMO" },
   { name: "Jenifa (Frontend)", path: "/Team/jenifa_withoutGlow.webp", role: "Developer" },

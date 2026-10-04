@@ -110,7 +110,7 @@ const RUNNING_PROJECTS: RunningProject[] = [
     deadline: "Nov 12, 2026",
     daysRemaining: 44,
     tech: ["Next.js", "Framer Motion", "Tailwind CSS"],
-    team: ["Mahbuba Khanom Mumu", "Nahid Akter Jenifa"],
+    team: ["Nahid Akter Jenifa", "MD Abu Sahid"],
     budget: "$14,500",
   },
 ];
@@ -142,7 +142,7 @@ const INITIAL_PENDING_WORKS: PendingWorkItem[] = [
     title: "Figma High-Res Assets for Retina Displays",
     blockerReason: "Exporting 4K optimized SVG iconography with dark mode variants",
     priority: "medium",
-    assignee: "Mahbuba Khanom Mumu",
+    assignee: "Nahid Akter Jenifa",
     dateAdded: "Sep 29, 2026",
     resolved: false,
   },

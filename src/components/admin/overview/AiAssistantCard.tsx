@@ -26,7 +26,7 @@ export default function AiAssistantCard() {
       if (query.includes("revenue") || query.includes("profit") || query.includes("money")) {
         setResponse("Total Projects Revenue is $184,500 (+24.4% YoY) with $42,800 in active contract milestones.");
       } else if (query.includes("leave") || query.includes("team") || query.includes("who")) {
-        setResponse("4 engineers working right now, 1 in client meeting (Mumu), and Shamsul is on annual leave returning Oct 2.");
+        setResponse("4 engineers working right now, 1 in client meeting (Abid), and Shamsul is on annual leave returning Oct 2.");
       } else if (query.includes("crash") || query.includes("bug") || query.includes("health")) {
         setResponse("System health is optimal at 99.94% crash-free rate. 0 fatal crashes logged in the last 24h.");
       } else {

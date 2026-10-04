@@ -58,7 +58,6 @@ const INITIAL_MEETINGS: MeetingItem[] = [
     attendees: [
       { name: "MD Abu Sahid", avatar: "/Team/sahid_withoutGlow.webp" },
       { name: "Joyant Sheikhar", avatar: "/Team/joyant_withoutGlow.webp" },
-      { name: "Mahbuba Khanom", avatar: "/Team/mumu_withoutGlow.webp" },
       { name: "Abid Shahriar", avatar: "/Team/abid_withoutGlow.webp" },
       { name: "Nahid Jenifa", avatar: "/Team/jenifa_withoutGlow.webp" },
     ],
@@ -74,7 +73,7 @@ const INITIAL_MEETINGS: MeetingItem[] = [
     platform: "Zoom",
     meetUrl: "https://zoom.us/j/9823482394",
     attendees: [
-      { name: "Mahbuba Khanom", avatar: "/Team/mumu_withoutGlow.webp" },
+      { name: "Nahid Jenifa", avatar: "/Team/jenifa_withoutGlow.webp" },
       { name: "MD Abu Sahid", avatar: "/Team/sahid_withoutGlow.webp" },
     ],
     agenda: "Present Nordic Wood 3D product customizer models and dark/light typography system.",

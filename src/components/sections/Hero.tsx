@@ -160,17 +160,17 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
           // A. Badge Entrance
           .fromTo(
             ".hero-badge",
-            { opacity: 0, y: -20, scale: 0.92, filter: "blur(6px)" },
-            { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.7, delay: 0.05 }
+            { opacity: 0, y: -24, scale: 0.9, filter: "blur(8px)" },
+            { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.9, delay: 0.1 }
           )
           // B. Headline Words 3D Reveal
           .fromTo(
             ".hero-reveal-word",
             {
               yPercent: 120,
-              rotateX: -35,
+              rotateX: -40,
               opacity: 0,
-              filter: "blur(8px)",
+              filter: "blur(10px)",
               transformOrigin: "50% 100%",
             },
             {
@@ -178,32 +178,32 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
               rotateX: 0,
               opacity: 1,
               filter: "blur(0px)",
-              duration: 0.85,
-              stagger: 0.035,
+              duration: 1.15,
+              stagger: 0.045,
               ease: "power4.out",
             },
-            "-=0.5"
+            "-=0.6"
           )
           // C. Subtitle Lines Reveal
           .fromTo(
             ".hero-sub-line",
-            { yPercent: 100, opacity: 0, filter: "blur(4px)" },
-            { yPercent: 0, opacity: 1, filter: "blur(0px)", duration: 0.7, stagger: 0.06, ease: "power3.out" },
-            "-=0.55"
+            { yPercent: 100, opacity: 0, filter: "blur(6px)" },
+            { yPercent: 0, opacity: 1, filter: "blur(0px)", duration: 0.95, stagger: 0.08, ease: "power3.out" },
+            "-=0.7"
           )
           // D. CTA Buttons Reveal
           .fromTo(
             ".hero-cta",
-            { opacity: 0, y: 18, scale: 0.95 },
-            { opacity: 1, y: 0, scale: 1, duration: 0.65, ease: "power3.out" },
-            "-=0.55"
+            { opacity: 0, y: 24, scale: 0.94 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.85, ease: "power3.out" },
+            "-=0.7"
           )
           // E. Hero 3D Shape Entrance
           .fromTo(
             ".hero-shape-wrapper",
-            { opacity: 0, y: 45, scale: 1.12, filter: "blur(8px)" },
-            { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 1.0, ease: "power3.out" },
-            "-=0.8"
+            { opacity: 0, y: 60, scale: 1.18, filter: "blur(14px)" },
+            { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 1.5, ease: "power3.out" },
+            "-=1.1"
           );
 
         if (shouldWaitForPreloader) {
@@ -215,10 +215,10 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
           window.addEventListener("preloader-opening", onOpening, { once: true });
           window.addEventListener("preloader-done", onOpening, { once: true });
 
-          // Hard safety timeout: intro will NEVER stay hidden or stuck
+          // Fallback safety timeout (4.5s) so intro will never stay paused forever
           const safetyTimer = setTimeout(() => {
             onOpening();
-          }, 900);
+          }, 4500);
 
           // Fast-forward intro if user scrolls immediately
           const handleEarlyScroll = () => {

@@ -26,27 +26,25 @@ export const CREVOSYS_MEMBERS: TeamMember[] = [
     name: "MD ABU SAHID",
     role: "CEO • MERN Stack Developer & UI/UX Designer",
     education: "Metropolitan University, Sylhet",
-    image: "/Team/sahid_withoutGlow.webp",
+    image: "/Team/sahidceo.webp",
   },
   {
     id: 2,
     name: "JOYANT SHEIKHAR",
     role: "CTO • Software Developer",
     education: "Metropolitan University, Sylhet",
-    image: "/Team/joyant_withoutGlow.webp",
+    image: "/Team/joyantcto.webp",
   },
-  
   {
-    id: 4,
+    id: 3,
     name: "ABID SHAHRIAR",
     role: "COO • Web Developer",
     education: "Metropolitan University, Sylhet",
-    image: "/Team/abid_withoutGlow.webp",
+    image: "/Team/shahriarcoo.webp",
   },
 ];
 
 export const DEFAULT_MEMBERS: TeamMember[] = CREVOSYS_MEMBERS;
-
 
 export default function TeamSquadSection({
   title = "THE SQUAD",
@@ -61,14 +59,30 @@ export default function TeamSquadSection({
       .then((resData) => {
         const data = Array.isArray(resData) ? resData : resData?.data;
         if (Array.isArray(data) && data.length > 0) {
+          const filtered = data.filter(
+            (m: any) =>
+              !m.name?.toLowerCase().includes("mumu") &&
+              !m.name?.toLowerCase().includes("mahbuba") &&
+              !m.slug?.toLowerCase().includes("mumu") &&
+              !m.slug?.toLowerCase().includes("mahbuba")
+          );
           setSquad(
-            data.map((m: any) => ({
-              id: m._id || m.id,
-              name: m.name,
-              role: m.role || `${m.designation} • ${m.position}`,
-              education: m.education || "Metropolitan University, Sylhet",
-              image: m.picture,
-            }))
+            filtered.map((m: any) => {
+              const nameLower = (m.name || "").toLowerCase();
+              let imagePath = m.picture || "/Team/sahidceo.webp";
+              if (nameLower.includes("sahid")) imagePath = "/Team/sahidceo.webp";
+              else if (nameLower.includes("joyant")) imagePath = "/Team/joyantcto.webp";
+              else if (nameLower.includes("abid") || nameLower.includes("shahriar")) imagePath = "/Team/shahriarcoo.webp";
+              else imagePath = imagePath.replace(/\.png$/i, ".webp");
+
+              return {
+                id: m._id || m.id,
+                name: m.name,
+                role: m.role || `${m.designation} • ${m.position}`,
+                education: m.education || "Metropolitan University, Sylhet",
+                image: imagePath,
+              };
+            })
           );
         }
       })
