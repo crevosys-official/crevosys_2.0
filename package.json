@@ -41,5 +41,9 @@
     "tailwindcss": "^4",
     "tw-animate-css": "^1.3.4",
     "typescript": "6.0.3"
-  }
+  },
+  "browserslist": [
+    "defaults and fully supports es6-module",
+    "maintained node versions"
+  ]
 }
