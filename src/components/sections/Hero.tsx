@@ -299,7 +299,7 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
         onMouseLeave={onCursorLeave}
       >
         {/* Strategy Pill Badge */}
-        <div className="hero-badge group relative inline-flex items-center gap-2 p-1 pr-4 rounded-full bg-[#18181b]/90 border border-white/10 backdrop-blur-xl mb-5 sm:mb-7 shadow-[0_4px_20px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1)] transition-transform duration-300 hover:scale-[1.02]">
+        <div className="hero-badge group relative inline-flex items-center gap-2 p-1 pr-4 rounded-full bg-[#18181b]/90 border border-white/10 backdrop-blur-xl mb-5 sm:mb-7 shadow-[0_4px_20px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1)] transition-colors duration-300">
           <div className="absolute inset-0 rounded-full bg-gradient-to-r from-transparent via-white/[0.06] to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           <span className="relative flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold text-white bg-gradient-to-r from-[#ff6a00] to-[#e85500] shadow-[0_0_14px_rgba(255,106,0,0.55),inset_0_1px_1px_rgba(255,255,255,0.35)]">
             <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
@@ -406,11 +406,13 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
               style={{ transformStyle: "preserve-3d" }}
             >
               <Image
-                src="/elements/hero_shape.png"
-                alt="Hero 3D Shape"
+                src="/elements/hero_shape.webp"
+                alt=""
                 width={2905}
                 height={1119}
                 priority
+                fetchPriority="high"
+                sizes="(max-width: 768px) 100vw, 130vw"
                 className="w-[130vw] min-w-[1300px] max-w-none h-auto object-contain object-bottom select-none pointer-events-none scale-125 sm:scale-135 md:scale-140 lg:scale-145 translate-y-[12%] sm:translate-y-[15%] md:translate-y-[32%] drop-shadow-[0_-15px_45px_rgba(0,0,0,0.65)]"
               />
             </div>

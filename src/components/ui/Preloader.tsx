@@ -63,7 +63,6 @@ export default function Preloader() {
         lenis.start();
       }
       document.body.style.overflow = "";
-      document.documentElement.style.overflow = "";
       window.dispatchEvent(new CustomEvent("preloader-opening"));
       window.dispatchEvent(new CustomEvent("preloader-done"));
       return;
@@ -79,7 +78,6 @@ export default function Preloader() {
       lenis.stop();
     }
     document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden";
 
     const wordEl = wordRef.current;
 
@@ -160,7 +158,7 @@ export default function Preloader() {
           const current = Math.round(counterObj.value);
           setPercent(current);
           if (progressBarRef.current) {
-            progressBarRef.current.style.width = `${current}%`;
+            progressBarRef.current.style.transform = `scaleX(${current / 100})`;
           }
         },
       },
@@ -233,7 +231,6 @@ export default function Preloader() {
         lenis.start();
       }
       document.body.style.overflow = "";
-      document.documentElement.style.overflow = "";
       window.dispatchEvent(new CustomEvent("preloader-done"));
       setIsComplete(true);
     });
@@ -244,7 +241,6 @@ export default function Preloader() {
         lenis.start();
       }
       document.body.style.overflow = "";
-      document.documentElement.style.overflow = "";
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -283,13 +279,18 @@ export default function Preloader() {
         ref={centerTextRef}
         className="absolute inset-0 z-30 flex items-center justify-center px-4 pointer-events-none"
       >
-        {/* Dynamic Ambient Glow behind active word */}
-        <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] h-[250px] rounded-full pointer-events-none transition-all duration-700 blur-[85px] opacity-35"
-          style={{
-            background: FLIP_WORDS[wordIndex].glow,
-          }}
-        />
+        {/* Dynamic Ambient Glow behind active word (smooth opacity transition for GPU compositing) */}
+        {FLIP_WORDS.map((fw, idx) => (
+          <div
+            key={idx}
+            className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] h-[250px] rounded-full pointer-events-none blur-[85px] transition-opacity duration-700 will-change-transform ${
+              wordIndex === idx ? "opacity-35" : "opacity-0"
+            }`}
+            style={{
+              background: fw.glow,
+            }}
+          />
+        ))}
 
         <div className="relative z-10 flex items-center justify-center text-center font-sans">
           {/* Static Prefix "We" */}
@@ -337,8 +338,8 @@ export default function Preloader() {
         <div className="w-28 sm:w-40 md:w-48 h-[2.5px] bg-white/[0.1] rounded-full overflow-hidden mt-3 relative shadow-[inset_0_1px_2px_rgba(0,0,0,0.8)]">
           <div
             ref={progressBarRef}
-            className="h-full bg-gradient-to-r from-[#ff6a00] via-[#a374ff] to-[#ff7520] rounded-full transition-all duration-75 shadow-[0_0_12px_rgba(255,106,0,0.9)]"
-            style={{ width: `${percent}%` }}
+            className="h-full w-full bg-gradient-to-r from-[#ff6a00] via-[#a374ff] to-[#ff7520] rounded-full origin-left will-change-transform shadow-[0_0_12px_rgba(255,106,0,0.9)]"
+            style={{ transform: `scaleX(${percent / 100})` }}
           />
         </div>
 
