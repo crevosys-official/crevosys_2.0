@@ -196,3 +196,5 @@ npx vercel --prod
 
 © 2026 **CrevoSys**. All rights reserved.  
 Proprietary software engineered by CrevoSys.
+
+lsof -i :3000 -i :3001
