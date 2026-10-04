@@ -11,9 +11,9 @@ import { Star, MoveRight, ArrowRight } from "lucide-react";
 import { DEFAULT_SERVICES } from "@/data/defaultServices";
 
 export const metadata: Metadata = {
-  title: "Services & Capabilities | Crevosys",
+  title: "Our Services & Capabilities | CrevoSys",
   description:
-    "Explore our complete suite of digital services — development, marketing, UI/UX design, and AI automation tailored for fast-moving businesses.",
+    "Explore CrevoSys's comprehensive digital services, including custom software engineering, strategic product design, modern branding, and AI automation.",
 };
 
 export default async function ServicesDirectoryPage() {
@@ -45,9 +45,10 @@ export default async function ServicesDirectoryPage() {
       {/* Background glow overlay */}
       <div className="fixed inset-0 z-0 pointer-events-none flex items-center justify-center w-full h-full">
         <Image
-          src="/gradient.png"
-          alt="gradient background"
+          src="/gradient.webp"
+          alt=""
           fill
+          sizes="100vw"
           style={{ objectFit: "cover" }}
           className="opacity-15"
           priority
