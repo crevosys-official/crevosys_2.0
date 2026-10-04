@@ -1,41 +1,59 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import gsap from "gsap";
 import { useLenis } from "@/lib/lenis";
 import { usePathname } from "next/navigation";
 
-// In-memory flag ensuring the preloader only runs once per page enter/reload session
+// Extend global window object for reliable synchronization with Hero
+declare global {
+  interface Window {
+    __crevosysPreloaderOpeningDispatched?: boolean;
+    __crevosysPreloaderDone?: boolean;
+  }
+}
+
+// In-memory flag ensuring the preloader only runs once per page session
 let hasPlayedPreloader = false;
 
 const FLIP_WORDS = [
   {
     text: "Plan,",
     gradient: "from-white via-[#ffaa66] to-[#ff6a00]",
-    glow: "rgba(255,106,0,0.5)",
+    glow: "rgba(255,106,0,0.45)",
   },
   {
     text: "Design,",
     gradient: "from-white via-[#d8b4fe] to-[#a374ff]",
-    glow: "rgba(163,116,255,0.5)",
+    glow: "rgba(163,116,255,0.45)",
   },
   {
     text: "Build,",
     gradient: "from-white via-[#7dd3fc] to-[#38bdf8]",
-    glow: "rgba(56,189,248,0.5)",
+    glow: "rgba(56,189,248,0.45)",
   },
   {
     text: "Automate.",
     gradient: "from-white via-[#86efac] to-[#22c55e]",
-    glow: "rgba(34,197,94,0.5)",
+    glow: "rgba(34,197,94,0.45)",
   },
 ];
+
+function checkAlreadySeen(): boolean {
+  if (typeof window === "undefined") return false;
+  if (hasPlayedPreloader) return true;
+  try {
+    return sessionStorage.getItem("crevosys_preloader_seen") === "1";
+  } catch {
+    return false;
+  }
+}
 
 export default function Preloader() {
   const pathname = usePathname();
   const [percent, setPercent] = useState(0);
   const [wordIndex, setWordIndex] = useState(0);
-  const [isComplete, setIsComplete] = useState(pathname !== "/" || hasPlayedPreloader);
+  const [isComplete, setIsComplete] = useState(() => pathname !== "/" || checkAlreadySeen());
 
   const containerRef = useRef<HTMLDivElement>(null);
   const topPanelRef = useRef<HTMLDivElement>(null);
@@ -46,32 +64,92 @@ export default function Preloader() {
   const progressBarRef = useRef<HTMLDivElement>(null);
 
   const lenis = useLenis();
-  const initializedRef = useRef(false);
+  const isDoneRef = useRef(false);
+  const masterTlRef = useRef<gsap.core.Timeline | null>(null);
 
-  // Dedicated Lenis scroll lock that doesn't restart the GSAP timeline
+  // Force unlock scroll and cleanup
+  const cleanupAndUnlock = useCallback(() => {
+    document.body.style.overflow = "";
+    document.documentElement.style.overflow = "";
+    if (lenis) {
+      lenis.start();
+    }
+  }, [lenis]);
+
+  // Immediate skip / instant dismissal
+  const handleSkip = useCallback(() => {
+    if (isDoneRef.current) return;
+    isDoneRef.current = true;
+    hasPlayedPreloader = true;
+    try {
+      sessionStorage.setItem("crevosys_preloader_seen", "1");
+    } catch {}
+
+    if (masterTlRef.current) {
+      masterTlRef.current.kill();
+    }
+
+    if (typeof window !== "undefined") {
+      window.__crevosysPreloaderOpeningDispatched = true;
+      window.__crevosysPreloaderDone = true;
+      window.dispatchEvent(new CustomEvent("preloader-opening"));
+      window.dispatchEvent(new CustomEvent("preloader-done"));
+    }
+
+    cleanupAndUnlock();
+
+    // Fast shutter slide out
+    if (topPanelRef.current && bottomPanelRef.current) {
+      gsap.to(topPanelRef.current, {
+        yPercent: -100,
+        duration: 0.35,
+        ease: "power3.inOut",
+      });
+      gsap.to(bottomPanelRef.current, {
+        yPercent: 100,
+        duration: 0.35,
+        ease: "power3.inOut",
+        onComplete: () => setIsComplete(true),
+      });
+      if (centerTextRef.current) {
+        gsap.to(centerTextRef.current, { opacity: 0, duration: 0.2 });
+      }
+      if (cornerLoaderRef.current) {
+        gsap.to(cornerLoaderRef.current, { opacity: 0, duration: 0.2 });
+      }
+    } else {
+      setIsComplete(true);
+    }
+  }, [cleanupAndUnlock]);
+
+  // Dedicated Lenis scroll lock
   useEffect(() => {
-    if (lenis && !isComplete && pathname === "/" && !hasPlayedPreloader) {
+    if (lenis && !isComplete && pathname === "/" && !checkAlreadySeen()) {
       lenis.stop();
     }
   }, [lenis, isComplete, pathname]);
 
   useEffect(() => {
     // If not on home page ("/") or preloader has already played, skip immediately
-    if (pathname !== "/" || hasPlayedPreloader) {
+    if (pathname !== "/" || checkAlreadySeen()) {
+      hasPlayedPreloader = true;
+      isDoneRef.current = true;
       setIsComplete(true);
-      if (lenis) {
-        lenis.start();
+      cleanupAndUnlock();
+
+      if (typeof window !== "undefined") {
+        window.__crevosysPreloaderOpeningDispatched = true;
+        window.__crevosysPreloaderDone = true;
+        window.dispatchEvent(new CustomEvent("preloader-opening"));
+        window.dispatchEvent(new CustomEvent("preloader-done"));
       }
-      document.body.style.overflow = "";
-      window.dispatchEvent(new CustomEvent("preloader-opening"));
-      window.dispatchEvent(new CustomEvent("preloader-done"));
       return;
     }
 
-    // Prevent duplicate animation in React StrictMode
-    if (initializedRef.current) return;
-    initializedRef.current = true;
     hasPlayedPreloader = true;
+    try {
+      sessionStorage.setItem("crevosys_preloader_seen", "1");
+    } catch {}
 
     // Lock scroll during preloading
     if (lenis) {
@@ -79,43 +157,39 @@ export default function Preloader() {
     }
     document.body.style.overflow = "hidden";
 
-    const wordEl = wordRef.current;
+    const isMobile =
+      typeof window !== "undefined" &&
+      (window.innerWidth < 768 || window.matchMedia("(pointer: coarse)").matches);
+
+    // Fast, responsive timings (0.75s on mobile, 1.1s on desktop)
+    const counterDuration = isMobile ? 0.65 : 0.85;
+    const wordInterval = isMobile ? 0.16 : 0.22;
+    const curtainDuration = isMobile ? 0.5 : 0.65;
 
     const flipToWord = (newIndex: number) => {
       const el = wordRef.current;
       if (!el) return;
 
-      // 3D Flip Out
       gsap.to(el, {
-        rotateX: -90,
-        y: -24,
+        rotateX: -70,
+        y: -14,
         opacity: 0,
-        filter: "blur(6px)",
-        duration: 0.28,
+        duration: isMobile ? 0.12 : 0.16,
         ease: "power2.in",
         onComplete: () => {
           el.textContent = FLIP_WORDS[newIndex].text;
           el.className = `inline-block font-extrabold text-3xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r ${FLIP_WORDS[newIndex].gradient} will-change-transform`;
-          el.style.filter = `drop-shadow(0 0 25px ${FLIP_WORDS[newIndex].glow})`;
-
           setWordIndex(newIndex);
 
-          // 3D Flip In
           gsap.fromTo(
             el,
-            {
-              rotateX: 90,
-              y: 24,
-              opacity: 0,
-              filter: "blur(6px)",
-            },
+            { rotateX: 70, y: 14, opacity: 0 },
             {
               rotateX: 0,
               y: 0,
               opacity: 1,
-              filter: "blur(0px)",
-              duration: 0.4,
-              ease: "back.out(1.4)",
+              duration: isMobile ? 0.16 : 0.22,
+              ease: "back.out(1.2)",
             }
           );
         },
@@ -124,36 +198,31 @@ export default function Preloader() {
 
     const counterObj = { value: 0 };
     const masterTl = gsap.timeline();
+    masterTlRef.current = masterTl;
 
-    // Initial entrance for "Plan," (Part of the synchronized timeline - exactly ONCE)
-    if (wordEl) {
+    // Initial entrance for "Plan,"
+    if (wordRef.current) {
       masterTl.fromTo(
-        wordEl,
-        {
-          rotateX: 90,
-          y: 26,
-          opacity: 0,
-          filter: "blur(6px)",
-        },
+        wordRef.current,
+        { rotateX: 60, y: 16, opacity: 0 },
         {
           rotateX: 0,
           y: 0,
           opacity: 1,
-          filter: "blur(0px)",
-          duration: 0.5,
-          ease: "back.out(1.4)",
+          duration: isMobile ? 0.25 : 0.35,
+          ease: "back.out(1.2)",
         },
         0
       );
     }
 
-    // 1. Percentage counter animation (0 -> 100% over 2.3s)
+    // 1. Percentage counter animation (Snappy 0 -> 100%)
     masterTl.to(
       counterObj,
       {
         value: 100,
-        duration: 2.3,
-        ease: "power1.inOut",
+        duration: counterDuration,
+        ease: "power2.inOut",
         onUpdate: () => {
           const current = Math.round(counterObj.value);
           setPercent(current);
@@ -165,40 +234,41 @@ export default function Preloader() {
       0
     );
 
-    // 2. Synchronized 3D Word Flips:
-    // Initial is "Plan," (at 0s). Then Design -> Build -> Automate.
-    masterTl.call(() => flipToWord(1), [], 0.6); // -> Design,
-    masterTl.call(() => flipToWord(2), [], 1.2); // -> Build,
-    masterTl.call(() => flipToWord(3), [], 1.8); // -> Automate.
+    // 2. Rapid word flips synchronized with counter
+    masterTl.call(() => flipToWord(1), [], wordInterval); // -> Design,
+    masterTl.call(() => flipToWord(2), [], wordInterval * 2); // -> Build,
+    masterTl.call(() => flipToWord(3), [], wordInterval * 3); // -> Automate.
 
-    // 3. Pause at 100%
-    masterTl.to({}, { duration: 0.25 });
+    // 3. Short pause at 100%
+    masterTl.to({}, { duration: isMobile ? 0.1 : 0.15 });
 
-    // 4. Trigger Hero entrance animation
+    // 4. Trigger Hero entrance animation early (as shutters begin parting)
     masterTl.add(() => {
-      window.dispatchEvent(new CustomEvent("preloader-opening"));
+      if (typeof window !== "undefined") {
+        window.__crevosysPreloaderOpeningDispatched = true;
+        window.dispatchEvent(new CustomEvent("preloader-opening"));
+      }
     });
 
-    // Lift & fade center text
+    // Fade center text and bottom-right counter
     masterTl.to(
       centerTextRef.current,
       {
-        y: -35,
+        y: -24,
         opacity: 0,
-        scale: 0.96,
-        duration: 0.45,
-        ease: "power3.in",
+        scale: 0.97,
+        duration: isMobile ? 0.25 : 0.35,
+        ease: "power2.in",
       },
-      "+=0.04"
+      "+=0.02"
     );
 
-    // Fade bottom-right counter
     masterTl.to(
       cornerLoaderRef.current,
       {
-        y: 16,
+        y: 12,
         opacity: 0,
-        duration: 0.35,
+        duration: isMobile ? 0.2 : 0.25,
         ease: "power2.in",
       },
       "<"
@@ -209,7 +279,7 @@ export default function Preloader() {
       topPanelRef.current,
       {
         yPercent: -100,
-        duration: 1.05,
+        duration: curtainDuration,
         ease: "power4.inOut",
       },
       "-=0.1"
@@ -219,7 +289,7 @@ export default function Preloader() {
       bottomPanelRef.current,
       {
         yPercent: 100,
-        duration: 1.05,
+        duration: curtainDuration,
         ease: "power4.inOut",
       },
       "<"
@@ -227,23 +297,29 @@ export default function Preloader() {
 
     // 5. Complete and cleanup
     masterTl.add(() => {
-      if (lenis) {
-        lenis.start();
+      isDoneRef.current = true;
+      cleanupAndUnlock();
+
+      if (typeof window !== "undefined") {
+        window.__crevosysPreloaderDone = true;
+        window.dispatchEvent(new CustomEvent("preloader-done"));
       }
-      document.body.style.overflow = "";
-      window.dispatchEvent(new CustomEvent("preloader-done"));
       setIsComplete(true);
     });
 
-    return () => {
-      masterTl.kill();
-      if (lenis) {
-        lenis.start();
+    // Hard safety timeout: Preloader will NEVER hang or block the user
+    const safetyTimer = setTimeout(() => {
+      if (!isDoneRef.current) {
+        handleSkip();
       }
-      document.body.style.overflow = "";
+    }, isMobile ? 1500 : 1900);
+
+    return () => {
+      clearTimeout(safetyTimer);
+      masterTl.kill();
+      cleanupAndUnlock();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [cleanupAndUnlock, handleSkip, lenis, pathname]);
 
   if (isComplete || pathname !== "/") return null;
 
@@ -251,64 +327,70 @@ export default function Preloader() {
     <div
       ref={containerRef}
       id="site-preloader"
-      className="fixed inset-0 z-[99999] pointer-events-auto select-none overflow-hidden bg-transparent"
-      aria-label="Site Loading"
+      onClick={handleSkip}
+      className="fixed inset-0 z-[99999] pointer-events-auto select-none overflow-hidden bg-transparent cursor-pointer"
+      aria-label="Site Loading (Tap to Skip)"
+      title="Tap anywhere to skip"
     >
-      {/* Top Split Shutter: Seamless solid background with no harsh seam shadows or cutoffs */}
+      {/* Top Split Shutter */}
       <div
         ref={topPanelRef}
         className="absolute top-0 left-0 w-full h-[51%] bg-[#030305] overflow-hidden will-change-transform"
       >
-        {/* Subtle Ambient Top Aurora Glow */}
-        <div className="absolute -top-[25%] left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-b from-indigo-600/[0.14] via-purple-600/[0.08] to-transparent blur-[140px] rounded-full pointer-events-none" />
+        <div className="absolute -top-[25%] left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-gradient-to-b from-indigo-600/[0.12] via-purple-600/[0.06] to-transparent blur-[90px] rounded-full pointer-events-none" />
       </div>
 
-      {/* Bottom Split Shutter: Seamless solid background perfectly meeting top panel */}
+      {/* Bottom Split Shutter */}
       <div
         ref={bottomPanelRef}
         className="absolute bottom-0 left-0 w-full h-[51%] bg-[#030305] overflow-hidden will-change-transform"
       >
-        {/* Subtle Ambient Bottom Glow */}
-        <div className="absolute -bottom-[25%] left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-t from-[#ff6a00]/[0.10] via-purple-600/[0.06] to-transparent blur-[140px] rounded-full pointer-events-none" />
+        <div className="absolute -bottom-[25%] left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-gradient-to-t from-[#ff6a00]/[0.10] via-purple-600/[0.05] to-transparent blur-[90px] rounded-full pointer-events-none" />
       </div>
 
-      {/* ========================================================================= */}
-      {/* CENTER: Perfectly Centered "We [Plan, / Design, / Build, / Automate.]"     */}
-      {/* ========================================================================= */}
+      {/* Top-Right Quick Skip Button */}
+      <div className="fixed top-5 right-5 sm:top-7 sm:right-7 z-50 pointer-events-auto">
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            handleSkip();
+          }}
+          className="px-3 py-1.5 rounded-full text-[11px] font-mono tracking-wider text-zinc-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-colors uppercase cursor-pointer"
+        >
+          Skip ➔
+        </button>
+      </div>
+
+      {/* CENTER: "We [Plan, / Design, / Build, / Automate.]" */}
       <div
         ref={centerTextRef}
         className="absolute inset-0 z-30 flex items-center justify-center px-4 pointer-events-none"
       >
-        {/* Dynamic Ambient Glow behind active word (smooth opacity transition for GPU compositing) */}
+        {/* Dynamic Ambient Glow */}
         {FLIP_WORDS.map((fw, idx) => (
           <div
             key={idx}
-            className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] h-[250px] rounded-full pointer-events-none blur-[85px] transition-opacity duration-700 will-change-transform ${
-              wordIndex === idx ? "opacity-35" : "opacity-0"
+            className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[380px] sm:w-[500px] h-[180px] rounded-full pointer-events-none blur-[60px] transition-opacity duration-300 will-change-transform ${
+              wordIndex === idx ? "opacity-30" : "opacity-0"
             }`}
-            style={{
-              background: fw.glow,
-            }}
+            style={{ background: fw.glow }}
           />
         ))}
 
         <div className="relative z-10 flex items-center justify-center text-center font-sans">
-          {/* Static Prefix "We" */}
           <span className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-tight text-zinc-400 mr-2.5 sm:mr-4 md:mr-5 select-none">
             We
           </span>
 
-          {/* 3D Flip Word */}
           <div
             className="inline-block overflow-visible"
-            style={{ perspective: 1000 }}
+            style={{ perspective: 800 }}
           >
             <span
               ref={wordRef}
               className={`inline-block font-extrabold text-3xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r ${FLIP_WORDS[wordIndex].gradient} will-change-transform`}
               style={{
                 transformStyle: "preserve-3d",
-                filter: `drop-shadow(0 0 25px ${FLIP_WORDS[wordIndex].glow})`,
               }}
             >
               {FLIP_WORDS[wordIndex].text}
@@ -317,16 +399,13 @@ export default function Preloader() {
         </div>
       </div>
 
-      {/* ========================================================================= */}
-      {/* BOTTOM-RIGHT CORNER: Loading Animation (% counter & progress line)        */}
-      {/* ========================================================================= */}
+      {/* BOTTOM-RIGHT CORNER: Progress & % counter */}
       <div
         ref={cornerLoaderRef}
         className="fixed bottom-6 right-6 sm:bottom-10 sm:right-10 md:bottom-12 md:right-12 z-40 flex flex-col items-end pointer-events-none will-change-transform"
       >
-        {/* Percentage Counter */}
         <div className="flex items-baseline font-mono tabular-nums select-none leading-none">
-          <span className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.9)]">
+          <span className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight text-white drop-shadow-[0_4px_16px_rgba(0,0,0,0.8)]">
             {percent}
           </span>
           <span className="text-xl sm:text-3xl md:text-4xl font-bold text-[#ff6a00] ml-1 sm:ml-2">
@@ -334,18 +413,16 @@ export default function Preloader() {
           </span>
         </div>
 
-        {/* Micro Progress Track */}
-        <div className="w-28 sm:w-40 md:w-48 h-[2.5px] bg-white/[0.1] rounded-full overflow-hidden mt-3 relative shadow-[inset_0_1px_2px_rgba(0,0,0,0.8)]">
+        <div className="w-24 sm:w-36 md:w-44 h-[2px] sm:h-[2.5px] bg-white/[0.1] rounded-full overflow-hidden mt-2.5 relative">
           <div
             ref={progressBarRef}
-            className="h-full w-full bg-gradient-to-r from-[#ff6a00] via-[#a374ff] to-[#ff7520] rounded-full origin-left will-change-transform shadow-[0_0_12px_rgba(255,106,0,0.9)]"
+            className="h-full w-full bg-gradient-to-r from-[#ff6a00] via-[#a374ff] to-[#ff7520] rounded-full origin-left will-change-transform shadow-[0_0_10px_rgba(255,106,0,0.8)]"
             style={{ transform: `scaleX(${percent / 100})` }}
           />
         </div>
 
-        {/* Subtle Status Caption */}
-        <div className="text-[9px] sm:text-[10px] font-mono tracking-[0.25em] text-zinc-500 uppercase mt-2.5 select-none">
-          LOADING EXPERIENCE
+        <div className="text-[9px] sm:text-[10px] font-mono tracking-[0.25em] text-zinc-500 uppercase mt-2 select-none">
+          TAP ANYWHERE TO SKIP
         </div>
       </div>
     </div>

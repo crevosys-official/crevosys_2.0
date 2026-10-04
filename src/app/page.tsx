@@ -53,7 +53,6 @@ const Page = () => {
             sizes="100vw"
             style={{ objectFit: "cover" }}
             className="opacity-10"
-            priority
           />
         </div>
 

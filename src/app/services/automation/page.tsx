@@ -38,12 +38,11 @@ const AutomationPage = () => {
       {/* Background overlay */}
       <div className="fixed inset-0 z-2 pointer-events-none flex items-center justify-center w-full h-full">
         <Image
-          src="/gradient.png"
+          src="/gradient.webp"
           alt="gradient background"
           fill
           style={{ objectFit: "cover" }}
           className="opacity-10"
-          priority
         />
       </div>
 

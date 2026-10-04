@@ -326,7 +326,7 @@ export default function AboutPage() {
                 <div className="relative rounded-3xl overflow-hidden border border-white/15 shadow-2xl bg-zinc-900/60 group">
                   <div className="relative aspect-[4/4.5] w-full overflow-hidden">
                     <Image
-                      src="/founder_poster.png"
+                      src="/founder_poster.webp"
                       alt="CrevoSys Founders"
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"

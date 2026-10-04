@@ -131,12 +131,11 @@ export default async function DynamicServicePage({ params }: ServicePageProps) {
       {/* Background overlay */}
       <div className="fixed inset-0 z-0 pointer-events-none flex items-center justify-center w-full h-full">
         <Image
-          src="/gradient.png"
+          src="/gradient.webp"
           alt="gradient background"
           fill
           style={{ objectFit: "cover" }}
           className="opacity-15"
-          priority
         />
       </div>
 

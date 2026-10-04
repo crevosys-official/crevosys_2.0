@@ -26,14 +26,14 @@ export const CREVOSYS_MEMBERS: TeamMember[] = [
     name: "MD ABU SAHID",
     role: "CEO • MERN Stack Developer & UI/UX Designer",
     education: "Metropolitan University, Sylhet",
-    image: "/Team/sahid_withoutGlow.png",
+    image: "/Team/sahid_withoutGlow.webp",
   },
   {
     id: 2,
     name: "JOYANT SHEIKHAR",
     role: "CTO • Software Developer",
     education: "Metropolitan University, Sylhet",
-    image: "/Team/joyant_withoutGlow.png",
+    image: "/Team/joyant_withoutGlow.webp",
   },
   
   {
@@ -41,7 +41,7 @@ export const CREVOSYS_MEMBERS: TeamMember[] = [
     name: "ABID SHAHRIAR",
     role: "COO • Web Developer",
     education: "Metropolitan University, Sylhet",
-    image: "/Team/abid_withoutGlow.png",
+    image: "/Team/abid_withoutGlow.webp",
   },
 ];
 

@@ -132,7 +132,14 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
       // Plays cinematic reveal when at top; skips if already scrolled midway
       // =========================================================================
       const isAlreadyScrolled = window.scrollY > 30;
-      const preloaderActive = typeof document !== "undefined" && !!document.getElementById("site-preloader");
+      const preloaderOpeningFired =
+        typeof window !== "undefined" && !!window.__crevosysPreloaderOpeningDispatched;
+      const preloaderDoneFired =
+        typeof window !== "undefined" && !!window.__crevosysPreloaderDone;
+      const preloaderElement =
+        typeof document !== "undefined" && document.getElementById("site-preloader");
+      const shouldWaitForPreloader =
+        !!preloaderElement && !preloaderOpeningFired && !preloaderDoneFired;
 
       if (isAlreadyScrolled) {
         gsap.set(".hero-reveal-word", { yPercent: 0, rotateX: 0, opacity: 1, filter: "blur(0px)" });
@@ -142,7 +149,7 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
         gsap.set(".hero-shape-wrapper", { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" });
       } else {
         const introTl = gsap.timeline({
-          paused: preloaderActive,
+          paused: shouldWaitForPreloader,
           defaults: { ease: "power4.out" },
           onComplete: () => {
             ScrollTrigger.refresh();
@@ -153,17 +160,17 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
           // A. Badge Entrance
           .fromTo(
             ".hero-badge",
-            { opacity: 0, y: -24, scale: 0.9, filter: "blur(8px)" },
-            { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.9, delay: 0.1 }
+            { opacity: 0, y: -20, scale: 0.92, filter: "blur(6px)" },
+            { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.7, delay: 0.05 }
           )
           // B. Headline Words 3D Reveal
           .fromTo(
             ".hero-reveal-word",
             {
               yPercent: 120,
-              rotateX: -40,
+              rotateX: -35,
               opacity: 0,
-              filter: "blur(10px)",
+              filter: "blur(8px)",
               transformOrigin: "50% 100%",
             },
             {
@@ -171,48 +178,60 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
               rotateX: 0,
               opacity: 1,
               filter: "blur(0px)",
-              duration: 1.15,
-              stagger: 0.045,
+              duration: 0.85,
+              stagger: 0.035,
               ease: "power4.out",
             },
-            "-=0.6"
+            "-=0.5"
           )
           // C. Subtitle Lines Reveal
           .fromTo(
             ".hero-sub-line",
-            { yPercent: 100, opacity: 0, filter: "blur(6px)" },
-            { yPercent: 0, opacity: 1, filter: "blur(0px)", duration: 0.95, stagger: 0.08, ease: "power3.out" },
-            "-=0.7"
+            { yPercent: 100, opacity: 0, filter: "blur(4px)" },
+            { yPercent: 0, opacity: 1, filter: "blur(0px)", duration: 0.7, stagger: 0.06, ease: "power3.out" },
+            "-=0.55"
           )
           // D. CTA Buttons Reveal
           .fromTo(
             ".hero-cta",
-            { opacity: 0, y: 24, scale: 0.94 },
-            { opacity: 1, y: 0, scale: 1, duration: 0.85, ease: "power3.out" },
-            "-=0.7"
+            { opacity: 0, y: 18, scale: 0.95 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.65, ease: "power3.out" },
+            "-=0.55"
           )
           // E. Hero 3D Shape Entrance
           .fromTo(
             ".hero-shape-wrapper",
-            { opacity: 0, y: 60, scale: 1.18, filter: "blur(14px)" },
-            { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 1.5, ease: "power3.out" },
-            "-=1.1"
+            { opacity: 0, y: 45, scale: 1.12, filter: "blur(8px)" },
+            { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 1.0, ease: "power3.out" },
+            "-=0.8"
           );
 
-        if (preloaderActive) {
+        if (shouldWaitForPreloader) {
           const onOpening = () => {
-            introTl.play();
+            if (introTl.paused()) {
+              introTl.play();
+            }
           };
           window.addEventListener("preloader-opening", onOpening, { once: true });
-        }
+          window.addEventListener("preloader-done", onOpening, { once: true });
 
-        // Fast-forward intro if user scrolls immediately
-        const handleEarlyScroll = () => {
-          if (introTl.isActive()) {
-            introTl.progress(1);
-          }
-        };
-        window.addEventListener("scroll", handleEarlyScroll, { passive: true, once: true });
+          // Hard safety timeout: intro will NEVER stay hidden or stuck
+          const safetyTimer = setTimeout(() => {
+            onOpening();
+          }, 900);
+
+          // Fast-forward intro if user scrolls immediately
+          const handleEarlyScroll = () => {
+            clearTimeout(safetyTimer);
+            if (introTl.isActive() || introTl.paused()) {
+              introTl.progress(1);
+            }
+          };
+          window.addEventListener("scroll", handleEarlyScroll, { passive: true, once: true });
+        } else {
+          // If preloader was already done or skipped, play immediately
+          introTl.play();
+        }
       }
 
       // =========================================================================
@@ -229,9 +248,12 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
       }
 
       // =========================================================================
-      // 4. INTERACTIVE 3D MOUSE PARALLAX (High-performance quickTo)
+      // 4. INTERACTIVE 3D MOUSE PARALLAX (Desktop Fine Pointer Only)
       // =========================================================================
-      if (shapeTiltRef.current && glowRef.current && heroRef.current) {
+      const isFinePointer =
+        typeof window !== "undefined" && window.matchMedia("(pointer: fine)").matches;
+
+      if (isFinePointer && shapeTiltRef.current && glowRef.current && heroRef.current) {
         const tiltX = gsap.quickTo(shapeTiltRef.current, "x", { duration: 0.9, ease: "power3.out" });
         const tiltY = gsap.quickTo(shapeTiltRef.current, "y", { duration: 0.9, ease: "power3.out" });
         const rotX = gsap.quickTo(shapeTiltRef.current, "rotationX", { duration: 0.9, ease: "power3.out" });
@@ -413,7 +435,7 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
                 priority
                 fetchPriority="high"
                 sizes="(max-width: 768px) 100vw, 130vw"
-                className="w-[130vw] min-w-[1300px] max-w-none h-auto object-contain object-bottom select-none pointer-events-none scale-125 sm:scale-135 md:scale-140 lg:scale-145 translate-y-[12%] sm:translate-y-[15%] md:translate-y-[32%] drop-shadow-[0_-15px_45px_rgba(0,0,0,0.65)]"
+                className="w-[130vw] min-w-[1300px] max-w-none h-auto object-contain object-bottom select-none pointer-events-none scale-125 sm:scale-135 md:scale-140 lg:scale-145 translate-y-[12%] sm:translate-y-[15%] md:translate-y-[32%] drop-shadow-[0_-8px_20px_rgba(0,0,0,0.45)] md:drop-shadow-[0_-15px_45px_rgba(0,0,0,0.65)]"
               />
             </div>
           </div>

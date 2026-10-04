@@ -79,7 +79,7 @@ export default function AdminSidebar() {
       <div className="lg:hidden fixed top-0 left-0 right-0 z-40 h-16 bg-[#08080b]/90 backdrop-blur-md border-b border-white/[0.08] px-4 flex items-center justify-between">
         <Link href="/admin" className="flex items-center gap-2.5">
           <Image
-            src="/crevoicon.png"
+            src="/crevoicon.webp"
             alt="Crevosys"
             width={32}
             height={32}
@@ -134,7 +134,7 @@ export default function AdminSidebar() {
             >
               <div className="relative">
                 <Image
-                  src="/crevoicon.png"
+                  src="/crevoicon.webp"
                   alt="Crevosys"
                   width={38}
                   height={38}

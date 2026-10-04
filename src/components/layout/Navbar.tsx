@@ -221,7 +221,7 @@ export default function Navigation() {
           <div className="pointer-events-auto">
             <Link href="/" className="flex items-center gap-2 sm:gap-3 flex-shrink-0 group">
               <Image
-                src="/crevoicon.png"
+                src="/crevoicon.webp"
                 alt="Crevosys"
                 className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 object-contain transition-transform duration-200 group-hover:scale-105"
                 height={40}

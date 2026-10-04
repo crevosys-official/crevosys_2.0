@@ -16,12 +16,11 @@ export default function NotFound() {
       {/* Website Background Gradient */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <Image
-          src="/gradient.png"
+          src="/gradient.webp"
           alt="gradient background"
           fill
           style={{ objectFit: "cover" }}
           className="opacity-15"
-          priority
         />
       </div>
 

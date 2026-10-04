@@ -30,12 +30,12 @@ import { toast } from "sonner";
 import { TeamMemberItem } from "@/types/team";
 
 const PRESET_TEAM_PICTURES = [
-  { name: "Sahid (CEO)", path: "/Team/sahid_withoutGlow.png", role: "CEO" },
-  { name: "Joyant (CTO)", path: "/Team/joyant_withoutGlow.png", role: "CTO" },
-  { name: "Mumu (CBO)", path: "/Team/mumu_withoutGlow.png", role: "CBO" },
-  { name: "Abid (COO)", path: "/Team/abid_withoutGlow.png", role: "COO" },
-  { name: "Sumon (CMO)", path: "/Team/sumon_withoutGlow.png", role: "CMO" },
-  { name: "Jenifa (Frontend)", path: "/Team/jenifa_withoutGlow.png", role: "Developer" },
+  { name: "Sahid (CEO)", path: "/Team/sahid_withoutGlow.webp", role: "CEO" },
+  { name: "Joyant (CTO)", path: "/Team/joyant_withoutGlow.webp", role: "CTO" },
+  { name: "Mumu (CBO)", path: "/Team/mumu_withoutGlow.webp", role: "CBO" },
+  { name: "Abid (COO)", path: "/Team/abid_withoutGlow.webp", role: "COO" },
+  { name: "Sumon (CMO)", path: "/Team/sumon_withoutGlow.webp", role: "CMO" },
+  { name: "Jenifa (Frontend)", path: "/Team/jenifa_withoutGlow.webp", role: "Developer" },
 ];
 
 export default function TeamManagement() {
@@ -966,7 +966,7 @@ export default function TeamManagement() {
                   <div className="flex-1 w-full space-y-2">
                     <input
                       type="text"
-                      placeholder="Image URL or local path (e.g. /Team/sahid_withoutGlow.png)"
+                      placeholder="Image URL or local path (e.g. /Team/sahid_withoutGlow.webp)"
                       value={formData.picture}
                       onChange={(e) => setFormData({ ...formData, picture: e.target.value })}
                       className="w-full bg-zinc-900 border border-white/10 rounded-xl px-3.5 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#ff8804]"

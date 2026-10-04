@@ -40,7 +40,7 @@ export default function AdminGuard({ children }: AdminGuardProps) {
         <div className="relative flex flex-col items-center gap-4">
           <div className="relative">
             <Image
-              src="/crevoicon.png"
+              src="/crevoicon.webp"
               alt="Crevosys"
               width={48}
               height={48}

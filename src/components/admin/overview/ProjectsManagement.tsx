@@ -651,7 +651,7 @@ export default function ProjectsManagement() {
               {/* Card Image Area */}
               <div className="relative h-52 w-full overflow-hidden bg-zinc-950">
                 <Image
-                  src={proj.image || "/gradient.png"}
+                  src={proj.image || "/gradient.webp"}
                   alt={proj.title}
                   fill
                   className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
@@ -835,7 +835,7 @@ export default function ProjectsManagement() {
                     <td className="py-3 px-4">
                       <div className="relative w-14 h-10 rounded-lg overflow-hidden border border-white/10 bg-zinc-900">
                         <Image
-                          src={proj.image || "/gradient.png"}
+                          src={proj.image || "/gradient.webp"}
                           alt={proj.title}
                           fill
                           className="object-cover"

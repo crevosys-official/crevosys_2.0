@@ -1,7 +1,7 @@
 # CrevoSys 2.0
 
 <p align="center">
-  <img src="/public/gradient.png" alt="CrevoSys Banner" width="100%" style="border-radius: 12px; max-height: 280px; object-fit: cover;" />
+  <img src="/public/gradient.webp" alt="CrevoSys Banner" width="100%" style="border-radius: 12px; max-height: 280px; object-fit: cover;" />
 </p>
 
 <p align="center">

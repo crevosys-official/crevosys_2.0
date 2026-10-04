@@ -38,12 +38,11 @@ const DevelopmentPage = () => {
       {/* Background overlay from main page */}
       <div className="fixed inset-0 z-2 pointer-events-none flex items-center justify-center w-full h-full">
         <Image
-          src="/gradient.png"
+          src="/gradient.webp"
           alt="gradient background"
           fill
           style={{ objectFit: "cover" }}
           className="opacity-10"
-          priority
         />
       </div>
 
@@ -180,7 +179,7 @@ const DevelopmentPage = () => {
             
             <div className="relative aspect-square md:aspect-auto md:h-[500px] rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
               <Image
-                src="/services/crevosysdev.png"
+                src="/services/crevosysdev.webp"
                 alt="Development Process"
                 fill
                 className="object-cover"

@@ -297,7 +297,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({
         <Image
           ref={bgImage1Ref}
           className="absolute -top-30 hidden md:inline-flex xl:inline-flex -left-30 z-0 pointer-events-none"
-          src="/reviews.png"
+          src="/reviews.webp"
           width={400}
           height={100}
           alt="reviews"
@@ -306,7 +306,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({
         <Image
           ref={bgImage2Ref}
           className="absolute -bottom-50 -right-60 z-0 pointer-events-none"
-          src="/reviews.png"
+          src="/reviews.webp"
           width={700}
           height={100}
           alt="reviews"

@@ -241,7 +241,7 @@ export default function AdminLockScreen({
           <div className="flex items-center gap-3">
             <div className="relative">
               <Image
-                src="/crevoicon.png"
+                src="/crevoicon.webp"
                 alt="Crevosys"
                 width={36}
                 height={36}

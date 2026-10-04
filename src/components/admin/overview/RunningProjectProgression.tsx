@@ -58,8 +58,8 @@ const PROJECTS_PROGRESSION: ProjectTimelineItem[] = [
     trackBg: "bg-blue-900/30",
     phase: "IN PROGRESS",
     assignees: [
-      { name: "MD Abu Sahid", avatar: "/Team/sahid_withoutGlow.png" },
-      { name: "Joyant Sheikhar", avatar: "/Team/joyant_withoutGlow.png" },
+      { name: "MD Abu Sahid", avatar: "/Team/sahid_withoutGlow.webp" },
+      { name: "Joyant Sheikhar", avatar: "/Team/joyant_withoutGlow.webp" },
     ],
   },
   {
@@ -77,8 +77,8 @@ const PROJECTS_PROGRESSION: ProjectTimelineItem[] = [
     trackBg: "bg-purple-900/30",
     phase: "IN PROGRESS",
     assignees: [
-      { name: "Joyant Sheikhar", avatar: "/Team/joyant_withoutGlow.png" },
-      { name: "Abid Shahriar", avatar: "/Team/abid_withoutGlow.png" },
+      { name: "Joyant Sheikhar", avatar: "/Team/joyant_withoutGlow.webp" },
+      { name: "Abid Shahriar", avatar: "/Team/abid_withoutGlow.webp" },
     ],
   },
   {
@@ -96,8 +96,8 @@ const PROJECTS_PROGRESSION: ProjectTimelineItem[] = [
     trackBg: "bg-pink-900/30",
     phase: "EDITING",
     assignees: [
-      { name: "MD Abu Sahid", avatar: "/Team/sahid_withoutGlow.png" },
-      { name: "Abid Shahriar", avatar: "/Team/abid_withoutGlow.png" },
+      { name: "MD Abu Sahid", avatar: "/Team/sahid_withoutGlow.webp" },
+      { name: "Abid Shahriar", avatar: "/Team/abid_withoutGlow.webp" },
     ],
   },
   {
@@ -115,8 +115,8 @@ const PROJECTS_PROGRESSION: ProjectTimelineItem[] = [
     trackBg: "bg-amber-900/30",
     phase: "IN PROGRESS",
     assignees: [
-      { name: "MD Abu Sahid", avatar: "/Team/sahid_withoutGlow.png" },
-      { name: "Joyant Sheikhar", avatar: "/Team/joyant_withoutGlow.png" },
+      { name: "MD Abu Sahid", avatar: "/Team/sahid_withoutGlow.webp" },
+      { name: "Joyant Sheikhar", avatar: "/Team/joyant_withoutGlow.webp" },
     ],
   },
 ];

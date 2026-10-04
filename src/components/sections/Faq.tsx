@@ -4,7 +4,6 @@ import React, { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import Lenis from "lenis";
 import { CircleHelp, MailQuestion, MessageCircleQuestionMark, Star } from "lucide-react";
 
 if (typeof window !== "undefined") {
@@ -75,18 +74,7 @@ export default function ScrollFaq({ items = DEFAULT_FAQS }: { items?: FAQItemDat
 
   useGSAP(
     () => {
-      // 1. Lenis Smooth Scrolling integration
-      const lenis = new Lenis({
-        lerp: 0.08,
-        smoothWheel: true,
-      });
 
-      lenis.on("scroll", ScrollTrigger.update);
-      const tickerCallback = (time: number) => {
-        lenis.raf(time * 1000);
-      };
-      gsap.ticker.add(tickerCallback);
-      gsap.ticker.lagSmoothing(0);
 
       // Helper to measure native rendered bubble dimensions
       const measureBubble = (msg: HTMLElement) => {
@@ -275,11 +263,7 @@ export default function ScrollFaq({ items = DEFAULT_FAQS }: { items?: FAQItemDat
         initAnimations();
       }
 
-      // Cleanup ticker & Lenis instance on unmount
-      return () => {
-        gsap.ticker.remove(tickerCallback);
-        lenis.destroy();
-      };
+
     },
     { scope: containerRef }
   );

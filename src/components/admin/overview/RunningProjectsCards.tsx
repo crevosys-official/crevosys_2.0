@@ -31,8 +31,8 @@ const RUNNING_PROJECTS: ProjectCardItem[] = [
     dateStart: "Oct 15, 2026",
     daysLeft: 16,
     team: [
-      { name: "MD Abu Sahid", avatar: "/Team/sahid_withoutGlow.png" },
-      { name: "Nahid Akter Jenifa", avatar: "/Team/jenifa_withoutGlow.png" },
+      { name: "MD Abu Sahid", avatar: "/Team/sahid_withoutGlow.webp" },
+      { name: "Nahid Akter Jenifa", avatar: "/Team/jenifa_withoutGlow.webp" },
     ],
     liveUrl: "https://the-palace-resort.vercel.app",
     statusText: "Booking Engine & Inventory Sync",
@@ -45,8 +45,8 @@ const RUNNING_PROJECTS: ProjectCardItem[] = [
     dateStart: "Oct 28, 2026",
     daysLeft: 29,
     team: [
-      { name: "Joyant Sheikhar", avatar: "/Team/joyant_withoutGlow.png" },
-      { name: "Abid Shahriar", avatar: "/Team/abid_withoutGlow.png" },
+      { name: "Joyant Sheikhar", avatar: "/Team/joyant_withoutGlow.webp" },
+      { name: "Abid Shahriar", avatar: "/Team/abid_withoutGlow.webp" },
     ],
     liveUrl: "https://meetup-restaurant.vercel.app",
     statusText: "Supabase Driver Geo-tracking",
@@ -59,8 +59,8 @@ const RUNNING_PROJECTS: ProjectCardItem[] = [
     dateStart: "Oct 08, 2026",
     daysLeft: 9,
     team: [
-      { name: "MD Abu Sahid", avatar: "/Team/sahid_withoutGlow.png" },
-      { name: "Joyant Sheikhar", avatar: "/Team/joyant_withoutGlow.png" },
+      { name: "MD Abu Sahid", avatar: "/Team/sahid_withoutGlow.webp" },
+      { name: "Joyant Sheikhar", avatar: "/Team/joyant_withoutGlow.webp" },
     ],
     liveUrl: "https://skyletbankltd.netlify.app",
     statusText: "Final Pen-Testing & Biometrics",

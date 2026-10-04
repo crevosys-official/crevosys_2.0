@@ -26,9 +26,13 @@ const TeamLayout = () => {
     <div>
       <div className="grid md:grid-cols-3 gap-5 py-30 px-10">
         {teams.map((team, index) => {
-          const glowPic = team.picture?.includes("_withoutGlow")
-            ? team.picture.replace("_withoutGlow", "_withGlow")
-            : team.picture;
+          const rawPic = (team.picture || "/Team/sahid_withoutGlow.webp").replace(
+            /\.png$/,
+            ".webp"
+          );
+          const glowPic = rawPic.includes("_withoutGlow")
+            ? rawPic.replace("_withoutGlow", "_withGlow")
+            : rawPic;
 
           const designation = team.designation || (team as any).Designation || "";
           const position = team.position || (team as any).Position || "";
@@ -58,7 +62,7 @@ const TeamLayout = () => {
 
               <Image
                 className="relative rounded-2xl group-hover:opacity-0 transition-opacity duration-300 object-cover w-full h-auto"
-                src={team.picture || "/Team/sahid_withoutGlow.png"}
+                src={rawPic}
                 height={1000}
                 width={1000}
                 alt={team.name}
