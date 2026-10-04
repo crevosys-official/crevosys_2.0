@@ -12,14 +12,14 @@ const Footer = () => {
               <Link href="#" className="flex items-center gap-2">
                 <Image
                   className="w-30 h-30"
-                  src="/crevoicon.png"
-                  alt="Brand Logo"
+                  src="/crevoicon.webp"
+                  alt="CrevoSys logo"
                   height={100}
                   width={100}
                   loading="lazy"
                 />
                 <div>
-                  <h1 className=" text-3xl font-heading uppercase">Crevosys</h1>
+                  <p className="text-3xl font-heading uppercase">Crevosys</p>
                   <p>A digital IT solution</p>
                 </div>
               </Link>
@@ -72,7 +72,7 @@ const Footer = () => {
           <div className="mt-6 lg:mt-10 lg:flex-1 text-white">
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               <div>
-                <h3 className="text-white uppercase">About</h3>
+                <p className="text-white uppercase font-semibold text-sm">About</p>
                 <Link
                   href="/about"
                   className="block mt-2 text-sm text-gray-300 hover:text-white hover:underline">
@@ -95,7 +95,7 @@ const Footer = () => {
                 </a>
               </div>
               <div className=" hidden md:inline">
-                <h3 className="text-white uppercase">Insights</h3>
+                <p className="text-white uppercase font-semibold text-sm">Insights</p>
                 <a
                   href="#"
                   className="block mt-2 text-sm text-gray-300 hover:text-white hover:underline">
@@ -118,7 +118,7 @@ const Footer = () => {
                 </a>
               </div>
               <div className="hidden md:inline">
-                <h3 className="text-white uppercase">Services</h3>
+                <p className="text-white uppercase font-semibold text-sm">Services</p>
                 <Link
                   href="/services/development"
                   className="block mt-2 text-sm text-gray-300 hover:text-white hover:underline">
@@ -141,7 +141,7 @@ const Footer = () => {
                 </Link>
               </div>
               <div>
-                <h3 className="text-white uppercase">Contact</h3>
+                <p className="text-white uppercase font-semibold text-sm">Contact</p>
                 <span className="block mt-2 text-sm text-white hover:underline">
                   +88 01855245281
                 </span>

@@ -214,9 +214,10 @@ export default function AboutPage() {
       {/* Fixed gradient overlay identical to Hero and Homepage */}
       <div className="fixed inset-0 z-0 pointer-events-none flex items-center justify-center w-full h-full">
         <Image
-          src="/gradient.png"
-          alt="gradient background"
+          src="/gradient.webp"
+          alt=""
           fill
+          sizes="100vw"
           style={{ objectFit: "cover" }}
           className="opacity-10"
           priority

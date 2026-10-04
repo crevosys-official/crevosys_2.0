@@ -16,17 +16,20 @@ const page = () => {
           "flex items-center justify-center w-full h-full",
         ].join(" ")}>
         <Image
-          src="/gradient.png"
-          alt="gradient background"
+          src="/gradient.webp"
+          alt=""
           fill
+          sizes="100vw"
           style={{ objectFit: "cover" }}
           className="opacity-10"
           priority
         />
       </div>
-      <div  className="md:container md:mx-auto xl:container xl:mx-auto">
-      <Navbar />
-      <TeamLayout />
+      <div className="md:container md:mx-auto xl:container xl:mx-auto">
+        <Navbar />
+        <main>
+          <TeamLayout />
+        </main>
       </div>
     </div>
   );

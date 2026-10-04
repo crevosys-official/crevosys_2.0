@@ -12,7 +12,7 @@ const NAV_LINKS = [
   { title: "About", href: "/about" },
   { title: "Services", href: "/services" },
   { title: "Contact", href: "/contact" },
-  { title: "Works", href: "/works" },
+  { title: "Works", href: "/#portfolio" },
 ];
 
 // SVG Bezier Morph Paths (Normalized for clipPathUnits="objectBoundingBox")
@@ -309,10 +309,9 @@ export default function Navigation() {
         >
           <div className="relative w-full h-full opacity-15 scale-105">
             <Image
-              src="/elements/menuBG.jpg"
-              alt="Menu Background"
+              src="/elements/menuBG.webp"
+              alt=""
               fill
-              priority
               className="object-cover object-center"
               sizes="100vw"
             />
@@ -339,21 +338,22 @@ export default function Navigation() {
               +8801601321799
             </a>
             <div className="my-2 sm:my-3"></div>
-            <h6 className="menu-info-item text-xs sm:text-base md:text-lg text-neutral-400">
+            <p className="menu-info-item text-xs sm:text-base md:text-lg text-neutral-400">
               Online Based IT Agency
-            </h6>
-            <h6 className="menu-info-item text-xs sm:text-base md:text-lg text-neutral-400">
+            </p>
+            <p className="menu-info-item text-xs sm:text-base md:text-lg text-neutral-400">
               Bangladesh - 2025
-            </h6>
+            </p>
             <div className="menu-info-item mt-6 sm:mt-10 lg:mt-14">
-              <h6 className="text-[#a374ff] font-semibold text-[11px] sm:text-xs uppercase tracking-[0.2rem] mb-2 sm:mb-3">
+              <p className="text-[#a374ff] font-semibold text-[11px] sm:text-xs uppercase tracking-[0.2rem] mb-2 sm:mb-3">
                 Follow Us
-              </h6>
+              </p>
               <div className="flex flex-wrap gap-4 sm:gap-6 text-xs sm:text-sm text-neutral-300">
                 <a
                   href="https://www.instagram.com/"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="Follow CrevoSys on Instagram"
                   className="hover:text-white transition-colors duration-200"
                 >
                   Instagram
@@ -362,6 +362,7 @@ export default function Navigation() {
                   href="https://www.facebook.com/CrevoSys"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="Follow CrevoSys on Facebook"
                   className="hover:text-white transition-colors duration-200"
                 >
                   Facebook
@@ -370,6 +371,7 @@ export default function Navigation() {
                   href="https://www.linkedin.com/company/crevosys-official/"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="Follow CrevoSys on LinkedIn"
                   className="hover:text-white transition-colors duration-200"
                 >
                   Linkedin

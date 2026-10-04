@@ -86,14 +86,14 @@ const GetTouch = () => {
     <div
       ref={sectionRef}
       className="py-14 relative min-h-full m-2 md:container md:mx-auto xl:container xl:mx-auto">
-      <h4 className="get-touch-badge flex gap-2 items-center text-2xl mx-auto justify-center text-white">
+      <div className="get-touch-badge flex gap-2 items-center text-2xl mx-auto justify-center text-white">
         <ArrowRight /> <span>Get in touch</span>
-      </h4>
+      </div>
       <hr className="get-touch-divider my-8 border-gray-200/10 origin-center" />
-      <h1 className="get-touch-title md:text-8xl font-heading uppercase text-4xl tracking-wide text-center my-3 text-white">
+      <h2 className="get-touch-title md:text-8xl font-heading uppercase text-4xl tracking-wide text-center my-3 text-white">
         Let&apos;s get started <br />
         with our team
-      </h1>
+      </h2>
       <p className="get-touch-desc text-center tracking-wide my-5 text-gray-500 text-sm md:text-base">
         Use customer data to build great and solid product experiences
         that convert.

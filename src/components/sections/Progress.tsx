@@ -158,27 +158,26 @@ const Progress: React.FC<ProgressProps> = ({ onCardHover, onCursorLeave }) => {
   return (
     <section ref={sectionRef} className="py-16 md:container md:mx-auto xl:container xl:mx-auto">
       {/* Heading */}
-      <div className={headingClass}>
-        <h1 className="progress-heading-line">How We</h1>
-        <div className={`${flexCenterClass} progress-heading-line`}>
-          <div className={transformContainerClass}>
-            <h1>Transform</h1>
+      <h2 className={headingClass}>
+        <span className="progress-heading-line block">How We</span>
+        <span className={`${flexCenterClass} progress-heading-line`}>
+          <span className={transformContainerClass}>
+            <span>Transform</span>
             <Image
               className={curveImageClass}
-              src="/curve.png"
-              alt="Curved underline for Transform"
-              height={100}
-              width={100}
-              priority
+              src="/curve.webp"
+              alt=""
+              height={56}
+              width={1248}
             />
-          </div>
+          </span>
 
-          <div>
-            <h1>Your</h1>
-          </div>
-        </div>
-        <h1 className="progress-heading-line">Business</h1>
-      </div>
+          <span>
+            <span>Your</span>
+          </span>
+        </span>
+        <span className="progress-heading-line block">Business</span>
+      </h2>
 
       {loading && (
         <div className="text-center text-white my-10">Loading...</div>
@@ -210,9 +209,9 @@ const Progress: React.FC<ProgressProps> = ({ onCardHover, onCursorLeave }) => {
                     style={{
                       backgroundColor: progress.title_bg || "#fff",
                     }}>
-                    <h1 className="font-heading text-[40px] text-black uppercase font-bold">
+                    <h3 className="font-heading text-[40px] text-black uppercase font-bold">
                       {progress.title || "Untitled"}
-                    </h1>
+                    </h3>
                   </div>
                   <p className="text-md text-gray-400 md:my-8 my-5">
                     {progress.about || "No description provided."}

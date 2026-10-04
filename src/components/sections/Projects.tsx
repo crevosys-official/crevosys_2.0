@@ -93,9 +93,9 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
             <Star className="w-3" />
             Projects
           </div>
-          <h1 className="projects-header-title text-4xl sm:text-5xl font-heading tracking-wide text-center text-zinc-200 px-4">
+          <h2 className="projects-header-title text-4xl sm:text-5xl font-heading tracking-wide text-center text-zinc-200 px-4">
             Selected Works &amp; Case Studies
-          </h1>
+          </h2>
           <p className="projects-header-desc xl:w-1/2 md:w-2/3 w-full text-md tracking-wide text-gray-400 text-center flex mx-auto px-4">
             Explore our curated portfolio of recent digital experiences, management systems, and high-impact platforms.
           </p>
@@ -181,6 +181,7 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}
+                          aria-label={`Live preview of ${project.title}`}
                           className="inline-flex items-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl bg-white text-zinc-950 font-semibold text-xs sm:text-sm tracking-wide transition-all duration-300 shadow-[0_10px_25px_rgba(0,0,0,0.5)] hover:bg-zinc-100 hover:scale-105 active:scale-95 cursor-pointer"
                         >
                           <span>Live Preview</span>
@@ -193,6 +194,7 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
                           e.stopPropagation();
                           setSelectedProject(project);
                         }}
+                        aria-label={`View case study for ${project.title}`}
                         className="inline-flex items-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl bg-white/10 text-white font-medium text-xs sm:text-sm tracking-wide border border-white/15 backdrop-blur-md transition-all duration-300 hover:bg-white/20 hover:border-white/30 cursor-pointer"
                       >
                         <span>View Case Study</span>

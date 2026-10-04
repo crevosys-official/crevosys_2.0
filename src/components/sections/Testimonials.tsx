@@ -320,9 +320,9 @@ const Testimonials: React.FC<TestimonialsProps> = ({
               <Star className="w-3" />
               Testimonials
             </div>
-            <h1 className="testimonial-title text-4xl font-heading tracking-wide text-center text-zinc-200">
+            <h2 className="testimonial-title text-4xl font-heading tracking-wide text-center text-zinc-200">
               Our Happy Clients
-            </h1>
+            </h2>
             <p className="testimonial-desc w-fit text-md md:text-lg tracking-wide text-gray-400 text-center flex mx-auto">
               Hear from clients who&apos;ve experienced remarkable
               transformations with crevosys.

@@ -21,9 +21,10 @@ const page = () => {
             "flex items-center justify-center w-full h-full",
           ].join(" ")}>
           <Image
-            src="/gradient.png"
-            alt="gradient background"
+            src="/gradient.webp"
+            alt=""
             fill
+            sizes="100vw"
             style={{ objectFit: "cover" }}
             className="opacity-10"
             priority
@@ -32,7 +33,7 @@ const page = () => {
             <Image
               className="w-full h-auto min-h-screen opacity-30 md:opacity-100"
               src="/pricing/stars.svg"
-              alt="stars"
+              alt=""
               height={1000}
               width={1000}
               loading="lazy"
@@ -40,9 +41,9 @@ const page = () => {
           </div>
         </div>
         {/* content */}
-        <div className="relative z-10">
+        <main className="relative z-10">
           <ContactLayout />
-        </div>
+        </main>
       </div>
     </div>
   );

@@ -299,9 +299,9 @@ export default function ScrollFaq({ items = DEFAULT_FAQS }: { items?: FAQItemDat
           <MessageCircleQuestionMark className="w-3" />
           Frequently Asked Questions
         </div>
-        <h1 className="projects-header-title text-4xl sm:text-5xl font-heading tracking-wide text-center text-zinc-200 px-4">
+        <h2 className="projects-header-title text-4xl sm:text-5xl font-heading tracking-wide text-center text-zinc-200 px-4">
           Frequently Asked Questions
-        </h1>
+        </h2>
         <p className="projects-header-desc text-md tracking-wide text-gray-400 text-center mx-auto px-4">
           Got questions? We’ve got answers.
         </p>

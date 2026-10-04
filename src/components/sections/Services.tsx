@@ -161,9 +161,9 @@ const Services = () => {
             Services
           </div>
 
-          <h1 className="services-title text-4xl font-heading tracking-wide text-center text-zinc-200 px-4">
+          <h2 className="services-title text-4xl font-heading tracking-wide text-center text-zinc-200 px-4">
             Our Solutions for your Digital Growth
-          </h1>
+          </h2>
           <p className="services-desc xl:w-1/2 md:w-1/2 w-full text-md tracking-wide text-gray-400 text-center flex mx-auto px-4">
             We offer expert Webflow design, development, SEO, and support
             services tailored to boost your website&apos;s performance, user
@@ -188,7 +188,10 @@ const Services = () => {
               <div
                 key={serviceCard._id || serviceCard.id || index}
                 className="service-card-item">
-                <Link href={`/services/${slug}`}>
+                <Link
+                  href={`/services/${slug}`}
+                  aria-label={`View ${serviceCard.title} service plan`}
+                >
                   <PixelCard
                     variant={variant}
                     className="my-1 md:my-2 xl:my-10 w-full cursor-pointer hover:border-zinc-200/20">
@@ -204,9 +207,9 @@ const Services = () => {
                             loading="lazy"
                           />
                         </div>
-                        <h2 className="text-2xl md:text-3xl text-white font-semibold mt-2 line-clamp-1">
+                        <h3 className="text-2xl md:text-3xl text-white font-semibold mt-2 line-clamp-1">
                           {serviceCard.title}
-                        </h2>
+                        </h3>
                         <p className="text-gray-400 text-sm md:text-md mt-2 line-clamp-3 leading-relaxed">
                           {serviceCard.description}
                         </p>
