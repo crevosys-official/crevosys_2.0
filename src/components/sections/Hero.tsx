@@ -6,7 +6,6 @@ import React, { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { isMobileDevice } from "@/lib/animation";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -133,15 +132,6 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
       // Plays cinematic reveal when at top; skips if already scrolled midway
       // =========================================================================
       const isAlreadyScrolled = window.scrollY > 30;
-      const isMobile = isMobileDevice();
-      const preloaderOpeningFired =
-        typeof window !== "undefined" && !!window.__crevosysPreloaderOpeningDispatched;
-      const preloaderDoneFired =
-        typeof window !== "undefined" && !!window.__crevosysPreloaderDone;
-      const preloaderElement =
-        typeof document !== "undefined" && document.getElementById("site-preloader");
-      const shouldWaitForPreloader =
-        !isMobile && !!preloaderElement && !preloaderOpeningFired && !preloaderDoneFired;
 
       if (isAlreadyScrolled) {
         gsap.set(".hero-reveal-word", { yPercent: 0, rotateX: 0, opacity: 1, filter: "blur(0px)" });
@@ -151,7 +141,6 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
         gsap.set(".hero-shape-wrapper", { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" });
       } else {
         const introTl = gsap.timeline({
-          paused: shouldWaitForPreloader,
           defaults: { ease: "power4.out" },
           onComplete: () => {
             ScrollTrigger.refresh();
@@ -208,32 +197,13 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
             "-=1.1"
           );
 
-        if (shouldWaitForPreloader) {
-          const onOpening = () => {
-            if (introTl.paused()) {
-              introTl.play();
-            }
-          };
-          window.addEventListener("preloader-opening", onOpening, { once: true });
-          window.addEventListener("preloader-done", onOpening, { once: true });
-
-          // Fallback safety timeout (4.5s) so intro will never stay paused forever
-          const safetyTimer = setTimeout(() => {
-            onOpening();
-          }, 4500);
-
-          // Fast-forward intro if user scrolls immediately
-          const handleEarlyScroll = () => {
-            clearTimeout(safetyTimer);
-            if (introTl.isActive() || introTl.paused()) {
-              introTl.progress(1);
-            }
-          };
-          window.addEventListener("scroll", handleEarlyScroll, { passive: true, once: true });
-        } else {
-          // If preloader was already done or skipped, play immediately
-          introTl.play();
-        }
+        // Fast-forward intro if user scrolls immediately
+        const handleEarlyScroll = () => {
+          if (introTl.isActive()) {
+            introTl.progress(1);
+          }
+        };
+        window.addEventListener("scroll", handleEarlyScroll, { passive: true, once: true });
       }
 
       // =========================================================================
@@ -439,7 +409,7 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
                 priority
                 fetchPriority="high"
                 sizes="(max-width: 768px) 100vw, 130vw"
-                className="w-[150vw] sm:w-[130vw] sm:min-w-[1300px] max-w-none h-auto object-contain object-bottom select-none pointer-events-none scale-125 sm:scale-135 md:scale-140 lg:scale-145 translate-y-[12%] sm:translate-y-[15%] md:translate-y-[32%] drop-shadow-[0_-8px_20px_rgba(0,0,0,0.45)] md:drop-shadow-[0_-15px_45px_rgba(0,0,0,0.65)]"
+                className="w-[130vw] min-w-[1300px] max-w-none h-auto object-contain object-bottom select-none pointer-events-none scale-125 sm:scale-135 md:scale-140 lg:scale-145 translate-y-[12%] sm:translate-y-[15%] md:translate-y-[32%] drop-shadow-[0_-15px_45px_rgba(0,0,0,0.65)]"
               />
             </div>
           </div>

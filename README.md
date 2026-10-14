@@ -90,7 +90,7 @@ crevosys_2.0/
 │   │   │   └── marketing/      # Digital Marketing & Growth
 │   │   ├── team/               # Team directory page
 │   │   ├── globals.css         # Tailwind v4 configuration, theme tokens, & fonts
-│   │   ├── layout.tsx          # Root layout with Lenis provider & Preloader
+│   │   ├── layout.tsx          # Root layout with Lenis smooth scroll provider
 │   │   ├── not-found.tsx       # Custom 404 error page
 │   │   └── page.tsx            # Main Homepage
 │   ├── components/

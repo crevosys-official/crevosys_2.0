@@ -11,21 +11,6 @@ body {
   -webkit-text-size-adjust: 100%;
 }
 
-/* =========================================================================
-   Mobile Preloader Bypass:
-   Ensure the preloader overlay, split shutters, percentage counter, and
-   loading animations are never displayed on mobile screens (< 768px).
-   This completely avoids visual flash before client-side hydration occurs.
-   ========================================================================= */
-@media (max-width: 767.98px), ((hover: none) and (pointer: coarse) and (max-height: 500px)) {
-  #site-preloader {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-  }
-}
-
 @custom-variant dark (&:is(.dark *));
 
 @font-face {
