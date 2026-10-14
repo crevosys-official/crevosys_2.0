@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import gsap from "gsap";
 import { useLenis } from "@/lib/lenis";
+import { isMobileDevice } from "@/lib/animation";
 
 // Extend global window object for reliable synchronization with Hero
 declare global {
@@ -193,19 +194,12 @@ export default function Preloader() {
       }
     } catch {}
 
-    const isMobile = isMobileScreen();
+    const isMobile = isMobileDevice();
     isMobileRef.current = isMobile;
     const reducedMotion = isReducedMotion();
 
     // =========================================================================
     // PRIMARY REQUIREMENT: Mobile & Reduced-Motion Full Bypass
-    // =========================================================================
-    // Completely disable preloader execution on mobile screens (< 768px) and
-    // when reduced motion is preferred.
-    // - Do not show overlay, percentage, or animations.
-    // - Do not lock scrolling or modify overflow.
-    // - Do not start GSAP timelines or asset-loading promises.
-    // - Unblock page and dispatch completion events immediately.
     // =========================================================================
     if (isMobile || reducedMotion || hasPlayedPreloader) {
       isDoneRef.current = true;
@@ -220,6 +214,14 @@ export default function Preloader() {
     // Prevent duplicate animation in React Strict Mode
     if (initializedRef.current) return;
     initializedRef.current = true;
+
+    // Dismiss immediately if window is resized to mobile during preloading
+    const handleResize = () => {
+      if (isMobileDevice() && !isDoneRef.current) {
+        handleSkip();
+      }
+    };
+    window.addEventListener("resize", handleResize, { passive: true });
 
     // Desktop: Lock scroll during preloading
     if (lenisRef.current) {
@@ -421,7 +423,7 @@ export default function Preloader() {
 
     return () => {
       clearTimeout(safetyTimer);
-      window.removeEventListener("resize", handleResizeOrOrientation);
+      window.removeEventListener("resize", handleResize);
       window.removeEventListener("orientationchange", handleResizeOrOrientation);
       masterTl.kill();
       cleanupAndUnlock();

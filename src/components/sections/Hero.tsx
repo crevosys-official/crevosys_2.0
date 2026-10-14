@@ -6,6 +6,7 @@ import React, { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { isMobileDevice } from "@/lib/animation";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -132,30 +133,17 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
       // Plays cinematic reveal when at top; skips if already scrolled midway
       // =========================================================================
       const isAlreadyScrolled = window.scrollY > 30;
-      const isMobile =
-        typeof window !== "undefined" &&
-        (window.matchMedia("(max-width: 767.98px)").matches ||
-          window.matchMedia("(hover: none) and (pointer: coarse) and (max-height: 500px)").matches);
-      const prefersReducedMotion =
-        typeof window !== "undefined" &&
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
+      const isMobile = isMobileDevice();
       const preloaderOpeningFired =
         typeof window !== "undefined" && !!window.__crevosysPreloaderOpeningDispatched;
       const preloaderDoneFired =
         typeof window !== "undefined" && !!window.__crevosysPreloaderDone;
       const preloaderElement =
         typeof document !== "undefined" && document.getElementById("site-preloader");
-
-      // On mobile devices or when reduced motion is preferred, NEVER wait for the preloader
       const shouldWaitForPreloader =
-        !isMobile &&
-        !prefersReducedMotion &&
-        !!preloaderElement &&
-        !preloaderOpeningFired &&
-        !preloaderDoneFired;
+        !isMobile && !!preloaderElement && !preloaderOpeningFired && !preloaderDoneFired;
 
-      if (isAlreadyScrolled || prefersReducedMotion) {
+      if (isAlreadyScrolled) {
         gsap.set(".hero-reveal-word", { yPercent: 0, rotateX: 0, opacity: 1, filter: "blur(0px)" });
         gsap.set(".hero-badge", { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" });
         gsap.set(".hero-sub-line", { yPercent: 0, opacity: 1, filter: "blur(0px)" });
