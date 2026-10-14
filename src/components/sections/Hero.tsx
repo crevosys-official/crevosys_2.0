@@ -132,16 +132,30 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
       // Plays cinematic reveal when at top; skips if already scrolled midway
       // =========================================================================
       const isAlreadyScrolled = window.scrollY > 30;
+      const isMobile =
+        typeof window !== "undefined" &&
+        (window.matchMedia("(max-width: 767.98px)").matches ||
+          window.matchMedia("(hover: none) and (pointer: coarse) and (max-height: 500px)").matches);
+      const prefersReducedMotion =
+        typeof window !== "undefined" &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
       const preloaderOpeningFired =
         typeof window !== "undefined" && !!window.__crevosysPreloaderOpeningDispatched;
       const preloaderDoneFired =
         typeof window !== "undefined" && !!window.__crevosysPreloaderDone;
       const preloaderElement =
         typeof document !== "undefined" && document.getElementById("site-preloader");
-      const shouldWaitForPreloader =
-        !!preloaderElement && !preloaderOpeningFired && !preloaderDoneFired;
 
-      if (isAlreadyScrolled) {
+      // On mobile devices or when reduced motion is preferred, NEVER wait for the preloader
+      const shouldWaitForPreloader =
+        !isMobile &&
+        !prefersReducedMotion &&
+        !!preloaderElement &&
+        !preloaderOpeningFired &&
+        !preloaderDoneFired;
+
+      if (isAlreadyScrolled || prefersReducedMotion) {
         gsap.set(".hero-reveal-word", { yPercent: 0, rotateX: 0, opacity: 1, filter: "blur(0px)" });
         gsap.set(".hero-badge", { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" });
         gsap.set(".hero-sub-line", { yPercent: 0, opacity: 1, filter: "blur(0px)" });
@@ -309,9 +323,11 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_85%_65%_at_50%_-10%,rgba(59,130,246,0.12),rgba(147,51,234,0.09),rgba(0,0,0,0)_80%)] pointer-events-none" />
 
       {/* Ambient background blur lights */}
-      <div className="absolute top-[20%] left-[-10%] w-[550px] h-[450px] bg-blue-600/[0.08] blur-[140px] rounded-full pointer-events-none" />
-      <div className="absolute top-[30%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[450px] bg-gradient-to-r from-blue-600/[0.08] via-indigo-600/[0.11] to-purple-600/[0.09] blur-[135px] rounded-full pointer-events-none" />
-      <div className="absolute top-[25%] right-[-10%] w-[550px] h-[450px] bg-purple-600/[0.08] blur-[140px] rounded-full pointer-events-none" />
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[20%] left-[-10%] w-[550px] max-w-[80vw] h-[450px] bg-blue-600/[0.08] blur-[140px] rounded-full" />
+        <div className="absolute top-[30%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] max-w-[95vw] h-[450px] bg-gradient-to-r from-blue-600/[0.08] via-indigo-600/[0.11] to-purple-600/[0.09] blur-[135px] rounded-full" />
+        <div className="absolute top-[25%] right-[-10%] w-[550px] max-w-[80vw] h-[450px] bg-purple-600/[0.08] blur-[140px] rounded-full" />
+      </div>
 
       {/* Main Content Area */}
       <div
@@ -435,7 +451,7 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
                 priority
                 fetchPriority="high"
                 sizes="(max-width: 768px) 100vw, 130vw"
-                className="w-[130vw] min-w-[1300px] max-w-none h-auto object-contain object-bottom select-none pointer-events-none scale-125 sm:scale-135 md:scale-140 lg:scale-145 translate-y-[12%] sm:translate-y-[15%] md:translate-y-[32%] drop-shadow-[0_-8px_20px_rgba(0,0,0,0.45)] md:drop-shadow-[0_-15px_45px_rgba(0,0,0,0.65)]"
+                className="w-[150vw] sm:w-[130vw] sm:min-w-[1300px] max-w-none h-auto object-contain object-bottom select-none pointer-events-none scale-125 sm:scale-135 md:scale-140 lg:scale-145 translate-y-[12%] sm:translate-y-[15%] md:translate-y-[32%] drop-shadow-[0_-8px_20px_rgba(0,0,0,0.45)] md:drop-shadow-[0_-15px_45px_rgba(0,0,0,0.65)]"
               />
             </div>
           </div>

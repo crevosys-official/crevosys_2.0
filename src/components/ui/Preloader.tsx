@@ -38,6 +38,34 @@ const FLIP_WORDS = [
   },
 ];
 
+// Responsive check helpers
+const isMobileScreen = (): boolean => {
+  if (typeof window === "undefined") return false;
+  return (
+    window.matchMedia("(max-width: 767.98px)").matches ||
+    window.matchMedia("(hover: none) and (pointer: coarse) and (max-height: 500px)").matches
+  );
+};
+
+const isReducedMotion = (): boolean => {
+  if (typeof window === "undefined") return false;
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+};
+
+const notifyPreloaderOpening = () => {
+  if (typeof window !== "undefined") {
+    window.__crevosysPreloaderOpeningDispatched = true;
+    window.dispatchEvent(new CustomEvent("preloader-opening"));
+  }
+};
+
+const notifyPreloaderDone = () => {
+  if (typeof window !== "undefined") {
+    window.__crevosysPreloaderDone = true;
+    window.dispatchEvent(new CustomEvent("preloader-done"));
+  }
+};
+
 export default function Preloader() {
   const [percent, setPercent] = useState(0);
   const [wordIndex, setWordIndex] = useState(0);
@@ -52,17 +80,31 @@ export default function Preloader() {
   const progressBarRef = useRef<HTMLDivElement>(null);
 
   const lenis = useLenis();
+  const lenisRef = useRef(lenis);
   const isDoneRef = useRef(false);
+  const isMobileRef = useRef(false);
+  const initializedRef = useRef(false);
   const masterTlRef = useRef<gsap.core.Timeline | null>(null);
+
+  // Keep lenisRef up-to-date and maintain desktop scroll lock independently
+  // of the GSAP timeline lifecycle to prevent StrictMode or hook updates from restarting animations
+  useEffect(() => {
+    lenisRef.current = lenis;
+    if (lenis && !hasPlayedPreloader && !isDoneRef.current && !isMobileRef.current) {
+      lenis.stop();
+    }
+  }, [lenis]);
 
   // Force unlock scroll and cleanup
   const cleanupAndUnlock = useCallback(() => {
-    document.body.style.overflow = "";
-    document.documentElement.style.overflow = "";
-    if (lenis) {
-      lenis.start();
+    if (typeof document !== "undefined") {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
     }
-  }, [lenis]);
+    if (lenisRef.current) {
+      lenisRef.current.start();
+    }
+  }, []);
 
   // Immediate skip / instant dismissal
   const handleSkip = useCallback(() => {
@@ -74,25 +116,20 @@ export default function Preloader() {
       masterTlRef.current.kill();
     }
 
-    if (typeof window !== "undefined") {
-      window.__crevosysPreloaderOpeningDispatched = true;
-      window.__crevosysPreloaderDone = true;
-      window.dispatchEvent(new CustomEvent("preloader-opening"));
-      window.dispatchEvent(new CustomEvent("preloader-done"));
-    }
-
+    notifyPreloaderOpening();
+    notifyPreloaderDone();
     cleanupAndUnlock();
 
     // Fast shutter slide out
     if (topPanelRef.current && bottomPanelRef.current) {
       gsap.to(topPanelRef.current, {
         yPercent: -100,
-        duration: 0.4,
+        duration: 0.35,
         ease: "power3.inOut",
       });
       gsap.to(bottomPanelRef.current, {
         yPercent: 100,
-        duration: 0.4,
+        duration: 0.35,
         ease: "power3.inOut",
         onComplete: () => setIsComplete(true),
       });
@@ -107,12 +144,46 @@ export default function Preloader() {
     }
   }, [cleanupAndUnlock]);
 
-  // Dedicated Lenis scroll lock
-  useEffect(() => {
-    if (lenis && !isComplete && !hasPlayedPreloader) {
-      lenis.stop();
-    }
-  }, [lenis, isComplete]);
+  const flipToWord = useCallback((newIndex: number) => {
+    const el = wordRef.current;
+    if (!el) return;
+
+    // 3D Flip Out
+    gsap.to(el, {
+      rotateX: -90,
+      y: -24,
+      opacity: 0,
+      filter: "blur(6px)",
+      duration: 0.26,
+      ease: "power2.in",
+      onComplete: () => {
+        el.textContent = FLIP_WORDS[newIndex].text;
+        el.className = `inline-block font-extrabold text-3xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r ${FLIP_WORDS[newIndex].gradient} will-change-transform`;
+        el.style.filter = `drop-shadow(0 0 25px ${FLIP_WORDS[newIndex].glow})`;
+
+        setWordIndex(newIndex);
+
+        // 3D Flip In
+        gsap.fromTo(
+          el,
+          {
+            rotateX: 90,
+            y: 24,
+            opacity: 0,
+            filter: "blur(6px)",
+          },
+          {
+            rotateX: 0,
+            y: 0,
+            opacity: 1,
+            filter: "blur(0px)",
+            duration: 0.38,
+            ease: "back.out(1.4)",
+          }
+        );
+      },
+    });
+  }, []);
 
   useEffect(() => {
     // Clear any stale sessionStorage lock from previous buggy implementations
@@ -122,67 +193,117 @@ export default function Preloader() {
       }
     } catch {}
 
-    // If preloader has already completed, skip immediately
-    if (hasPlayedPreloader) {
-      setIsComplete(true);
-      cleanupAndUnlock();
+    const isMobile = isMobileScreen();
+    isMobileRef.current = isMobile;
+    const reducedMotion = isReducedMotion();
 
-      if (typeof window !== "undefined") {
-        window.__crevosysPreloaderOpeningDispatched = true;
-        window.__crevosysPreloaderDone = true;
-        window.dispatchEvent(new CustomEvent("preloader-opening"));
-        window.dispatchEvent(new CustomEvent("preloader-done"));
-      }
+    // =========================================================================
+    // PRIMARY REQUIREMENT: Mobile & Reduced-Motion Full Bypass
+    // =========================================================================
+    // Completely disable preloader execution on mobile screens (< 768px) and
+    // when reduced motion is preferred.
+    // - Do not show overlay, percentage, or animations.
+    // - Do not lock scrolling or modify overflow.
+    // - Do not start GSAP timelines or asset-loading promises.
+    // - Unblock page and dispatch completion events immediately.
+    // =========================================================================
+    if (isMobile || reducedMotion || hasPlayedPreloader) {
+      isDoneRef.current = true;
+      hasPlayedPreloader = true;
+      cleanupAndUnlock();
+      notifyPreloaderOpening();
+      notifyPreloaderDone();
+      setIsComplete(true);
       return;
     }
 
-    // Lock scroll during preloading
-    if (lenis) {
-      lenis.stop();
+    // Prevent duplicate animation in React Strict Mode
+    if (initializedRef.current) return;
+    initializedRef.current = true;
+
+    // Desktop: Lock scroll during preloading
+    if (lenisRef.current) {
+      lenisRef.current.stop();
     }
     document.body.style.overflow = "hidden";
     document.documentElement.style.overflow = "hidden";
 
-    const flipToWord = (newIndex: number) => {
-      const el = wordRef.current;
-      if (!el) return;
+    // Hard safety timeout: Desktop preloader will NEVER hang or block the user (3.5s max)
+    const safetyTimer = setTimeout(() => {
+      if (!isDoneRef.current) {
+        console.warn("[Preloader] Safety timeout reached (3.5s). Forcing completion to unblock view.");
+        handleSkip();
+      }
+    }, 3500);
 
-      // 3D Flip Out
-      gsap.to(el, {
-        rotateX: -90,
-        y: -24,
-        opacity: 0,
-        filter: "blur(6px)",
-        duration: 0.26,
-        ease: "power2.in",
-        onComplete: () => {
-          el.textContent = FLIP_WORDS[newIndex].text;
-          el.className = `inline-block font-extrabold text-3xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r ${FLIP_WORDS[newIndex].gradient} will-change-transform`;
-          el.style.filter = `drop-shadow(0 0 25px ${FLIP_WORDS[newIndex].glow})`;
-
-          setWordIndex(newIndex);
-
-          // 3D Flip In
-          gsap.fromTo(
-            el,
-            {
-              rotateX: 90,
-              y: 24,
-              opacity: 0,
-              filter: "blur(6px)",
-            },
-            {
-              rotateX: 0,
-              y: 0,
-              opacity: 1,
-              filter: "blur(0px)",
-              duration: 0.38,
-              ease: "back.out(1.4)",
-            }
-          );
-        },
-      });
+    // Viewport resize & orientation change handler
+    const handleResizeOrOrientation = () => {
+      if (isMobileScreen()) {
+        handleSkip();
+      }
     };
+    window.addEventListener("resize", handleResizeOrOrientation, { passive: true });
+    window.addEventListener("orientationchange", handleResizeOrOrientation, { passive: true });
+
+    // =========================================================================
+    // Resilient Asset Tracking for Desktop
+    // =========================================================================
+    // Ensures missing/failed assets, slow networks, or rejected promises
+    // cannot hang progress at 0%. Errors are recorded with console.warn and resolved.
+    // =========================================================================
+    const trackCriticalAssets = (): Promise<void> => {
+      if (typeof window === "undefined") return Promise.resolve();
+      const assetPromises: Promise<void>[] = [];
+
+      // 1. Font readiness check
+      if (document.fonts && document.fonts.ready) {
+        assetPromises.push(
+          document.fonts.ready
+            .then(() => {})
+            .catch((err) => {
+              console.warn("[Preloader] Font loading warning (non-blocking):", err);
+            })
+        );
+      }
+
+      // 2. Critical hero graphic check (non-blocking, records failures)
+      const criticalImages = ["/elements/hero_shape.webp", "/gradient.webp"];
+      criticalImages.forEach((src) => {
+        assetPromises.push(
+          new Promise<void>((resolve) => {
+            const img = new Image();
+            const onDone = () => {
+              img.onload = null;
+              img.onerror = null;
+              resolve();
+            };
+            img.onload = onDone;
+            img.onerror = (e) => {
+              console.warn(`[Preloader] Non-blocking warning: failed to preload asset "${src}"`, e);
+              onDone(); // Always resolve so progress is never stuck at 0%
+            };
+            img.src = src;
+            if (img.complete) {
+              onDone();
+            }
+          })
+        );
+      });
+
+      // 1.5s asset timeout fallback to prevent slow network stalls
+      const assetTimeoutPromise = new Promise<void>((resolve) => {
+        setTimeout(resolve, 1500);
+      });
+
+      return Promise.race([
+        Promise.allSettled(assetPromises).then(() => {}),
+        assetTimeoutPromise,
+      ]);
+    };
+
+    trackCriticalAssets().catch((err) => {
+      console.warn("[Preloader] Asset tracking encountered error:", err);
+    });
 
     const counterObj = { value: 0 };
     const masterTl = gsap.timeline();
@@ -239,10 +360,7 @@ export default function Preloader() {
 
     // 4. Trigger Hero entrance animation as shutters begin opening
     masterTl.add(() => {
-      if (typeof window !== "undefined") {
-        window.__crevosysPreloaderOpeningDispatched = true;
-        window.dispatchEvent(new CustomEvent("preloader-opening"));
-      }
+      notifyPreloaderOpening();
     });
 
     // Lift & fade center text
@@ -295,20 +413,20 @@ export default function Preloader() {
     masterTl.add(() => {
       isDoneRef.current = true;
       hasPlayedPreloader = true;
+      clearTimeout(safetyTimer);
       cleanupAndUnlock();
-
-      if (typeof window !== "undefined") {
-        window.__crevosysPreloaderDone = true;
-        window.dispatchEvent(new CustomEvent("preloader-done"));
-      }
+      notifyPreloaderDone();
       setIsComplete(true);
     });
 
     return () => {
+      clearTimeout(safetyTimer);
+      window.removeEventListener("resize", handleResizeOrOrientation);
+      window.removeEventListener("orientationchange", handleResizeOrOrientation);
       masterTl.kill();
       cleanupAndUnlock();
     };
-  }, [cleanupAndUnlock, lenis]);
+  }, [cleanupAndUnlock, flipToWord, handleSkip]);
 
   if (isComplete) return null;
 
@@ -316,7 +434,7 @@ export default function Preloader() {
     <div
       ref={containerRef}
       id="site-preloader"
-      className="fixed inset-0 z-[99999] pointer-events-auto select-none overflow-hidden bg-transparent"
+      className="hidden md:block fixed inset-0 z-[99999] pointer-events-auto select-none overflow-hidden bg-transparent"
       aria-label="Site Loading"
     >
       {/* Top Split Shutter */}

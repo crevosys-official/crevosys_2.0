@@ -125,6 +125,9 @@ export default function ScrollFaq({ items = DEFAULT_FAQS }: { items?: FAQItemDat
           aSize: { width: number; height: number; contentWidth: number };
         }> = [];
 
+        const containerWidth = containerRef.current?.getBoundingClientRect().width || window.innerWidth;
+        const maxBubbleWidth = Math.max(260, containerWidth - 32);
+
         // Pre-measure and lock content widths to avoid wrapping jitter
         faqItems.forEach((item) => {
           const qMsg = item.querySelector<HTMLElement>(".faq-question");
@@ -134,14 +137,22 @@ export default function ScrollFaq({ items = DEFAULT_FAQS }: { items?: FAQItemDat
           const qSize = measureBubble(qMsg);
           const aSize = measureBubble(aMsg);
 
+          // Constrain width to never exceed parent container bounds on mobile
+          qSize.width = Math.min(qSize.width, maxBubbleWidth * 0.92);
+          aSize.width = Math.min(aSize.width, maxBubbleWidth);
+          qSize.contentWidth = Math.min(qSize.contentWidth, maxBubbleWidth * 0.85);
+          aSize.contentWidth = Math.min(aSize.contentWidth, maxBubbleWidth * 0.92);
+
           const qContent = qMsg.querySelector<HTMLElement>(".faq-content");
           const aContent = aMsg.querySelector<HTMLElement>(".faq-content");
           if (qContent) {
             qContent.style.width = `${qSize.contentWidth}px`;
+            qContent.style.maxWidth = "100%";
             qContent.style.flexShrink = "0";
           }
           if (aContent) {
             aContent.style.width = `${aSize.contentWidth}px`;
+            aContent.style.maxWidth = "100%";
             aContent.style.flexShrink = "0";
           }
 
@@ -298,7 +309,7 @@ export default function ScrollFaq({ items = DEFAULT_FAQS }: { items?: FAQItemDat
             <div className="flex justify-start">
               <div className="faq-question relative overflow-hidden bg-[#071FA9] border border-blue-400/30 text-white shadow-[0_8px_32px_rgba(7,31,169,0.35),inset_0_1px_0_rgba(255,255,255,0.15)] px-6 py-5 md:px-7 md:py-5 rounded-2xl md:rounded-3xl rounded-bl-sm max-w-[88%] sm:max-w-[75%] backdrop-blur-md will-change-[width,height,transform]">
                 <TypingDots dotColor="bg-white" />
-                <div className="faq-content w-max max-w-full flex flex-col gap-2">
+                <div className="faq-content w-full max-w-full flex flex-col gap-2">
                   <span className="text-[11px] uppercase tracking-wider font-semibold text-blue-200">
                     Question
                   </span>
@@ -313,7 +324,7 @@ export default function ScrollFaq({ items = DEFAULT_FAQS }: { items?: FAQItemDat
             <div className="flex justify-end w-full">
               <div className="faq-answer relative overflow-hidden bg-[#D79DBA] border border-white/30 text-zinc-950 shadow-[0_8px_32px_rgba(215,157,186,0.3),inset_0_1px_0_rgba(255,255,255,0.4)] px-6 py-5 md:px-7 md:py-5 rounded-2xl md:rounded-3xl rounded-br-sm w-full sm:w-[80%] md:w-[75%] backdrop-blur-md will-change-[width,height,transform]">
                 <TypingDots dotColor="bg-zinc-900" />
-                <div className="faq-content w-max max-w-full flex flex-col gap-2">
+                <div className="faq-content w-full max-w-full flex flex-col gap-2">
                   <span className="text-[11px] uppercase tracking-wider font-bold text-zinc-950/80">
                     CrevoSys
                   </span>

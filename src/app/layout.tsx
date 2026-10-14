@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter_Tight, Bebas_Neue, Anton } from "next/font/google";
 import "./globals.css";
 import { ReactLenis } from "@/lib/lenis";
@@ -25,6 +25,14 @@ const anton = Anton({
   variable: "--font-anton",
   display: "swap",
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: "cover",
+};
 
 export const metadata: Metadata = {
   title: "CrevoSys | Digital Product Agency & Software Solutions",

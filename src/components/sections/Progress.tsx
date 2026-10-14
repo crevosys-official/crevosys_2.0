@@ -64,8 +64,8 @@ interface ProgressProps {
 
 // css class constants
 const headingClass =
-  "text-white text-center md:text-7xl xl:text-8xl text-5xl font-heading uppercase font-bold tracking-wide flex flex-col justify-center items-center cursor-pointer";
-const flexCenterClass = "flex gap-4 mx-auto justify-center items-center";
+  "text-white text-center text-3xl sm:text-5xl md:text-7xl xl:text-8xl font-heading uppercase font-bold tracking-wide flex flex-col justify-center items-center cursor-pointer";
+const flexCenterClass = "flex flex-wrap sm:flex-nowrap gap-2 sm:gap-4 mx-auto justify-center items-center";
 const transformContainerClass = "relative";
 const curveImageClass = "progress-curve absolute bottom-1 w-full -rotate-1 origin-left";
 
@@ -156,7 +156,7 @@ const Progress: React.FC<ProgressProps> = ({ onCardHover, onCursorLeave }) => {
   );
 
   return (
-    <section ref={sectionRef} className="py-16 md:container md:mx-auto xl:container xl:mx-auto">
+    <section ref={sectionRef} className="py-12 sm:py-16 w-full max-w-full overflow-hidden md:container md:mx-auto xl:container xl:mx-auto">
       {/* Heading */}
       <h2 className={headingClass}>
         <span className="progress-heading-line block">How We</span>
@@ -186,7 +186,7 @@ const Progress: React.FC<ProgressProps> = ({ onCardHover, onCursorLeave }) => {
 
       {!loading && !error && (
         <div
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  justify-between md:p-5 gap-7 mt-20"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-between md:p-5 gap-7 mt-16 sm:mt-20"
           onMouseLeave={onCursorLeave}>
           {progressData.length === 0 ? (
             <div className="col-span-full text-center text-gray-400">
@@ -201,15 +201,15 @@ const Progress: React.FC<ProgressProps> = ({ onCardHover, onCursorLeave }) => {
               return (
                 <div
                   key={index}
-                  className="progress-card-item relative bg-[#191919]/30 border-zinc-300/10 border text-white p-10 mb-10 md:mb-0 xl:mb-0 rounded-xl"
+                  className="progress-card-item relative bg-[#191919]/30 border-zinc-300/10 border text-white p-6 sm:p-8 md:p-10 mb-8 md:mb-0 xl:mb-0 rounded-xl"
                   onMouseEnter={() => onCardHover?.(variant)}
                   onMouseLeave={onCursorLeave}>
                   <div
-                    className="progress-tag w-fit -rotate-5 pt-2 px-4 rounded-md absolute -top-10 flex items-center justify-center"
+                    className="progress-tag w-fit -rotate-5 pt-1.5 sm:pt-2 px-3 sm:px-4 rounded-md absolute -top-7 sm:-top-10 flex items-center justify-center"
                     style={{
                       backgroundColor: progress.title_bg || "#fff",
                     }}>
-                    <h3 className="font-heading text-[40px] text-black uppercase font-bold">
+                    <h3 className="font-heading text-2xl sm:text-3xl md:text-[40px] text-black uppercase font-bold">
                       {progress.title || "Untitled"}
                     </h3>
                   </div>

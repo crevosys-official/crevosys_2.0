@@ -291,8 +291,8 @@ const Testimonials: React.FC<TestimonialsProps> = ({
   const displayedFeedback = showAll ? feedback : feedback.slice(0, 4);
 
   return (
-    <div ref={sectionRef} className="testimonial-bg bg-zinc-900/25 relative">
-      <div className="w-full h-full bg-zinc-900/20 backdrop-blur-3xl py-4">
+    <div ref={sectionRef} className="testimonial-bg bg-zinc-900/25 relative overflow-hidden">
+      <div className="w-full h-full bg-zinc-900/20 backdrop-blur-3xl py-4 overflow-hidden relative">
         {/* Decorative 3D elements */}
         <Image
           ref={bgImage1Ref}
@@ -305,7 +305,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({
         />
         <Image
           ref={bgImage2Ref}
-          className="absolute -bottom-50 -right-60 z-0 pointer-events-none"
+          className="absolute -bottom-50 -right-60 hidden md:inline-flex xl:inline-flex z-0 pointer-events-none"
           src="/reviews.webp"
           width={700}
           height={100}

@@ -83,8 +83,10 @@ const Projects: React.FC<ProjectsProps> = ({ onCursorEnter, onCursorLeave }) => 
       ref={containerRef}
     >
       {/* Background ambient lighting */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-purple-600/10 rounded-full blur-[160px] pointer-events-none -z-10" />
-      <div className="absolute bottom-1/4 right-10 w-[600px] h-[500px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none -z-10" />
+      <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] max-w-[90vw] h-[600px] bg-purple-600/10 rounded-full blur-[160px]" />
+        <div className="absolute bottom-1/4 right-0 sm:right-10 w-[600px] max-w-[80vw] h-[500px] bg-blue-600/10 rounded-full blur-[140px]" />
+      </div>
 
       <div className="max-w-6xl mx-auto px-5 lg:px-8">
         {/* Section Header */}
