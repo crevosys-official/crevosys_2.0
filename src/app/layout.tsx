@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     siteName: "CrevoSys",
     images: [
       {
-        url: "https://i.postimg.cc/cHjM4mkK/thubnail.jpg",
+        url: "/thubnail.webp",
         width: 1280,
         height: 859,
         alt: "CrevoSys | Digital Product Agency & Software Solutions",
