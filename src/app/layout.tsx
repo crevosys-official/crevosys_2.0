@@ -34,9 +34,34 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.crevosys.com"),
   title: "CrevoSys | Digital Product Agency & Software Solutions",
   description:
     "CrevoSys empowers businesses with bespoke digital solutions, high-performance web development, modern UI/UX design, and intelligent AI automation services.",
+  openGraph: {
+    title: "CrevoSys | Digital Product Agency & Software Solutions",
+    description:
+      "CrevoSys empowers businesses with bespoke digital solutions, high-performance web development, modern UI/UX design, and intelligent AI automation services.",
+    url: "https://www.crevosys.com",
+    siteName: "CrevoSys",
+    images: [
+      {
+        url: "https://i.postimg.cc/cHjM4mkK/thubnail.jpg",
+        width: 1280,
+        height: 859,
+        alt: "CrevoSys | Digital Product Agency & Software Solutions",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CrevoSys | Digital Product Agency & Software Solutions",
+    description:
+      "CrevoSys empowers businesses with bespoke digital solutions, high-performance web development, modern UI/UX design, and intelligent AI automation services.",
+    images: ["https://i.postimg.cc/cHjM4mkK/thubnail.jpg"],
+  },
 };
 
 export default function RootLayout({
