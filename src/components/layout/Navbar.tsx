@@ -332,10 +332,10 @@ export default function Navigation() {
               crevosysofficial@gmail.com
             </a>
             <a
-              href="tel:+8801601321799"
+              href="tel:+8801855245281"
               className="menu-info-item block text-lg sm:text-2xl md:text-3xl lg:text-4xl font-normal leading-tight tracking-tight hover:text-[#a374ff] transition-colors mt-1"
             >
-              +8801601321799
+              +8801855245281
             </a>
             <div className="my-2 sm:my-3"></div>
             <p className="menu-info-item text-xs sm:text-base md:text-lg text-neutral-400">
@@ -350,7 +350,7 @@ export default function Navigation() {
               </p>
               <div className="flex flex-wrap gap-4 sm:gap-6 text-xs sm:text-sm text-neutral-300">
                 <a
-                  href="https://www.instagram.com/"
+                  href="https://www.instagram.com/crevosys"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Follow CrevoSys on Instagram"
