@@ -37,15 +37,23 @@ export default function ScrollToTop() {
     if (lenis) {
       lenis.on("scroll", updateScroll);
     }
+    let lastWidth = typeof window !== "undefined" ? window.innerWidth : 0;
+    const handleResize = () => {
+      if (typeof window === "undefined") return;
+      if (window.innerWidth === lastWidth) return;
+      lastWidth = window.innerWidth;
+      updateScroll();
+    };
+
     window.addEventListener("scroll", updateScroll, { passive: true });
-    window.addEventListener("resize", updateScroll, { passive: true });
+    window.addEventListener("resize", handleResize, { passive: true });
 
     return () => {
       if (lenis) {
         lenis.off("scroll", updateScroll);
       }
       window.removeEventListener("scroll", updateScroll);
-      window.removeEventListener("resize", updateScroll);
+      window.removeEventListener("resize", handleResize);
     };
   }, [lenis]);
 

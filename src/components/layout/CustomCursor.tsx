@@ -59,6 +59,7 @@ const VARIANTS_CONFIG = {
 };
 
 const CustomCursor: React.FC<CustomCursorProps> = ({ variant }) => {
+  const [isTouchDevice, setIsTouchDevice] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
   const rawX = useMotionValue(-100);
   const rawY = useMotionValue(-100);
@@ -68,15 +69,20 @@ const CustomCursor: React.FC<CustomCursorProps> = ({ variant }) => {
   const y = useSpring(rawY, { damping: 28, stiffness: 450 });
 
   useEffect(() => {
-    // Only enable cursor on devices that support hover/fine pointer
-    if (window.matchMedia("(pointer: coarse)").matches) {
-      return;
-    }
+    if (typeof window === "undefined") return;
+
+    const isTouch =
+      window.matchMedia("(pointer: coarse)").matches ||
+      window.innerWidth < 768 ||
+      /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    setIsTouchDevice(isTouch);
+    if (isTouch) return;
 
     const move = (e: MouseEvent) => {
       rawX.set(e.clientX);
       rawY.set(e.clientY);
-      if (!isVisible) setIsVisible(true);
+      setIsVisible(true);
     };
 
     const handleMouseLeave = () => setIsVisible(false);
@@ -91,7 +97,11 @@ const CustomCursor: React.FC<CustomCursorProps> = ({ variant }) => {
       document.removeEventListener("mouseleave", handleMouseLeave);
       document.removeEventListener("mouseenter", handleMouseEnter);
     };
-  }, [isVisible, rawX, rawY]);
+  }, [rawX, rawY]);
+
+  if (isTouchDevice) {
+    return null;
+  }
 
   const cfg = VARIANTS_CONFIG[variant] || VARIANTS_CONFIG.default;
 

@@ -28,8 +28,6 @@ const anton = Anton({
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
   viewportFit: "cover",
 };
 
@@ -80,15 +78,15 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
       </head>
-      <ReactLenis root>
-        <body
-          className={`${interTight.variable} ${bebasNeue.variable} ${anton.variable} antialiased`}
-        >
+      <body
+        className={`${interTight.variable} ${bebasNeue.variable} ${anton.variable} antialiased`}
+      >
+        <ReactLenis root>
           {children}
           <ScrollToTop />
           <Toaster />
-        </body>
-      </ReactLenis>
+        </ReactLenis>
+      </body>
     </html>
   );
 }
