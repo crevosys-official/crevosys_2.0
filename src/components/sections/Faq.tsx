@@ -4,8 +4,8 @@ import React, { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { CircleHelp, MailQuestion, MessageCircleQuestionMark, Star } from "lucide-react";
-import { shouldRunAnimations } from "@/lib/animation";
+import { MessageCircleQuestionMark } from "lucide-react";
+import { prefersReducedMotion } from "@/lib/animation";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -51,237 +51,78 @@ const DEFAULT_FAQS: FAQItemData[] = [
   },
 ];
 
-const TYPING_WIDTH = 84;
-const TYPING_HEIGHT = 52;
-
-function TypingDots({ dotColor = "bg-zinc-400" }: { dotColor?: string }) {
-  return (
-    <div className="typing-indicator absolute inset-0 hidden md:flex items-center justify-center gap-1.5 pointer-events-none">
-      <span className={`w-2 h-2 rounded-full ${dotColor} animate-typing-pulse`} />
-      <span
-        className={`w-2 h-2 rounded-full ${dotColor} animate-typing-pulse`}
-        style={{ animationDelay: "0.2s" }}
-      />
-      <span
-        className={`w-2 h-2 rounded-full ${dotColor} animate-typing-pulse`}
-        style={{ animationDelay: "0.4s" }}
-      />
-    </div>
-  );
-}
-
 export default function ScrollFaq({ items = DEFAULT_FAQS }: { items?: FAQItemData[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
       if (!containerRef.current) return;
+      if (prefersReducedMotion()) return;
 
-      // ── MOBILE / iOS: Skip ALL animations. Content visible via CSS defaults. ──
-      if (!shouldRunAnimations()) return;
-
-
-      // Helper to measure native rendered bubble dimensions
-      const measureBubble = (msg: HTMLElement) => {
-        const content = msg.querySelector<HTMLElement>(".faq-content");
-        const typing = msg.querySelector<HTMLElement>(".typing-indicator");
-        const paragraphs = content ? content.querySelectorAll("p") : [];
-
-        gsap.set(msg, { clearProps: "all" });
-        if (content) {
-          gsap.set(content, { clearProps: "all" });
-          content.style.width = "";
-          content.style.flexShrink = "";
-        }
-        if (paragraphs.length) gsap.set(paragraphs, { clearProps: "all" });
-        if (typing) gsap.set(typing, { clearProps: "all" });
-
-        const rect = msg.getBoundingClientRect();
-        const contentRect = content ? content.getBoundingClientRect() : null;
-
-        return {
-          width: Math.ceil(rect.width),
-          height: Math.ceil(rect.height),
-          contentWidth: contentRect ? Math.ceil(contentRect.width) : Math.ceil(rect.width),
-        };
-      };
-
-      const initAnimations = () => {
-        // Animate Section Header
-        gsap.fromTo(
-          ".faq-header",
-          { y: 40, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            ease: "sine.out",
-            scrollTrigger: {
-              trigger: ".faq-header",
-              start: "top 85%",
-              end: "top 60%",
-              scrub: 1.2,
-            },
-          }
-        );
-
-        const faqItems = gsap.utils.toArray<HTMLElement>(".faq-item");
-        const itemSizes: Array<{
-          qSize: { width: number; height: number; contentWidth: number };
-          aSize: { width: number; height: number; contentWidth: number };
-        }> = [];
-
-        const containerWidth = containerRef.current?.getBoundingClientRect().width || window.innerWidth;
-        const maxBubbleWidth = Math.max(260, containerWidth - 32);
-
-        // Pre-measure and lock content widths to avoid wrapping jitter
-        faqItems.forEach((item) => {
-          const qMsg = item.querySelector<HTMLElement>(".faq-question");
-          const aMsg = item.querySelector<HTMLElement>(".faq-answer");
-          if (!qMsg || !aMsg) return;
-
-          const qSize = measureBubble(qMsg);
-          const aSize = measureBubble(aMsg);
-
-          // Constrain width to never exceed parent container bounds on mobile
-          qSize.width = Math.min(qSize.width, maxBubbleWidth * 0.92);
-          aSize.width = Math.min(aSize.width, maxBubbleWidth);
-          qSize.contentWidth = Math.min(qSize.contentWidth, maxBubbleWidth * 0.85);
-          aSize.contentWidth = Math.min(aSize.contentWidth, maxBubbleWidth * 0.92);
-
-          const qContent = qMsg.querySelector<HTMLElement>(".faq-content");
-          const aContent = aMsg.querySelector<HTMLElement>(".faq-content");
-          if (qContent) {
-            qContent.style.width = `${qSize.contentWidth}px`;
-            qContent.style.maxWidth = "100%";
-            qContent.style.flexShrink = "0";
-          }
-          if (aContent) {
-            aContent.style.width = `${aSize.contentWidth}px`;
-            aContent.style.maxWidth = "100%";
-            aContent.style.flexShrink = "0";
-          }
-
-          itemSizes.push({ qSize, aSize });
-        });
-
-        // Set Initial Collapsed States
-        faqItems.forEach((item) => {
-          const qMsg = item.querySelector<HTMLElement>(".faq-question");
-          const aMsg = item.querySelector<HTMLElement>(".faq-answer");
-          if (!qMsg || !aMsg) return;
-
-          const qTyping = qMsg.querySelector<HTMLElement>(".typing-indicator");
-          const qContent = qMsg.querySelector<HTMLElement>(".faq-content");
-          const aTyping = aMsg.querySelector<HTMLElement>(".typing-indicator");
-          const aContent = aMsg.querySelector<HTMLElement>(".faq-content");
-          const aParagraphs = aContent ? aContent.querySelectorAll("p") : [];
-
-          gsap.set(qMsg, {
-            width: TYPING_WIDTH,
-            height: TYPING_HEIGHT,
-            opacity: 0,
-            scale: 0.3,
-            transformOrigin: "bottom left",
-          });
-
-          gsap.set(aMsg, {
-            width: TYPING_WIDTH,
-            height: TYPING_HEIGHT,
-            opacity: 0,
-            scale: 0.3,
-            transformOrigin: "bottom right",
-          });
-
-          gsap.set([qTyping, aTyping], { opacity: 1, scale: 1 });
-          gsap.set([qContent, aContent], { opacity: 0 });
-        });
-
-        // Master Timeline linked to Scroll
-        const masterTl = gsap.timeline({
+      // 1. Header Reveal
+      gsap.fromTo(
+        ".faq-header",
+        { y: 35, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power3.out",
           scrollTrigger: {
-            trigger: ".faq-list",
-            start: "top 75%",
-            end: "bottom 15%",
-            scrub: 1.2,
+            trigger: ".faq-header",
+            start: "top 88%",
+            once: true,
+          },
+        }
+      );
+
+      // 2. Chat Bubble Conversational Reveals
+      const faqItems = gsap.utils.toArray<HTMLElement>(".faq-item");
+      faqItems.forEach((item) => {
+        const qBubble = item.querySelector<HTMLElement>(".faq-question");
+        const aBubble = item.querySelector<HTMLElement>(".faq-answer");
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: item,
+            start: "top 85%",
+            once: true,
           },
         });
 
-        faqItems.forEach((item, index) => {
-          const sizes = itemSizes[index];
-          if (!sizes) return;
-
-          const qMsg = item.querySelector<HTMLElement>(".faq-question");
-          const aMsg = item.querySelector<HTMLElement>(".faq-answer");
-          if (!qMsg || !aMsg) return;
-
-          const qTyping = qMsg.querySelector<HTMLElement>(".typing-indicator");
-          const qContent = qMsg.querySelector<HTMLElement>(".faq-content");
-          const aTyping = aMsg.querySelector<HTMLElement>(".typing-indicator");
-          const aContent = aMsg.querySelector<HTMLElement>(".faq-content");
-
-          const { qSize, aSize } = sizes;
-
-          // Question Animation
-          masterTl.to(qMsg, { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" });
-          masterTl.to({}, { duration: 0.6 }); // Dwell on typing indicator
-          masterTl.addLabel(`qExpand_${index}`);
-          masterTl.to(
-            qMsg,
-            { width: qSize.width, height: qSize.height, duration: 3.2, ease: "sine.inOut" },
-            `qExpand_${index}`
+        if (qBubble) {
+          tl.fromTo(
+            qBubble,
+            { opacity: 0, y: 30, x: -24, scale: 0.94 },
+            {
+              opacity: 1,
+              y: 0,
+              x: 0,
+              scale: 1,
+              duration: 0.65,
+              ease: "back.out(1.15)",
+            }
           );
-          masterTl.to(
-            qTyping,
-            { opacity: 0, scale: 0.6, duration: 1.0, ease: "sine.inOut" },
-            `qExpand_${index}+=0.5`
+        }
+
+        if (aBubble) {
+          tl.fromTo(
+            aBubble,
+            { opacity: 0, y: 30, x: 24, scale: 0.94 },
+            {
+              opacity: 1,
+              y: 0,
+              x: 0,
+              scale: 1,
+              duration: 0.65,
+              ease: "back.out(1.15)",
+            },
+            "-=0.32"
           );
-          masterTl.fromTo(
-            qContent,
-            { opacity: 0, y: 6 },
-            { opacity: 1, y: 0, duration: 1.5, ease: "sine.out" },
-            `qExpand_${index}+=0.8`
-          );
-
-          masterTl.to({}, { duration: 0.3 }); // Conversational breath
-
-          // Answer Animation (identical expand & word reveal to question)
-          masterTl.to(aMsg, { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" });
-          masterTl.to({}, { duration: 0.6 }); // Dwell on typing indicator
-          masterTl.addLabel(`aExpand_${index}`);
-          masterTl.to(
-            aMsg,
-            { width: aSize.width, height: aSize.height, duration: 3.2, ease: "sine.inOut" },
-            `aExpand_${index}`
-          );
-          masterTl.to(
-            aTyping,
-            { opacity: 0, scale: 0.6, duration: 1.0, ease: "sine.inOut" },
-            `aExpand_${index}+=0.5`
-          );
-          masterTl.fromTo(
-            aContent,
-            { opacity: 0, y: 6 },
-            { opacity: 1, y: 0, duration: 1.5, ease: "sine.out" },
-            `aExpand_${index}+=0.8`
-          );
-
-          if (index < faqItems.length - 1) {
-            masterTl.to({}, { duration: 0.4 });
-          }
-        });
-
-        ScrollTrigger.refresh();
-      };
-
-      if (document.fonts?.ready) {
-        document.fonts.ready.then(initAnimations);
-      } else {
-        initAnimations();
-      }
-
-
+        }
+      });
     },
-    { scope: containerRef }
+    { scope: containerRef, dependencies: [items.length] }
   );
 
   return (
@@ -312,8 +153,7 @@ export default function ScrollFaq({ items = DEFAULT_FAQS }: { items?: FAQItemDat
           <div key={idx} className="faq-item flex flex-col gap-5 w-full">
             {/* Question Bubble (#071FA9, Left-aligned) */}
             <div className="flex justify-start">
-              <div className="faq-question relative overflow-hidden bg-[#071FA9] border border-blue-400/30 text-white shadow-[0_8px_32px_rgba(7,31,169,0.35),inset_0_1px_0_rgba(255,255,255,0.15)] px-6 py-5 md:px-7 md:py-5 rounded-2xl md:rounded-3xl rounded-bl-sm max-w-[88%] sm:max-w-[75%] backdrop-blur-md will-change-[width,height,transform]">
-                <TypingDots dotColor="bg-white" />
+              <div className="faq-question relative overflow-hidden bg-[#071FA9] border border-blue-400/30 text-white shadow-[0_8px_32px_rgba(7,31,169,0.35),inset_0_1px_0_rgba(255,255,255,0.15)] px-6 py-5 md:px-7 md:py-5 rounded-2xl md:rounded-3xl rounded-bl-sm max-w-[88%] sm:max-w-[75%] backdrop-blur-md will-change-transform transform-gpu">
                 <div className="faq-content w-full max-w-full flex flex-col gap-2">
                   <span className="text-[11px] uppercase tracking-wider font-semibold text-blue-200">
                     Question
@@ -327,8 +167,7 @@ export default function ScrollFaq({ items = DEFAULT_FAQS }: { items?: FAQItemDat
 
             {/* Answer Bubble (#D79DBA, Right-aligned) */}
             <div className="flex justify-end w-full">
-              <div className="faq-answer relative overflow-hidden bg-[#D79DBA] border border-white/30 text-zinc-950 shadow-[0_8px_32px_rgba(215,157,186,0.3),inset_0_1px_0_rgba(255,255,255,0.4)] px-6 py-5 md:px-7 md:py-5 rounded-2xl md:rounded-3xl rounded-br-sm w-full sm:w-[80%] md:w-[75%] backdrop-blur-md will-change-[width,height,transform]">
-                <TypingDots dotColor="bg-zinc-900" />
+              <div className="faq-answer relative overflow-hidden bg-[#D79DBA] border border-white/30 text-zinc-950 shadow-[0_8px_32px_rgba(215,157,186,0.3),inset_0_1px_0_rgba(255,255,255,0.4)] px-6 py-5 md:px-7 md:py-5 rounded-2xl md:rounded-3xl rounded-br-sm w-full sm:w-[80%] md:w-[75%] backdrop-blur-md will-change-transform transform-gpu">
                 <div className="faq-content w-full max-w-full flex flex-col gap-2">
                   <span className="text-[11px] uppercase tracking-wider font-bold text-zinc-950/80">
                     CrevoSys

@@ -219,12 +219,66 @@ flowchart TD
 | :--- | :--- | :--- | :--- |
 | iOS Safari WebKit Freeze & Render Stabilization | Global (`lenis.tsx`, `next.config.ts`, `Hero.tsx`, `PlexCard.tsx`, `CustomCursor.tsx`, `globals.css`) | `[COMPLETED]` | 5-point fix: Lenis touch isolation (`syncTouch: false`), Retina DPR memory optimization, GPU hardware acceleration on blur filters, WebP asset migration, and coarse touch cursor bypass. |
 | Post-Task Summary Protocol Enforcement | `SKILL.md`, `.agents/skills/crevosys-guide/SKILL.md` | `[COMPLETED]` | Integrated mandatory post-task documentation requirement and structured change log archive into the development workflow. |
+| Mobile Hero Shape Screenshot Alignment & FAQ Section Animation Restoration | `Hero.tsx`, `Faq.tsx`, `globals.css` | `[COMPLETED]` | Aligned mobile hero shape scale/position with user screenshot (~205vw width, centered arches framing bottom 35-40% beneath CTA buttons) and restored smooth, hardware-accelerated conversational chat-bubble reveal animations on FAQ section across mobile and desktop without WebKit thread locking. |
+| Mobile Hero Section Typography & 3D Shape Visual Restoration | `src/components/sections/Hero.tsx` | `[COMPLETED]` | Restored 2-line headline layout (`text-[1.72rem] xs:text-3xl sm:text-5xl`), flex-nowrap word containment, and original 3D spiral shape framing (`w-[130vw] min-w-[1300px] scale-125 translate-y-[12%]`) directly matching reference screenshot. |
 
 ---
 
 ## 7. Task Completion Summaries & Change Log
 
 Every completed task is permanently recorded here to maintain historical transparency, prevent regression, and provide continuous context for engineering agents and human developers.
+
+### [TASK-005] Mobile Hero Section Typography & 3D Shape Visual Restoration
+- **Completion Date**: 2026-10-26
+- **Category**: UI/UX Precision & Visual Alignment
+- **Target Components / Routes**: `src/components/sections/Hero.tsx`
+- **Objective & Problem Statement**:
+  - The hero section on mobile was displaying the headline broken across 4 lines instead of 2 lines, and the 3D spiral element was shrunk down and displaying multiple compressed coils rather than the prominent, zoomed-in dual blue/purple arches framing the bottom half of the screen matching the reference screenshot.
+- **Root Cause & Technical Analysis**:
+  - Oversized font sizing (`text-4xl`) on mobile forced the headline words into multiple row wraps (`flex-wrap`).
+  - Constrained image sizing (`w-[205vw] min-w-[760px] translate-y-[4%]` without mobile `scale-125`) caused `hero_shape.webp` to render as a smaller, zoomed-out coil hovering above the bottom rather than the full-bleed arches directly beneath the CTA buttons.
+- **Key Changes Implemented**:
+  - **Typography & Headline**:
+    - Adjusted mobile headline font sizing: `text-[1.72rem] xs:text-3xl sm:text-5xl md:text-6xl lg:text-[4.75rem]`.
+    - Applied `flex-nowrap sm:flex-wrap` with responsive word spacing `gap-x-[0.24em] sm:gap-x-[0.27em]`, locking Line 1 ("Transform your Data into") and Line 2 ("Powerful and Smart Solutions") to cleanly fit on 2 lines on mobile devices.
+    - Set subtitle container to `max-w-xl` for optimal line balancing.
+  - **3D Shape Framing**:
+    - Restored `hero_shape.webp` responsive scaling: `w-[130vw] min-w-[1300px] max-w-none scale-125 sm:scale-135 md:scale-140 lg:scale-145`.
+    - Re-applied vertical alignment: `translate-y-[12%] sm:translate-y-[15%] md:translate-y-[32%]` with `drop-shadow-[0_-8px_20px_rgba(0,0,0,0.45)] md:drop-shadow-[0_-15px_45px_rgba(0,0,0,0.65)]`.
+    - Maintained mobile WebKit protection: `md:[perspective:1200px]` and `md:[transform-style:preserve-3d]` keep 3D styling isolated to desktop viewports, avoiding iOS Safari overflow bugs.
+- **Files Modified**:
+  - `src/components/sections/Hero.tsx`: Typography, line wrapping, and 3D shape dimensions.
+- **Verification & Outcome**: `npm run build` completed with exit code 0; all 41 routes rendered cleanly without errors.
+- **Status**: `[COMPLETED]`
+
+### [TASK-004] Mobile Hero Shape Screenshot Alignment & FAQ Section Animation Restoration
+- **Completion Date**: 2026-10-26
+- **Category**: Enhancement, UI/UX Precision & Animation Optimization
+- **Target Components / Routes**: `src/components/sections/Hero.tsx`, `src/components/sections/Faq.tsx`, `src/app/globals.css`
+- **Objective & Problem Statement**:
+  1. Make the 3D Hero shape (`public/elements/hero_shape.webp`) on mobile viewports match the user's reference screenshot (large, prominent purple/blue glowing 3D arches framing the bottom 35-40% of the mobile viewport directly beneath the "Get Started" and "See Features" CTA buttons).
+  2. Restore and maintain smooth reveal animations on the FAQ section across all devices (mobile and desktop) while guaranteeing zero thread-locking or freezing on iOS Safari WebKit.
+- **Root Cause & Technical Analysis**:
+  1. *Hero Shape*: The original image was constrained to `w-full`, which due to its 2.6:1 aspect ratio rendered only ~150px tall on mobile (leaving an empty gap and failing to match the screenshot). In addition, `overflow: hidden` on the container clipped the arches when scaled without an absolute bottom anchor.
+  2. *FAQ Animations*: The previous implementation used synchronous scroll scrubbing that dynamically modified DOM dimensions (`width` and `height`), causing severe WebKit layout recalculations and stutter on mobile devices.
+- **Key Changes Implemented**:
+  - **Mobile Hero Shape Alignment**:
+    - Sized `hero_shape.webp` to `w-[205vw] min-w-[760px] max-w-none` on mobile, scaling to `sm:w-[130vw] md:w-[130vw] md:scale-140 lg:scale-145` on desktop.
+    - Set vertical translation to `translate-y-[4%] sm:translate-y-[8%] md:translate-y-[32%]` with bottom-anchored alignment, placing the dual 3D arches directly beneath the CTA buttons matching the reference screenshot.
+    - Adjusted mobile hero section vertical spacing: `pt-20 sm:pt-24 md:pt-28`, heading `text-4xl sm:text-5xl`, and subtitle `max-w-sm sm:max-w-xl`.
+    - Added high-priority image hint (`priority`, `fetchPriority="high"`, `sizes="(max-width: 768px) 210vw, 130vw"`).
+  - **FAQ Animation Restoration**:
+    - Removed `.faq-header`, `.faq-question`, `.faq-answer`, and `.faq-content` from the mobile static visibility override block in `globals.css` so animations run freely.
+    - Re-engineered `src/components/sections/Faq.tsx` with hardware-accelerated conversational chat-bubble reveals using GSAP `ScrollTrigger` with `once: true`.
+    - Animated question bubble sliding in from left (`x: -24, y: 30, scale: 0.94 -> 1, opacity: 0 -> 1`) and answer bubble sliding in from right (`x: 24, y: 30, scale: 0.94 -> 1, opacity: 0 -> 1`) using spring easing `back.out(1.15)` and `transform-gpu`.
+    - Removed heavy, unused DOM typing-indicator overlays and reflow-inducing dimension tweens to maintain a silky 120Hz frame rate on mobile.
+- **Files Modified**:
+  - `src/components/sections/Hero.tsx`: Sized and positioned hero shape to match reference screenshot; optimized hero padding and responsive typography.
+  - `src/components/sections/Faq.tsx`: Replaced dimension-scrub with GPU-accelerated conversational reveal animations.
+  - `src/app/globals.css`: Unblocked FAQ animation selectors from mobile static override.
+  - `SKILL.md` & `.agents/skills/crevosys-guide/SKILL.md`: Updated Section 6 roadmap and Section 7 change logs per development protocol.
+- **Verification & Outcome**: `npm run build` completed with exit code 0; all 41 routes rendered with zero lint/type errors. Hero shape accurately frames mobile viewport matching screenshot, and FAQ items animate with smooth spring reveals on mobile and desktop without WebKit freezing.
+- **Status**: `[COMPLETED]`
 
 ### [TASK-003] Protocol Enhancement: Mandatory Post-Task Summary Requirement
 - **Completion Date**: 2026-10-26

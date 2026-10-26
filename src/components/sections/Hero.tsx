@@ -278,7 +278,7 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
   return (
     <section
       ref={heroRef}
-      className="relative w-full min-h-screen flex flex-col items-center justify-between overflow-hidden bg-[#000000] pt-24 sm:pt-28 md:[perspective:1200px]"
+      className="relative w-full min-h-screen flex flex-col items-center justify-between overflow-hidden bg-[#000000] pt-20 sm:pt-24 md:pt-28 md:[perspective:1200px]"
     >
       {/* Background ambient radial gradients matching hero_shape colors */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_85%_65%_at_50%_-10%,rgba(59,130,246,0.12),rgba(147,51,234,0.09),rgba(0,0,0,0)_80%)] pointer-events-none" />
@@ -312,11 +312,11 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
         {/* 2-Line Luxury Heading with Masked Word-Reveal */}
         <h1
           aria-label="Transform your Data into Powerful and Smart Solutions"
-          className="text-3xl sm:text-5xl md:text-6xl lg:text-[4.75rem] font-semibold text-white tracking-[-0.035em] leading-[1.08] max-w-5xl select-text"
+          className="text-[1.72rem] xs:text-3xl sm:text-5xl md:text-6xl lg:text-[4.75rem] font-semibold text-white tracking-[-0.035em] leading-[1.08] max-w-5xl select-text"
         >
           {/* Line 1 */}
           <span className="block overflow-hidden pb-1 sm:pb-2">
-            <span className="flex flex-wrap justify-center items-center gap-x-[0.27em]">
+            <span className="flex flex-nowrap sm:flex-wrap justify-center items-center gap-x-[0.24em] sm:gap-x-[0.27em]">
               {LINE_1_WORDS.map((word, i) => (
                 <span key={i} className="inline-block overflow-hidden py-0.5">
                   <span
@@ -335,7 +335,7 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
 
           {/* Line 2 */}
           <span className="block overflow-hidden pb-1 sm:pb-2">
-            <span className="flex flex-wrap justify-center items-center gap-x-[0.27em]">
+            <span className="flex flex-nowrap sm:flex-wrap justify-center items-center gap-x-[0.24em] sm:gap-x-[0.27em]">
               {LINE_2_WORDS.map((word, i) => (
                 <span key={i} className="inline-block overflow-hidden py-0.5">
                   <span
@@ -411,7 +411,7 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
                 priority
                 fetchPriority="high"
                 sizes="(max-width: 768px) 100vw, 130vw"
-                className="w-full max-w-full md:w-[130vw] md:min-w-[1300px] md:max-w-none h-auto object-contain object-bottom select-none pointer-events-none scale-100 sm:scale-110 md:scale-140 lg:scale-145 translate-y-[2%] sm:translate-y-[8%] md:translate-y-[32%] drop-shadow-[0_-15px_45px_rgba(0,0,0,0.65)]"
+                className="w-[130vw] min-w-[1300px] max-w-none h-auto object-contain object-bottom select-none pointer-events-none scale-125 sm:scale-135 md:scale-140 lg:scale-145 translate-y-[12%] sm:translate-y-[15%] md:translate-y-[32%] drop-shadow-[0_-8px_20px_rgba(0,0,0,0.45)] md:drop-shadow-[0_-15px_45px_rgba(0,0,0,0.65)]"
               />
             </div>
           </div>
