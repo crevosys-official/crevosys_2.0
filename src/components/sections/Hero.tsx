@@ -6,6 +6,7 @@ import React, { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { shouldRunAnimations } from "@/lib/animation";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -30,6 +31,9 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
   useGSAP(
     () => {
       if (!heroRef.current) return;
+
+      // ── MOBILE / iOS: Skip ALL animations. Content visible via CSS defaults. ──
+      if (!shouldRunAnimations()) return;
       const scrollTl = gsap.timeline({
         scrollTrigger: {
           trigger: heroRef.current,
@@ -274,17 +278,16 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
   return (
     <section
       ref={heroRef}
-      className="relative w-full min-h-screen flex flex-col items-center justify-between overflow-hidden bg-[#000000] pt-24 sm:pt-28 select-none"
-      style={{ perspective: 1200 }}
+      className="relative w-full min-h-screen flex flex-col items-center justify-between overflow-hidden bg-[#000000] pt-24 sm:pt-28 md:[perspective:1200px]"
     >
       {/* Background ambient radial gradients matching hero_shape colors */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_85%_65%_at_50%_-10%,rgba(59,130,246,0.12),rgba(147,51,234,0.09),rgba(0,0,0,0)_80%)] pointer-events-none" />
 
-      {/* Ambient background blur lights */}
+      {/* Ambient background blur lights with GPU acceleration and responsive mobile blur */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[20%] left-[-10%] w-[550px] max-w-[80vw] h-[450px] bg-blue-600/[0.08] blur-[140px] rounded-full" />
-        <div className="absolute top-[30%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] max-w-[95vw] h-[450px] bg-gradient-to-r from-blue-600/[0.08] via-indigo-600/[0.11] to-purple-600/[0.09] blur-[135px] rounded-full" />
-        <div className="absolute top-[25%] right-[-10%] w-[550px] max-w-[80vw] h-[450px] bg-purple-600/[0.08] blur-[140px] rounded-full" />
+        <div className="absolute top-[20%] left-[-10%] w-[550px] max-w-[80vw] h-[450px] bg-blue-600/[0.08] blur-2xl md:blur-[140px] transform-gpu rounded-full" />
+        <div className="absolute top-[30%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] max-w-[95vw] h-[450px] bg-gradient-to-r from-blue-600/[0.08] via-indigo-600/[0.11] to-purple-600/[0.09] blur-2xl md:blur-[135px] transform-gpu rounded-full" />
+        <div className="absolute top-[25%] right-[-10%] w-[550px] max-w-[80vw] h-[450px] bg-purple-600/[0.08] blur-2xl md:blur-[140px] transform-gpu rounded-full" />
       </div>
 
       {/* Main Content Area */}
@@ -295,7 +298,7 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
         onMouseLeave={onCursorLeave}
       >
         {/* Strategy Pill Badge */}
-        <div className="hero-badge group relative inline-flex items-center gap-2 p-1 pr-4 rounded-full bg-[#18181b]/90 border border-white/10 backdrop-blur-xl mb-5 sm:mb-7 shadow-[0_4px_20px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1)] transition-colors duration-300">
+        <div className="hero-badge group relative inline-flex items-center gap-2 p-1 pr-4 rounded-full bg-[#18181b]/90 border border-white/10 backdrop-blur-md md:backdrop-blur-xl mb-5 sm:mb-7 shadow-[0_4px_20px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1)] transition-colors duration-300 transform-gpu">
           <div className="absolute inset-0 rounded-full bg-gradient-to-r from-transparent via-white/[0.06] to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           <span className="relative flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold text-white bg-gradient-to-r from-[#ff6a00] to-[#e85500] shadow-[0_0_14px_rgba(255,106,0,0.55),inset_0_1px_1px_rgba(255,255,255,0.35)]">
             <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
@@ -385,7 +388,7 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
         {/* Ambient glow matching the 3D shape gradient */}
         <div
           ref={glowRef}
-          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-[320px] bg-gradient-to-r from-blue-600/30 via-purple-600/35 to-pink-500/30 blur-[130px] rounded-full pointer-events-none will-change-transform"
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-[320px] bg-gradient-to-r from-blue-600/30 via-purple-600/35 to-pink-500/30 blur-2xl md:blur-[130px] transform-gpu rounded-full pointer-events-none will-change-transform"
         />
 
         {/* Parallax Container driven by GSAP ScrollTrigger */}
@@ -395,11 +398,10 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
             ref={shapeFloatRef}
             className="w-full flex items-end justify-center will-change-transform"
           >
-            {/* Interactive 3D mouse tilt */}
+            {/* Interactive 3D mouse tilt (Desktop only) */}
             <div
               ref={shapeTiltRef}
-              className="w-full flex items-end justify-center will-change-transform"
-              style={{ transformStyle: "preserve-3d" }}
+              className="w-full flex items-end justify-center will-change-transform md:[transform-style:preserve-3d]"
             >
               <Image
                 src="/elements/hero_shape.webp"
@@ -409,7 +411,7 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
                 priority
                 fetchPriority="high"
                 sizes="(max-width: 768px) 100vw, 130vw"
-                className="w-[130vw] min-w-[1300px] max-w-none h-auto object-contain object-bottom select-none pointer-events-none scale-125 sm:scale-135 md:scale-140 lg:scale-145 translate-y-[12%] sm:translate-y-[15%] md:translate-y-[32%] drop-shadow-[0_-15px_45px_rgba(0,0,0,0.65)]"
+                className="w-full max-w-full md:w-[130vw] md:min-w-[1300px] md:max-w-none h-auto object-contain object-bottom select-none pointer-events-none scale-100 sm:scale-110 md:scale-140 lg:scale-145 translate-y-[2%] sm:translate-y-[8%] md:translate-y-[32%] drop-shadow-[0_-15px_45px_rgba(0,0,0,0.65)]"
               />
             </div>
           </div>

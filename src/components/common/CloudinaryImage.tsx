@@ -8,6 +8,7 @@ export interface CloudinaryImageProps extends Omit<CldImageProps, "src"> {
   src: string;
   alt: string;
   className?: string;
+  priority?: boolean;
 }
 
 /**
@@ -20,6 +21,9 @@ export default function CloudinaryImage({
   width = 500,
   height = 500,
   className,
+  priority = false,
+  sizes = "(max-width: 768px) 100vw, 50vw",
+  quality,
   ...props
 }: CloudinaryImageProps) {
   // If it's a local path or external non-cloudinary URL, use Next.js Image
@@ -29,7 +33,13 @@ export default function CloudinaryImage({
     src.startsWith("https://");
 
   if (isLocalOrExternal) {
-    // If it is a Cloudinary hosted URL, we can still extract the public ID or render with Next.js Image
+    const nextQuality =
+      typeof quality === "number"
+        ? quality
+        : typeof quality === "string" && !isNaN(Number(quality))
+        ? Number(quality)
+        : undefined;
+
     return (
       <Image
         src={src}
@@ -37,6 +47,10 @@ export default function CloudinaryImage({
         width={Number(width)}
         height={Number(height)}
         className={className}
+        priority={priority}
+        loading={priority ? "eager" : "lazy"}
+        sizes={sizes}
+        quality={nextQuality}
       />
     );
   }
@@ -48,6 +62,9 @@ export default function CloudinaryImage({
       width={width}
       height={height}
       className={className}
+      priority={priority}
+      sizes={sizes}
+      quality={quality}
       crop={{
         type: "auto",
         source: true,

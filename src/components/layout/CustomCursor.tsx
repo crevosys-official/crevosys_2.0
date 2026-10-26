@@ -73,6 +73,8 @@ const CustomCursor: React.FC<CustomCursorProps> = ({ variant }) => {
 
     const isTouch =
       window.matchMedia("(pointer: coarse)").matches ||
+      "ontouchstart" in window ||
+      navigator.maxTouchPoints > 0 ||
       window.innerWidth < 768 ||
       /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 

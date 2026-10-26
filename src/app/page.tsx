@@ -42,7 +42,7 @@ const Page = () => {
       <div className="min-h-screen bg-[#000000]">
         <div
           className={[
-            "fixed inset-0 z-2 pointer-events-none",
+            "fixed inset-0 z-0 pointer-events-none",
             "flex items-center justify-center w-full h-full",
           ].join(" ")}
         >
@@ -50,9 +50,11 @@ const Page = () => {
             src="/gradient.webp"
             alt=""
             fill
+            priority
+            fetchPriority="high"
             sizes="100vw"
             style={{ objectFit: "cover" }}
-            className="opacity-10"
+            className="opacity-10 pointer-events-none"
           />
         </div>
 
@@ -62,7 +64,7 @@ const Page = () => {
         <CustomCursor variant={cursorVariant} />
 
         {/* Main Landmark wrapping the primary content */}
-        <main id="main-content">
+        <main id="main-content" className="overflow-x-clip">
           {/* Hero Section — full width edge-to-edge */}
           <Hero
             onCursorEnter={() => setCursorVariant("hero")}

@@ -239,7 +239,7 @@ export default function Navigation() {
             {/* GET IN TOUCH Button */}
             <Link
               href="/contact"
-              className="group relative hidden md:inline-flex items-center justify-center px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wider uppercase text-white bg-white/[0.08] hover:bg-white/[0.16] border border-white/15 hover:border-white/30 backdrop-blur-md transition-all duration-300 shadow-[0_2px_12px_rgba(0,0,0,0.3)] active:scale-95"
+              className="group relative hidden md:inline-flex items-center justify-center px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wider uppercase text-white bg-white/[0.08] hover:bg-white/[0.16] border border-white/15 hover:border-white/30 backdrop-blur-sm md:backdrop-blur-md transform-gpu transition-all duration-300 shadow-[0_2px_12px_rgba(0,0,0,0.3)] active:scale-95"
             >
               <span>GET IN TOUCH</span>
             </Link>
@@ -248,7 +248,7 @@ export default function Navigation() {
             <button
               onClick={handleToggle}
               aria-label="Toggle menu"
-              className="group relative flex items-center gap-2 sm:gap-3 px-3.5 sm:px-5 py-1.5 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wider uppercase text-[#f0eeee] hover:text-white bg-white/[0.08] hover:bg-white/[0.16] border border-white/15 hover:border-white/30 backdrop-blur-md transition-all duration-300 shadow-[0_2px_12px_rgba(0,0,0,0.3)] active:scale-95 cursor-pointer"
+              className="group relative flex items-center gap-2 sm:gap-3 px-3.5 sm:px-5 py-1.5 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wider uppercase text-[#f0eeee] hover:text-white bg-white/[0.08] hover:bg-white/[0.16] border border-white/15 hover:border-white/30 backdrop-blur-sm md:backdrop-blur-md transform-gpu transition-all duration-300 shadow-[0_2px_12px_rgba(0,0,0,0.3)] active:scale-95 cursor-pointer"
             >
               <span className="relative">
                 <span className="nav-toggle-menu block">Menu</span>
@@ -301,7 +301,7 @@ export default function Navigation() {
 
         {/* Morphing Background Container with Cropped Background Image */}
         <div
-          className="fixed inset-0 w-full h-full pointer-events-none -z-10 bg-black overflow-hidden"
+          className="fixed inset-0 w-full h-full pointer-events-none -z-10 bg-black overflow-hidden transform-gpu"
           style={{
             clipPath: "url(#menu-clip)",
             WebkitClipPath: "url(#menu-clip)",

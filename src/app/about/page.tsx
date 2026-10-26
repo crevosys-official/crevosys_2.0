@@ -228,15 +228,15 @@ export default function AboutPage() {
       <div className="absolute top-0 left-0 right-0 h-[900px] bg-[radial-gradient(ellipse_85%_65%_at_50%_-10%,rgba(59,130,246,0.14),rgba(147,51,234,0.11),rgba(0,0,0,0)_80%)] pointer-events-none z-0" />
 
       {/* Atmospheric Blur Lights Matching Hero */}
-      <div className="absolute top-[8%] left-[-10%] w-[580px] h-[480px] bg-blue-600/[0.08] blur-[150px] rounded-full pointer-events-none z-0" />
-      <div className="absolute top-[16%] left-1/2 -translate-x-1/2 w-[850px] h-[450px] bg-gradient-to-r from-blue-600/[0.07] via-indigo-600/[0.09] to-purple-600/[0.08] blur-[140px] rounded-full pointer-events-none z-0" />
-      <div className="absolute top-[12%] right-[-10%] w-[580px] h-[480px] bg-purple-600/[0.08] blur-[150px] rounded-full pointer-events-none z-0" />
+      <div className="absolute top-[8%] left-[-10%] w-[580px] h-[480px] bg-blue-600/[0.08] blur-2xl md:blur-[150px] transform-gpu rounded-full pointer-events-none z-0" />
+      <div className="absolute top-[16%] left-1/2 -translate-x-1/2 w-[850px] h-[450px] bg-gradient-to-r from-blue-600/[0.07] via-indigo-600/[0.09] to-purple-600/[0.08] blur-2xl md:blur-[140px] transform-gpu rounded-full pointer-events-none z-0" />
+      <div className="absolute top-[12%] right-[-10%] w-[580px] h-[480px] bg-purple-600/[0.08] blur-2xl md:blur-[150px] transform-gpu rounded-full pointer-events-none z-0" />
 
       {/* Mid-Page & Bottom Ambient Atmospheric Blooms */}
-      <div className="absolute top-[38%] right-[-5%] w-[500px] h-[450px] bg-orange-500/[0.05] blur-[160px] rounded-full pointer-events-none z-0" />
-      <div className="absolute top-[55%] left-[-5%] w-[550px] h-[500px] bg-blue-600/[0.05] blur-[160px] rounded-full pointer-events-none z-0" />
-      <div className="absolute top-[75%] right-1/4 w-[650px] h-[450px] bg-purple-600/[0.06] blur-[150px] rounded-full pointer-events-none z-0" />
-      <div className="absolute bottom-[5%] left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-r from-orange-500/[0.06] via-indigo-500/[0.06] to-blue-500/[0.06] blur-[150px] rounded-full pointer-events-none z-0" />
+      <div className="absolute top-[38%] right-[-5%] w-[500px] h-[450px] bg-orange-500/[0.05] blur-2xl md:blur-[160px] transform-gpu rounded-full pointer-events-none z-0" />
+      <div className="absolute top-[55%] left-[-5%] w-[550px] h-[500px] bg-blue-600/[0.05] blur-2xl md:blur-[160px] transform-gpu rounded-full pointer-events-none z-0" />
+      <div className="absolute top-[75%] right-1/4 w-[650px] h-[450px] bg-purple-600/[0.06] blur-2xl md:blur-[150px] transform-gpu rounded-full pointer-events-none z-0" />
+      <div className="absolute bottom-[5%] left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-r from-orange-500/[0.06] via-indigo-500/[0.06] to-blue-500/[0.06] blur-2xl md:blur-[150px] transform-gpu rounded-full pointer-events-none z-0" />
 
       {/* Subtle Precision Geometric Grid Mesh */}
       <div

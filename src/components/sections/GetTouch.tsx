@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { shouldRunAnimations } from "@/lib/animation";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -20,6 +21,9 @@ const GetTouch = () => {
   useGSAP(
     () => {
       if (!sectionRef.current) return;
+
+      // ── MOBILE / iOS: Skip ALL animations. Content visible via CSS defaults. ──
+      if (!shouldRunAnimations()) return;
 
       const tl = gsap.timeline({
         scrollTrigger: {

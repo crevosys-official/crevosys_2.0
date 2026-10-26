@@ -26,9 +26,9 @@ export default function NotFound() {
 
       {/* Ambient Radial Lighting matching the character's pastel fur palette */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden flex items-center justify-center">
-        <div className="absolute top-1/3 left-1/4 w-[400px] h-[400px] bg-purple-600/10 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute top-1/2 right-1/4 w-[450px] h-[450px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none" />
-        <div className="absolute bottom-1/4 left-1/3 w-[300px] h-[300px] bg-pink-500/10 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute top-1/3 left-1/4 w-[400px] h-[400px] bg-purple-600/10 rounded-full blur-2xl md:blur-[120px] transform-gpu pointer-events-none" />
+        <div className="absolute top-1/2 right-1/4 w-[450px] h-[450px] bg-blue-600/10 rounded-full blur-2xl md:blur-[140px] transform-gpu pointer-events-none" />
+        <div className="absolute bottom-1/4 left-1/3 w-[300px] h-[300px] bg-pink-500/10 rounded-full blur-2xl md:blur-[100px] transform-gpu pointer-events-none" />
       </div>
 
       {/* Main Content Area */}
@@ -66,7 +66,7 @@ export default function NotFound() {
               {/* Character wrapper */}
               <div className="relative z-10 w-[200px] h-[230px] sm:w-[270px] sm:h-[310px] md:w-[340px] md:h-[390px] lg:w-[420px] lg:h-[480px] xl:w-[470px] xl:h-[540px] flex items-center justify-center">
                 <Image
-                  src="/elements/pagenotfound.png"
+                  src="/elements/pagenotfound.webp"
                   alt="Curious monster reading a book"
                   fill
                   sizes="(max-width: 640px) 210px, (max-width: 1024px) 340px, 480px"

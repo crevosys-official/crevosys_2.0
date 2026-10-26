@@ -1,18 +1,56 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-html,
+html {
+  width: 100%;
+  min-height: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.lenis) {
+    scroll-behavior: smooth;
+  }
+}
+
 body {
   width: 100%;
-  position: relative;
-  overflow-x: clip;
-  -webkit-text-size-adjust: 100%;
-  -webkit-overflow-scrolling: touch;
+  min-height: 100%;
+  background-color: #000000;
+  -webkit-font-smoothing: antialiased;
 }
 
 @media (pointer: fine) {
   html {
     scrollbar-gutter: stable;
+  }
+}
+
+/* Mobile & Touch Safety: Guarantee all content is visible immediately without waiting for JS animations */
+@media (max-width: 767.98px), (pointer: coarse) {
+  .hero-reveal-word,
+  .hero-badge,
+  .hero-sub-line,
+  .hero-cta,
+  .hero-shape-wrapper,
+  .services-badge,
+  .services-title,
+  .services-desc,
+  .projects-header-badge,
+  .testimonial-badge,
+  .progress-heading-line,
+  .faq-header,
+  .faq-question,
+  .faq-answer,
+  .faq-content,
+  .get-touch-badge,
+  .get-touch-divider,
+  .get-touch-title,
+  .get-touch-desc {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    visibility: visible !important;
   }
 }
 

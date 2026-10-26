@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { shouldRunAnimations } from "@/lib/animation";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -210,6 +211,9 @@ const Testimonials: React.FC<TestimonialsProps> = ({
   useGSAP(
     () => {
       if (!sectionRef.current) return;
+
+      // ── MOBILE / iOS: Skip ALL animations. Content visible via CSS defaults. ──
+      if (!shouldRunAnimations()) return;
 
       const tl = gsap.timeline({
         scrollTrigger: {

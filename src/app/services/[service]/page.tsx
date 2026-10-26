@@ -87,7 +87,7 @@ export default async function DynamicServicePage({ params }: ServicePageProps) {
     {
       title: "Seamless Integration & Scalability",
       description: `Effortless integration into your tech stack with complete forward-compatibility and resilient cloud infrastructure.`,
-      icon: "/card_icons/automation.png",
+      icon: "/card_icons/automation.webp",
     },
     {
       title: "End-to-End Strategic Support",

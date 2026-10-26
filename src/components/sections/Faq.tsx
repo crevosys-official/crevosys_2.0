@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { CircleHelp, MailQuestion, MessageCircleQuestionMark, Star } from "lucide-react";
+import { shouldRunAnimations } from "@/lib/animation";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -55,7 +56,7 @@ const TYPING_HEIGHT = 52;
 
 function TypingDots({ dotColor = "bg-zinc-400" }: { dotColor?: string }) {
   return (
-    <div className="typing-indicator absolute inset-0 flex items-center justify-center gap-1.5 pointer-events-none">
+    <div className="typing-indicator absolute inset-0 hidden md:flex items-center justify-center gap-1.5 pointer-events-none">
       <span className={`w-2 h-2 rounded-full ${dotColor} animate-typing-pulse`} />
       <span
         className={`w-2 h-2 rounded-full ${dotColor} animate-typing-pulse`}
@@ -74,6 +75,10 @@ export default function ScrollFaq({ items = DEFAULT_FAQS }: { items?: FAQItemDat
 
   useGSAP(
     () => {
+      if (!containerRef.current) return;
+
+      // ── MOBILE / iOS: Skip ALL animations. Content visible via CSS defaults. ──
+      if (!shouldRunAnimations()) return;
 
 
       // Helper to measure native rendered bubble dimensions
@@ -285,8 +290,8 @@ export default function ScrollFaq({ items = DEFAULT_FAQS }: { items?: FAQItemDat
       className="relative w-full py-10 md:py-16 px-4 sm:px-6 md:px-12 flex flex-col items-center justify-center overflow-hidden"
     >
       {/* Ambient background glow to match app theme and card colors */}
-      <div className="absolute top-1/3 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[350px] bg-[#071FA9]/15 blur-[120px] rounded-full pointer-events-none -z-10" />
-      <div className="absolute top-2/3 right-1/4 translate-x-1/2 -translate-y-1/2 w-[500px] h-[350px] bg-[#D79DBA]/10 blur-[120px] rounded-full pointer-events-none -z-10" />
+      <div className="absolute top-1/3 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[350px] bg-[#071FA9]/15 blur-2xl md:blur-[120px] transform-gpu rounded-full pointer-events-none -z-10" />
+      <div className="absolute top-2/3 right-1/4 translate-x-1/2 -translate-y-1/2 w-[500px] h-[350px] bg-[#D79DBA]/10 blur-2xl md:blur-[120px] transform-gpu rounded-full pointer-events-none -z-10" />
 
       {/* Small Header matched with other sections */}
       <div className="faq-header flex flex-col gap-4 mb-16 md:mb-24 text-center">

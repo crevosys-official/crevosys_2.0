@@ -280,9 +280,10 @@ const AutomationPage = () => {
 
               <div className="relative aspect-square md:aspect-auto md:h-[480px] rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
                 <Image
-                  src="/services/automation.png"
+                  src="/services/automation.webp"
                   alt="AI Automation Process"
                   fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover"
                   loading="lazy"
                 />

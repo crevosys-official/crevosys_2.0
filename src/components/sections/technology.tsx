@@ -6,6 +6,7 @@ import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { shouldRunAnimations } from "@/lib/animation";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -300,6 +301,9 @@ export default function Integrations() {
     () => {
       if (!sectionRef.current) return;
 
+      // ── MOBILE / iOS: Skip ALL animations. Content visible via CSS defaults. ──
+      if (!shouldRunAnimations()) return;
+
       // Ordered visible badges from left side down (index 10, ~171.6°) to right side down (index 0, ~8°)
       const leftToRightIndices = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
       const revealWrappers = leftToRightIndices
@@ -489,14 +493,14 @@ export default function Integrations() {
       {/* Ambient Background Glow */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div
-          className="absolute left-1/2 bottom-0 -translate-x-1/2 w-[850px] max-w-[95vw] h-[480px] rounded-full blur-[110px] opacity-40"
+          className="absolute left-1/2 bottom-0 -translate-x-1/2 w-[850px] max-w-[95vw] h-[480px] rounded-full blur-2xl md:blur-[110px] transform-gpu opacity-40"
           style={{
             background:
               "radial-gradient(ellipse at 50% 85%, rgba(147, 51, 234, 0.45) 0%, rgba(79, 70, 229, 0.25) 40%, transparent 70%)",
           }}
         />
         <div
-          className="absolute left-1/2 top-10 -translate-x-1/2 w-[650px] max-w-[85vw] h-[300px] rounded-full blur-[120px] opacity-25"
+          className="absolute left-1/2 top-10 -translate-x-1/2 w-[650px] max-w-[85vw] h-[300px] rounded-full blur-2xl md:blur-[120px] transform-gpu opacity-25"
           style={{
             background: "radial-gradient(circle, rgba(168, 85, 247, 0.3) 0%, transparent 70%)",
           }}

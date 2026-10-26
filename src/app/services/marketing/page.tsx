@@ -34,7 +34,7 @@ const MarketingPage = () => {
       title: "Paid Advertising",
       description:
         "Maximizing customer acquisition and ROI with precision-targeted PPC campaigns across Google and Meta.",
-      icon: "/card_icons/automation.png",
+      icon: "/card_icons/automation.webp",
     },
   ];
 

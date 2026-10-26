@@ -4,10 +4,10 @@ import React, { useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLenis } from "@/lib/lenis";
+import { shouldRunAnimations } from "@/lib/animation";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
-  // Prevent mobile browser toolbar / address-bar collapse from triggering heavy ScrollTrigger refreshes
   ScrollTrigger.config({
     ignoreMobileResize: true,
   });
@@ -21,12 +21,23 @@ export default function ScrollProvider({ children }: ScrollProviderProps) {
   const lenis = useLenis();
 
   useEffect(() => {
-    // Give the DOM a moment to complete first layout pass, then refresh ScrollTrigger
+    // Safety check for iOS Safari: Ensure body/html overflow: hidden is never stuck on load
+    if (typeof document !== "undefined") {
+      if (document.body.style.overflow === "hidden") {
+        document.body.style.overflow = "";
+      }
+      if (document.documentElement.style.overflow === "hidden") {
+        document.documentElement.style.overflow = "";
+      }
+    }
+
+    // On mobile / iOS — skip all ScrollTrigger setup entirely
+    if (!shouldRunAnimations()) return;
+
     const timer = setTimeout(() => {
       ScrollTrigger.refresh();
     }, 200);
 
-    // Sync Lenis scroll updates with GSAP ScrollTrigger if Lenis is active (desktop)
     const handleScroll = () => {
       ScrollTrigger.update();
     };
@@ -35,16 +46,12 @@ export default function ScrollProvider({ children }: ScrollProviderProps) {
       lenis.on("scroll", handleScroll);
     }
 
-    // Only refresh on width changes (orientation change or desktop resize)
-    // NEVER on vertical-only changes, which occur continuously when mobile Safari hides/reveals its address bar
     let resizeTimer: ReturnType<typeof setTimeout>;
-    let lastWidth = typeof window !== "undefined" ? window.innerWidth : 0;
+    let lastWidth = window.innerWidth;
 
     const handleResize = () => {
-      if (typeof window === "undefined") return;
       if (window.innerWidth === lastWidth) return;
       lastWidth = window.innerWidth;
-
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => {
         ScrollTrigger.refresh();

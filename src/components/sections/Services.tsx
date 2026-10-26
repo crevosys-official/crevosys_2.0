@@ -7,6 +7,7 @@ import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { shouldRunAnimations } from "@/lib/animation";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -47,7 +48,7 @@ const DEFAULT_SERVICES: ServiceCard[] = [
       "We design professional looking yet simple Logo are search engine and user friendly.",
   },
   {
-    icon: "/card_icons/automation.png",
+    icon: "/card_icons/automation.webp",
     title: "Automation",
     slug: "automation",
     description:
@@ -78,6 +79,9 @@ const Services = () => {
   useGSAP(
     () => {
       if (!sectionRef.current) return;
+
+      // ── MOBILE / iOS: Skip ALL animations. Content visible via CSS defaults. ──
+      if (!shouldRunAnimations()) return;
 
       const tl = gsap.timeline({
         scrollTrigger: {

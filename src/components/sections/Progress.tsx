@@ -6,6 +6,7 @@ import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { shouldRunAnimations } from "@/lib/animation";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -94,6 +95,9 @@ const Progress: React.FC<ProgressProps> = ({ onCardHover, onCursorLeave }) => {
   useGSAP(
     () => {
       if (!sectionRef.current) return;
+
+      // ── MOBILE / iOS: Skip ALL animations. Content visible via CSS defaults. ──
+      if (!shouldRunAnimations()) return;
 
       const tl = gsap.timeline({
         scrollTrigger: {

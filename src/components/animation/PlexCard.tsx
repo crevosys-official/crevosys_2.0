@@ -190,10 +190,16 @@ export default function PixelCard({
   );
   const timePreviousRef = useRef(performance.now());
   const reducedMotion = useRef(false);
+  const isTouchRef = useRef(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       reducedMotion.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      isTouchRef.current =
+        window.matchMedia("(pointer: coarse)").matches ||
+        "ontouchstart" in window ||
+        navigator.maxTouchPoints > 0 ||
+        window.innerWidth < 768;
     }
   }, []);
 
@@ -204,7 +210,7 @@ export default function PixelCard({
   const finalNoFocus = noFocus ?? variantCfg.noFocus;
 
   const initPixels = () => {
-    if (!containerRef.current || !canvasRef.current) return;
+    if (!containerRef.current || !canvasRef.current || isTouchRef.current) return;
 
     const rect = containerRef.current.getBoundingClientRect();
     const width = Math.floor(rect.width);
@@ -312,7 +318,7 @@ export default function PixelCard({
   return (
     <div
       ref={containerRef}
-      className={`h-[400px] w-[300px] relative overflow-hidden grid place-items-center aspect-[4/5] border border-[#27272a] rounded-[25px] isolate transition-colors duration-200 ease-[cubic-bezier(0.5,1,0.89,1)] select-none ${className}`}
+      className={`h-[400px] w-[300px] relative overflow-hidden grid place-items-center aspect-[4/5] border border-[#27272a] rounded-[25px] isolate transform-gpu transition-colors duration-200 ease-[cubic-bezier(0.5,1,0.89,1)] select-none ${className}`}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       onFocus={finalNoFocus ? undefined : onFocus}
