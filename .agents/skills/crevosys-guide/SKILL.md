@@ -222,12 +222,32 @@ flowchart TD
 | Mobile Hero Shape Screenshot Alignment & FAQ Section Animation Restoration | `Hero.tsx`, `Faq.tsx`, `globals.css` | `[COMPLETED]` | Aligned mobile hero shape scale/position with user screenshot (~205vw width, centered arches framing bottom 35-40% beneath CTA buttons) and restored smooth, hardware-accelerated conversational chat-bubble reveal animations on FAQ section across mobile and desktop without WebKit thread locking. |
 | Mobile Hero Section Typography & 3D Shape Visual Restoration | `src/components/sections/Hero.tsx` | `[COMPLETED]` | Restored 2-line headline layout (`text-[1.72rem] xs:text-3xl sm:text-5xl`), flex-nowrap word containment, and original 3D spiral shape framing (`w-[130vw] min-w-[1300px] scale-125 translate-y-[12%]`) directly matching reference screenshot. |
 | Technology Section Mobile Icon Rotation Effect Restoration | `src/components/sections/technology.tsx` | `[COMPLETED]` | Restore continuous orbital icon rotation ticker and synchronized dashed track animation on mobile viewports while maintaining touch pause/resume inspection and WebKit stability. |
+| FAQ Section Mobile Typing & Expanding Chat Animation Restoration | `src/components/sections/Faq.tsx` | `[COMPLETED]` | Restore desktop typing indicator pulse and expanding bubble scroll animation on mobile viewports and desktop with accurate height measurement and hardware acceleration. |
 
 ---
 
 ## 7. Task Completion Summaries & Change Log
 
 Every completed task is permanently recorded here to maintain historical transparency, prevent regression, and provide continuous context for engineering agents and human developers.
+
+### [TASK-007] FAQ Section Mobile Typing & Expanding Chat Animation Restoration
+- **Completion Date**: 2026-10-27
+- **Category**: Enhancement & Animation Restoration
+- **Target Components / Routes**: `src/components/sections/Faq.tsx`
+- **Objective & Problem Statement**:
+  - The user requested restoring the exact desktop typing indicator pulse and expanding chat-bubble scroll effect on mobile phone viewports for the FAQ section only, without modifying any other sections or components in the project.
+- **Root Cause & Technical Analysis**:
+  - Previously, the typing indicator and width/height expansion animation were completely replaced with simpler chat bubble slide-in reveals across both desktop and mobile in commit `ef55152`.
+  - In addition, earlier iterations hid typing dots on mobile using `hidden md:flex` and bypassed mobile animations completely via `shouldRunAnimations()`.
+- **Key Changes Implemented**:
+  - **Typing Indicator Pulse**: Restored `TypingDots` with 3 animated pulsing dots (`animate-typing-pulse` with 0.2s staggered delay) inside both question bubbles (`bg-white`) and answer bubbles (`bg-zinc-900`) active on all devices including mobile (`flex`).
+  - **Dimension Pre-Measurement with Mobile Constraints**: Upgraded `measureBubble` to pre-apply constrained `maxWidth` (`Math.round(maxBubbleWidth * 0.9)` for questions, `maxBubbleWidth` for answers) prior to measuring DOM height, ensuring multi-line text wrapping is measured with exact pixel accuracy to prevent text clipping during expansion.
+  - **Scrubbed Scroll Timeline**: Configured a master GSAP timeline scrubbed to `.faq-list` scroll (`start: "top 75%"`, `end: "bottom 15%"`, `scrub: 1.2`), executing the sequential pop-up -> typing dwell -> smooth width/height expansion -> typing fade-out -> content reveal for each question and answer bubble.
+  - **Hardware Acceleration & Font Handling**: Added `will-change-[width,height,transform]` and `transform-gpu` to the question and answer bubbles, hooked font readiness via `document.fonts.ready` before measuring sizes, and added a debounced window resize handler to recompute dimensions on orientation or viewport changes.
+- **Files Modified**:
+  - `src/components/sections/Faq.tsx`: Restored typing indicator dots, pre-measured width/height expansion, and scroll scrub timeline.
+- **Verification & Outcome**: `npm run build` completed with exit code 0 across all 41 routes with zero type/lint errors.
+- **Status**: `[COMPLETED]`
 
 ### [TASK-006] Technology Section Mobile Icon Rotation Effect Restoration
 - **Completion Date**: 2026-10-27

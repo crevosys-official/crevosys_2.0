@@ -51,6 +51,25 @@ const DEFAULT_FAQS: FAQItemData[] = [
   },
 ];
 
+const TYPING_WIDTH = 84;
+const TYPING_HEIGHT = 52;
+
+function TypingDots({ dotColor = "bg-zinc-400" }: { dotColor?: string }) {
+  return (
+    <div className="typing-indicator absolute inset-0 flex items-center justify-center gap-1.5 pointer-events-none">
+      <span className={`w-2 h-2 rounded-full ${dotColor} animate-typing-pulse`} />
+      <span
+        className={`w-2 h-2 rounded-full ${dotColor} animate-typing-pulse`}
+        style={{ animationDelay: "0.2s" }}
+      />
+      <span
+        className={`w-2 h-2 rounded-full ${dotColor} animate-typing-pulse`}
+        style={{ animationDelay: "0.4s" }}
+      />
+    </div>
+  );
+}
+
 export default function ScrollFaq({ items = DEFAULT_FAQS }: { items?: FAQItemData[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -59,68 +78,225 @@ export default function ScrollFaq({ items = DEFAULT_FAQS }: { items?: FAQItemDat
       if (!containerRef.current) return;
       if (prefersReducedMotion()) return;
 
-      // 1. Header Reveal
-      gsap.fromTo(
-        ".faq-header",
-        { y: 35, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: ".faq-header",
-            start: "top 88%",
-            once: true,
-          },
+      let isCleanedUp = false;
+
+      // Helper to measure native rendered bubble dimensions with mobile bounds
+      const measureBubble = (msg: HTMLElement, maxAllowedWidth: number) => {
+        const content = msg.querySelector<HTMLElement>(".faq-content");
+        const typing = msg.querySelector<HTMLElement>(".typing-indicator");
+        const paragraphs = content ? content.querySelectorAll("p") : [];
+
+        gsap.set(msg, { clearProps: "all" });
+        if (content) {
+          gsap.set(content, { clearProps: "all" });
+          content.style.width = "";
+          content.style.maxWidth = `${maxAllowedWidth}px`;
+          content.style.flexShrink = "";
         }
-      );
+        if (paragraphs.length) gsap.set(paragraphs, { clearProps: "all" });
+        if (typing) gsap.set(typing, { clearProps: "all" });
 
-      // 2. Chat Bubble Conversational Reveals
-      const faqItems = gsap.utils.toArray<HTMLElement>(".faq-item");
-      faqItems.forEach((item) => {
-        const qBubble = item.querySelector<HTMLElement>(".faq-question");
-        const aBubble = item.querySelector<HTMLElement>(".faq-answer");
+        const rect = msg.getBoundingClientRect();
+        const contentRect = content ? content.getBoundingClientRect() : null;
 
-        const tl = gsap.timeline({
+        return {
+          width: Math.min(Math.ceil(rect.width), maxAllowedWidth),
+          height: Math.ceil(rect.height),
+          contentWidth: contentRect
+            ? Math.min(Math.ceil(contentRect.width), maxAllowedWidth)
+            : Math.min(Math.ceil(rect.width), maxAllowedWidth),
+        };
+      };
+
+      const initAnimations = () => {
+        if (isCleanedUp || !containerRef.current) return;
+
+        // 1. Animate Section Header
+        gsap.fromTo(
+          ".faq-header",
+          { y: 35, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            ease: "sine.out",
+            scrollTrigger: {
+              trigger: ".faq-header",
+              start: "top 85%",
+              end: "top 60%",
+              scrub: 1.2,
+            },
+          }
+        );
+
+        const faqItems = gsap.utils.toArray<HTMLElement>(".faq-item");
+        const itemSizes: Array<{
+          qSize: { width: number; height: number; contentWidth: number };
+          aSize: { width: number; height: number; contentWidth: number };
+        }> = [];
+
+        const containerWidth =
+          containerRef.current.getBoundingClientRect().width || window.innerWidth;
+        const maxBubbleWidth = Math.max(260, containerWidth - 32);
+
+        // Pre-measure and lock content widths to avoid wrapping jitter
+        faqItems.forEach((item) => {
+          const qMsg = item.querySelector<HTMLElement>(".faq-question");
+          const aMsg = item.querySelector<HTMLElement>(".faq-answer");
+          if (!qMsg || !aMsg) return;
+
+          const qAllowed = Math.round(maxBubbleWidth * 0.9);
+          const aAllowed = Math.round(maxBubbleWidth);
+
+          const qSize = measureBubble(qMsg, qAllowed);
+          const aSize = measureBubble(aMsg, aAllowed);
+
+          const qContent = qMsg.querySelector<HTMLElement>(".faq-content");
+          const aContent = aMsg.querySelector<HTMLElement>(".faq-content");
+          if (qContent) {
+            qContent.style.width = `${qSize.contentWidth}px`;
+            qContent.style.maxWidth = "100%";
+            qContent.style.flexShrink = "0";
+          }
+          if (aContent) {
+            aContent.style.width = `${aSize.contentWidth}px`;
+            aContent.style.maxWidth = "100%";
+            aContent.style.flexShrink = "0";
+          }
+
+          itemSizes.push({ qSize, aSize });
+        });
+
+        // 2. Set Initial Collapsed States
+        faqItems.forEach((item) => {
+          const qMsg = item.querySelector<HTMLElement>(".faq-question");
+          const aMsg = item.querySelector<HTMLElement>(".faq-answer");
+          if (!qMsg || !aMsg) return;
+
+          const qTyping = qMsg.querySelector<HTMLElement>(".typing-indicator");
+          const qContent = qMsg.querySelector<HTMLElement>(".faq-content");
+          const aTyping = aMsg.querySelector<HTMLElement>(".typing-indicator");
+          const aContent = aMsg.querySelector<HTMLElement>(".faq-content");
+
+          gsap.set(qMsg, {
+            width: TYPING_WIDTH,
+            height: TYPING_HEIGHT,
+            opacity: 0,
+            scale: 0.3,
+            transformOrigin: "bottom left",
+          });
+
+          gsap.set(aMsg, {
+            width: TYPING_WIDTH,
+            height: TYPING_HEIGHT,
+            opacity: 0,
+            scale: 0.3,
+            transformOrigin: "bottom right",
+          });
+
+          gsap.set([qTyping, aTyping], { opacity: 1, scale: 1 });
+          gsap.set([qContent, aContent], { opacity: 0 });
+        });
+
+        // 3. Master Timeline linked to Scroll
+        const masterTl = gsap.timeline({
           scrollTrigger: {
-            trigger: item,
-            start: "top 85%",
-            once: true,
+            trigger: ".faq-list",
+            start: "top 75%",
+            end: "bottom 15%",
+            scrub: 1.2,
           },
         });
 
-        if (qBubble) {
-          tl.fromTo(
-            qBubble,
-            { opacity: 0, y: 30, x: -24, scale: 0.94 },
-            {
-              opacity: 1,
-              y: 0,
-              x: 0,
-              scale: 1,
-              duration: 0.65,
-              ease: "back.out(1.15)",
-            }
-          );
-        }
+        faqItems.forEach((item, index) => {
+          const sizes = itemSizes[index];
+          if (!sizes) return;
 
-        if (aBubble) {
-          tl.fromTo(
-            aBubble,
-            { opacity: 0, y: 30, x: 24, scale: 0.94 },
-            {
-              opacity: 1,
-              y: 0,
-              x: 0,
-              scale: 1,
-              duration: 0.65,
-              ease: "back.out(1.15)",
-            },
-            "-=0.32"
+          const qMsg = item.querySelector<HTMLElement>(".faq-question");
+          const aMsg = item.querySelector<HTMLElement>(".faq-answer");
+          if (!qMsg || !aMsg) return;
+
+          const qTyping = qMsg.querySelector<HTMLElement>(".typing-indicator");
+          const qContent = qMsg.querySelector<HTMLElement>(".faq-content");
+          const aTyping = aMsg.querySelector<HTMLElement>(".typing-indicator");
+          const aContent = aMsg.querySelector<HTMLElement>(".faq-content");
+
+          const { qSize, aSize } = sizes;
+
+          // Question Animation
+          masterTl.to(qMsg, { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" });
+          masterTl.to({}, { duration: 0.6 }); // Dwell on typing indicator
+          masterTl.addLabel(`qExpand_${index}`);
+          masterTl.to(
+            qMsg,
+            { width: qSize.width, height: qSize.height, duration: 3.2, ease: "sine.inOut" },
+            `qExpand_${index}`
           );
+          masterTl.to(
+            qTyping,
+            { opacity: 0, scale: 0.6, duration: 1.0, ease: "sine.inOut" },
+            `qExpand_${index}+=0.5`
+          );
+          masterTl.fromTo(
+            qContent,
+            { opacity: 0, y: 6 },
+            { opacity: 1, y: 0, duration: 1.5, ease: "sine.out" },
+            `qExpand_${index}+=0.8`
+          );
+
+          masterTl.to({}, { duration: 0.3 }); // Conversational breath
+
+          // Answer Animation (identical expand & word reveal to question)
+          masterTl.to(aMsg, { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" });
+          masterTl.to({}, { duration: 0.6 }); // Dwell on typing indicator
+          masterTl.addLabel(`aExpand_${index}`);
+          masterTl.to(
+            aMsg,
+            { width: aSize.width, height: aSize.height, duration: 3.2, ease: "sine.inOut" },
+            `aExpand_${index}`
+          );
+          masterTl.to(
+            aTyping,
+            { opacity: 0, scale: 0.6, duration: 1.0, ease: "sine.inOut" },
+            `aExpand_${index}+=0.5`
+          );
+          masterTl.fromTo(
+            aContent,
+            { opacity: 0, y: 6 },
+            { opacity: 1, y: 0, duration: 1.5, ease: "sine.out" },
+            `aExpand_${index}+=0.8`
+          );
+
+          if (index < faqItems.length - 1) {
+            masterTl.to({}, { duration: 0.4 });
+          }
+        });
+
+        ScrollTrigger.refresh();
+      };
+
+      if (typeof document !== "undefined" && document.fonts?.ready) {
+        document.fonts.ready.then(() => {
+          if (!isCleanedUp) initAnimations();
+        });
+      } else {
+        initAnimations();
+      }
+
+      let lastWidth = typeof window !== "undefined" ? window.innerWidth : 0;
+      const handleResize = () => {
+        if (!containerRef.current) return;
+        const currentWidth = window.innerWidth;
+        if (Math.abs(currentWidth - lastWidth) > 40) {
+          lastWidth = currentWidth;
+          initAnimations();
         }
-      });
+      };
+      window.addEventListener("resize", handleResize);
+
+      return () => {
+        isCleanedUp = true;
+        window.removeEventListener("resize", handleResize);
+      };
     },
     { scope: containerRef, dependencies: [items.length] }
   );
@@ -153,7 +329,8 @@ export default function ScrollFaq({ items = DEFAULT_FAQS }: { items?: FAQItemDat
           <div key={idx} className="faq-item flex flex-col gap-5 w-full">
             {/* Question Bubble (#071FA9, Left-aligned) */}
             <div className="flex justify-start">
-              <div className="faq-question relative overflow-hidden bg-[#071FA9] border border-blue-400/30 text-white shadow-[0_8px_32px_rgba(7,31,169,0.35),inset_0_1px_0_rgba(255,255,255,0.15)] px-6 py-5 md:px-7 md:py-5 rounded-2xl md:rounded-3xl rounded-bl-sm max-w-[88%] sm:max-w-[75%] backdrop-blur-md will-change-transform transform-gpu">
+              <div className="faq-question relative overflow-hidden bg-[#071FA9] border border-blue-400/30 text-white shadow-[0_8px_32px_rgba(7,31,169,0.35),inset_0_1px_0_rgba(255,255,255,0.15)] px-6 py-5 md:px-7 md:py-5 rounded-2xl md:rounded-3xl rounded-bl-sm max-w-[88%] sm:max-w-[75%] backdrop-blur-md will-change-[width,height,transform] transform-gpu">
+                <TypingDots dotColor="bg-white" />
                 <div className="faq-content w-full max-w-full flex flex-col gap-2">
                   <span className="text-[11px] uppercase tracking-wider font-semibold text-blue-200">
                     Question
@@ -167,7 +344,8 @@ export default function ScrollFaq({ items = DEFAULT_FAQS }: { items?: FAQItemDat
 
             {/* Answer Bubble (#D79DBA, Right-aligned) */}
             <div className="flex justify-end w-full">
-              <div className="faq-answer relative overflow-hidden bg-[#D79DBA] border border-white/30 text-zinc-950 shadow-[0_8px_32px_rgba(215,157,186,0.3),inset_0_1px_0_rgba(255,255,255,0.4)] px-6 py-5 md:px-7 md:py-5 rounded-2xl md:rounded-3xl rounded-br-sm w-full sm:w-[80%] md:w-[75%] backdrop-blur-md will-change-transform transform-gpu">
+              <div className="faq-answer relative overflow-hidden bg-[#D79DBA] border border-white/30 text-zinc-950 shadow-[0_8px_32px_rgba(215,157,186,0.3),inset_0_1px_0_rgba(255,255,255,0.4)] px-6 py-5 md:px-7 md:py-5 rounded-2xl md:rounded-3xl rounded-br-sm w-full sm:w-[80%] md:w-[75%] backdrop-blur-md will-change-[width,height,transform] transform-gpu">
+                <TypingDots dotColor="bg-zinc-900" />
                 <div className="faq-content w-full max-w-full flex flex-col gap-2">
                   <span className="text-[11px] uppercase tracking-wider font-bold text-zinc-950/80">
                     CrevoSys
