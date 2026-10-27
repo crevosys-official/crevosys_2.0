@@ -221,12 +221,32 @@ flowchart TD
 | Post-Task Summary Protocol Enforcement | `SKILL.md`, `.agents/skills/crevosys-guide/SKILL.md` | `[COMPLETED]` | Integrated mandatory post-task documentation requirement and structured change log archive into the development workflow. |
 | Mobile Hero Shape Screenshot Alignment & FAQ Section Animation Restoration | `Hero.tsx`, `Faq.tsx`, `globals.css` | `[COMPLETED]` | Aligned mobile hero shape scale/position with user screenshot (~205vw width, centered arches framing bottom 35-40% beneath CTA buttons) and restored smooth, hardware-accelerated conversational chat-bubble reveal animations on FAQ section across mobile and desktop without WebKit thread locking. |
 | Mobile Hero Section Typography & 3D Shape Visual Restoration | `src/components/sections/Hero.tsx` | `[COMPLETED]` | Restored 2-line headline layout (`text-[1.72rem] xs:text-3xl sm:text-5xl`), flex-nowrap word containment, and original 3D spiral shape framing (`w-[130vw] min-w-[1300px] scale-125 translate-y-[12%]`) directly matching reference screenshot. |
+| Technology Section Mobile Icon Rotation Effect Restoration | `src/components/sections/technology.tsx` | `[COMPLETED]` | Restore continuous orbital icon rotation ticker and synchronized dashed track animation on mobile viewports while maintaining touch pause/resume inspection and WebKit stability. |
 
 ---
 
 ## 7. Task Completion Summaries & Change Log
 
 Every completed task is permanently recorded here to maintain historical transparency, prevent regression, and provide continuous context for engineering agents and human developers.
+
+### [TASK-006] Technology Section Mobile Icon Rotation Effect Restoration
+- **Completion Date**: 2026-10-27
+- **Category**: Enhancement & Mobile Performance
+- **Target Components / Routes**: `src/components/sections/technology.tsx`
+- **Objective & Problem Statement**:
+  - The technology section's orbital icon rotation effect was running only on desktop, leaving icons completely static on mobile viewports.
+- **Root Cause & Technical Analysis**:
+  - `useGSAP` in `technology.tsx` had an early exit condition `if (!shouldRunAnimations()) return;`, which returned `false` on any touch/mobile viewport (`window.innerWidth < 768`, iOS UserAgent, `pointer: coarse`).
+  - This prevented the GSAP continuous rotation ticker (`gsap.ticker.add(tickerCallback)`), dashed track animation, and the entrance timeline from ever mounting on mobile devices.
+- **Key Changes Implemented**:
+  - **Mobile Rotation Activation**: Replaced the coarse `shouldRunAnimations()` gate with `prefersReducedMotion()`, enabling the orbital rotation ticker and synchronized dashed track animation across all mobile, tablet, and desktop devices while continuing to respect users' OS accessibility settings.
+  - **Failsafe Reveal Animations**: Replaced upfront `gsap.set` pre-hiding with ScrollTrigger-based `fromTo` reveals (`opacity: 0 -> 1`, `y: 24 -> 0`, `scale: 0.3 -> 1`), preventing initial blank flashes on slow network or low-power mobile devices.
+  - **GPU Hardware Acceleration**: Upgraded TechBadge transforms to hardware-accelerated 3D vectors (`translate3d(-50%, -50%, 0)`) with `will-change-transform` and `transform-gpu` to guarantee a 120Hz frame rate on mobile WebKit without layer repaints.
+  - **Full Touch Interactivity Preservation**: Maintained tap-to-inspect (`handleBadgeSelect`), smooth deceleration on tap (`speedRef -> 0`), active highlight ring, and mobile radar indicator card ("Tap to resume" / "Orbital Tech Radar").
+- **Files Modified**:
+  - `src/components/sections/technology.tsx`: Replaced mobile animation bypass with `prefersReducedMotion`, converted entrance tweens to `fromTo`, and added `translate3d` GPU acceleration.
+- **Verification & Outcome**: `npm run build` completed with exit code 0 across all 41 routes. The orbital rotation effect and synchronized dashed track smoothly spin and respond to touch on mobile devices just like on desktop.
+- **Status**: `[COMPLETED]`
 
 ### [TASK-005] Mobile Hero Section Typography & 3D Shape Visual Restoration
 - **Completion Date**: 2026-10-26

@@ -6,7 +6,7 @@ import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { shouldRunAnimations } from "@/lib/animation";
+import { prefersReducedMotion } from "@/lib/animation";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -127,9 +127,9 @@ function TechBadge({
         top: `${initialTopPct}%`,
         opacity: initialFade.opacity,
         visibility: initialFade.visible ? "visible" : "hidden",
-        transform: `translate(-50%, -50%) scale(${initialFade.scale})`,
+        transform: `translate3d(-50%, -50%, 0) scale(${initialFade.scale})`,
       }}
-      className="absolute pointer-events-auto z-20 group cursor-pointer"
+      className="absolute pointer-events-auto z-20 group cursor-pointer will-change-transform transform-gpu"
       onMouseEnter={() => onHover(item.name)}
       onMouseLeave={() => onHover(null)}
       onClick={(e) => {
@@ -301,8 +301,8 @@ export default function Integrations() {
     () => {
       if (!sectionRef.current) return;
 
-      // ── MOBILE / iOS: Skip ALL animations. Content visible via CSS defaults. ──
-      if (!shouldRunAnimations()) return;
+      // Honor user accessibility setting for reduced motion
+      if (prefersReducedMotion()) return;
 
       // Ordered visible badges from left side down (index 10, ~171.6°) to right side down (index 0, ~8°)
       const leftToRightIndices = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
@@ -310,20 +310,7 @@ export default function Integrations() {
         .map((idx) => badgeRefs.current[idx]?.querySelector(".badge-reveal-wrapper"))
         .filter(Boolean);
 
-      // Pre-set initial hidden state for entrance reveal
-      gsap.set(revealWrappers, {
-        opacity: 0,
-        scale: 0.3,
-        y: 24,
-      });
-
       const textTargets = [mobileHeaderRef.current, contentRef.current].filter(Boolean);
-      if (textTargets.length > 0) {
-        gsap.set(textTargets, {
-          opacity: 0,
-          y: 28,
-        });
-      }
 
       // Entrance timeline triggered on scroll enter - snappy & responsive
       const entranceTl = gsap.timeline({
@@ -334,10 +321,11 @@ export default function Integrations() {
         },
       });
 
-      // 1. Text headers lift & reveal
+      // 1. Text headers lift & reveal (using fromTo to ensure visibility without pre-hiding DOM)
       if (textTargets.length > 0) {
-        entranceTl.to(
+        entranceTl.fromTo(
           textTargets,
+          { opacity: 0, y: 24 },
           {
             opacity: 1,
             y: 0,
@@ -364,18 +352,21 @@ export default function Integrations() {
       }
 
       // 3. Reveal icons sequentially from left side down line across to right side down line
-      entranceTl.to(
-        revealWrappers,
-        {
-          opacity: 1,
-          scale: 1,
-          y: 0,
-          stagger: 0.05,
-          duration: 0.45,
-          ease: "back.out(1.5)",
-        },
-        0.1
-      );
+      if (revealWrappers.length > 0) {
+        entranceTl.fromTo(
+          revealWrappers,
+          { opacity: 0, scale: 0.3, y: 24 },
+          {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            stagger: 0.04,
+            duration: 0.45,
+            ease: "back.out(1.5)",
+          },
+          0.1
+        );
+      }
 
       // 4. Smoothly start spinning like an orbital wheel once revealed
       entranceTl.to(
@@ -387,6 +378,13 @@ export default function Integrations() {
         },
         "-=0.1"
       );
+
+      // Fallback safeguard to guarantee rotation speed is 1 once entrance completes
+      entranceTl.eventCallback("onComplete", () => {
+        if (!isHoveredRef.current) {
+          speedRef.current.value = 1;
+        }
+      });
 
       // Continuous orbital rotation ticker
       const ORBIT_SPEED = 0.18; // smooth, steady orbital rotation (degrees per frame)
@@ -434,7 +432,7 @@ export default function Integrations() {
           el.style.left = `${leftPct}%`;
           el.style.top = `${topPct}%`;
           el.style.opacity = `${fade.opacity}`;
-          el.style.transform = `translate(-50%, -50%) scale(${fade.scale})`;
+          el.style.transform = `translate3d(-50%, -50%, 0) scale(${fade.scale})`;
           el.style.pointerEvents = fade.opacity > 0.25 ? "auto" : "none";
         }
       };
@@ -453,12 +451,12 @@ export default function Integrations() {
           gsap.to(speedRef.current, { value: 0, duration: 0.2 });
         },
         onEnter: () => {
-          if (!isHoveredRef.current && entranceTl.progress() > 0.8) {
+          if (!isHoveredRef.current && (entranceTl.progress() > 0.8 || entranceTl.scrollTrigger?.direction === 1)) {
             gsap.to(speedRef.current, { value: 1, duration: 0.5 });
           }
         },
         onEnterBack: () => {
-          if (!isHoveredRef.current && entranceTl.progress() > 0.8) {
+          if (!isHoveredRef.current) {
             gsap.to(speedRef.current, { value: 1, duration: 0.5 });
           }
         },
