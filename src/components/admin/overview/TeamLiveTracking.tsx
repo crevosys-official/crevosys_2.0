@@ -17,6 +17,7 @@ import {
   Globe,
   Radio,
 } from "lucide-react";
+import AvatarWithFallback from "@/components/ui/AvatarWithFallback";
 
 export type WorkStatus = "working" | "meeting" | "leave";
 
@@ -44,7 +45,7 @@ const INITIAL_TEAM: TeamMemberLive[] = [
     name: "MD Abu Sahid",
     designation: "Chief Executive Officer (CEO)",
     position: "MERN-Developer & UI/UX",
-    avatar: "/Team/sahid_withoutGlow.webp",
+    avatar: "/Team/sahidceo.webp",
     glowAvatar: "/Team/sahid_withGlow.webp",
     status: "working",
     currentTask: "Architecting Next.js 15 App Router & Core Overview API",
@@ -60,7 +61,7 @@ const INITIAL_TEAM: TeamMemberLive[] = [
     name: "Joyant Sheikhar Gupta Joy",
     designation: "Chief Technology Officer (CTO)",
     position: "Software Developer",
-    avatar: "/Team/joyant_withoutGlow.webp",
+    avatar: "/Team/joyantcto.webp",
     glowAvatar: "/Team/joyant_withGlow.webp",
     status: "working",
     currentTask: "Refactoring Database ORM & Redis Session Caching Layer",
@@ -76,7 +77,7 @@ const INITIAL_TEAM: TeamMemberLive[] = [
     name: "Abid Shahriar",
     designation: "Chief Operating Officer (COO)",
     position: "Web Developer",
-    avatar: "/Team/abid_withoutGlow.webp",
+    avatar: "/Team/shahriarcoo.webp",
     glowAvatar: "/Team/abid_withGlow.webp",
     status: "working",
     currentTask: "Integrating Stripe & SSLCommerz Multi-Currency Checkout",
@@ -282,23 +283,17 @@ export default function TeamLiveTracking() {
                   <div className="flex items-center gap-3">
                     {/* Glowing Avatar on hover */}
                     <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-white/10 shrink-0 bg-zinc-900 group-hover:border-[#ff6a00]/40 transition-colors">
-                      <Image
+                      <AvatarWithFallback
                         src={member.avatar}
+                        glowSrc={member.glowAvatar}
                         alt={member.name}
                         width={48}
                         height={48}
-                        className="w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-0"
-                      />
-                      <Image
-                        src={member.glowAvatar}
-                        alt={member.name}
-                        width={48}
-                        height={48}
-                        className="w-full h-full object-cover absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        className="w-full h-full object-cover"
                       />
                       {/* Status indicator pin */}
                       <span
-                        className={`absolute bottom-0.5 right-0.5 w-3 h-3 rounded-full border-2 border-[#0e0e13] ${
+                        className={`absolute bottom-0.5 right-0.5 w-3 h-3 rounded-full border-2 border-[#0e0e13] z-10 ${
                           isWorking
                             ? "bg-emerald-500"
                             : isMeeting

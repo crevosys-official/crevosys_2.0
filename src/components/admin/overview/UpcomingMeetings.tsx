@@ -13,6 +13,7 @@ import {
   Check,
   Sparkles,
 } from "lucide-react";
+import AvatarWithFallback from "@/components/ui/AvatarWithFallback";
 
 export interface MeetingItem {
   id: string;
@@ -41,8 +42,8 @@ const INITIAL_MEETINGS: MeetingItem[] = [
     platform: "Google Meet",
     meetUrl: "https://meet.google.com/cre-arch-log",
     attendees: [
-      { name: "MD Abu Sahid", avatar: "/Team/sahid_withoutGlow.webp" },
-      { name: "Joyant Sheikhar", avatar: "/Team/joyant_withoutGlow.webp" },
+      { name: "MD Abu Sahid", avatar: "/Team/sahidceo.webp" },
+      { name: "Joyant Sheikhar", avatar: "/Team/joyantcto.webp" },
     ],
     agenda: "Finalize telemetry ingestion schema & AWS GovCloud container orchestration parameters.",
   },
@@ -56,9 +57,9 @@ const INITIAL_MEETINGS: MeetingItem[] = [
     platform: "Discord",
     meetUrl: "https://discord.gg/crevosys-team",
     attendees: [
-      { name: "MD Abu Sahid", avatar: "/Team/sahid_withoutGlow.webp" },
-      { name: "Joyant Sheikhar", avatar: "/Team/joyant_withoutGlow.webp" },
-      { name: "Abid Shahriar", avatar: "/Team/abid_withoutGlow.webp" },
+      { name: "MD Abu Sahid", avatar: "/Team/sahidceo.webp" },
+      { name: "Joyant Sheikhar", avatar: "/Team/joyantcto.webp" },
+      { name: "Abid Shahriar", avatar: "/Team/shahriarcoo.webp" },
       { name: "Nahid Jenifa", avatar: "/Team/jenifa_withoutGlow.webp" },
     ],
     agenda: "Review velocity on The Palace Resort booking engine and plan upcoming AeroLogistics kickoff.",
@@ -74,7 +75,7 @@ const INITIAL_MEETINGS: MeetingItem[] = [
     meetUrl: "https://zoom.us/j/9823482394",
     attendees: [
       { name: "Nahid Jenifa", avatar: "/Team/jenifa_withoutGlow.webp" },
-      { name: "MD Abu Sahid", avatar: "/Team/sahid_withoutGlow.webp" },
+      { name: "MD Abu Sahid", avatar: "/Team/sahidceo.webp" },
     ],
     agenda: "Present Nordic Wood 3D product customizer models and dark/light typography system.",
   },
@@ -88,8 +89,8 @@ const INITIAL_MEETINGS: MeetingItem[] = [
     platform: "Google Meet",
     meetUrl: "https://meet.google.com/cre-exec-rev",
     attendees: [
-      { name: "MD Abu Sahid", avatar: "/Team/sahid_withoutGlow.webp" },
-      { name: "Abid Shahriar", avatar: "/Team/abid_withoutGlow.webp" },
+      { name: "MD Abu Sahid", avatar: "/Team/sahidceo.webp" },
+      { name: "Abid Shahriar", avatar: "/Team/shahriarcoo.webp" },
       { name: "Shamsul Islam", avatar: "/Team/sumon_withoutGlow.webp" },
     ],
     agenda: "Quarterly milestone reconciliation, Upwork enterprise retainers, and cashflow forecast.",
@@ -284,7 +285,7 @@ export default function UpcomingMeetings() {
                       className="relative w-7 h-7 rounded-full overflow-hidden border-2 border-[#0e0e13] bg-zinc-800"
                       title={att.name}
                     >
-                      <Image
+                      <AvatarWithFallback
                         src={att.avatar}
                         alt={att.name}
                         width={28}

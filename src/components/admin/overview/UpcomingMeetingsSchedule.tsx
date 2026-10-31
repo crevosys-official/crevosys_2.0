@@ -7,6 +7,7 @@ import {
   Video,
   Plus,
 } from "lucide-react";
+import AvatarWithFallback from "@/components/ui/AvatarWithFallback";
 
 export interface ScheduleMeeting {
   id: string;
@@ -28,8 +29,8 @@ const MEETINGS_DATA: ScheduleMeeting[] = [
     platform: "Google Meet",
     meetUrl: "https://meet.google.com/cre-arch-log",
     attendees: [
-      { name: "MD Abu Sahid", avatar: "/Team/sahid_withoutGlow.webp" },
-      { name: "Joyant Sheikhar", avatar: "/Team/joyant_withoutGlow.webp" },
+      { name: "MD Abu Sahid", avatar: "/Team/sahidceo.webp" },
+      { name: "Joyant Sheikhar", avatar: "/Team/joyantcto.webp" },
     ],
     status: "upcoming",
   },
@@ -41,9 +42,9 @@ const MEETINGS_DATA: ScheduleMeeting[] = [
     platform: "Discord",
     meetUrl: "https://discord.gg/crevosys",
     attendees: [
-      { name: "MD Abu Sahid", avatar: "/Team/sahid_withoutGlow.webp" },
-      { name: "Joyant Sheikhar", avatar: "/Team/joyant_withoutGlow.webp" },
-      { name: "Abid Shahriar", avatar: "/Team/abid_withoutGlow.webp" },
+      { name: "MD Abu Sahid", avatar: "/Team/sahidceo.webp" },
+      { name: "Joyant Sheikhar", avatar: "/Team/joyantcto.webp" },
+      { name: "Abid Shahriar", avatar: "/Team/shahriarcoo.webp" },
       { name: "Nahid Jenifa", avatar: "/Team/jenifa_withoutGlow.webp" },
     ],
     status: "scheduled",
@@ -57,7 +58,7 @@ const MEETINGS_DATA: ScheduleMeeting[] = [
     meetUrl: "https://zoom.us/j/9823482394",
     attendees: [
       { name: "Nahid Jenifa", avatar: "/Team/jenifa_withoutGlow.webp" },
-      { name: "MD Abu Sahid", avatar: "/Team/sahid_withoutGlow.webp" },
+      { name: "MD Abu Sahid", avatar: "/Team/sahidceo.webp" },
     ],
     status: "scheduled",
   },
@@ -159,10 +160,10 @@ export default function UpcomingMeetingsSchedule() {
                 {meeting.attendees.map((att, idx) => (
                   <div
                     key={idx}
-                    className="relative w-6 h-6 rounded-full overflow-hidden border border-zinc-900"
+                    className="relative w-6 h-6 rounded-full overflow-hidden border border-zinc-900 bg-zinc-900"
                     title={att.name}
                   >
-                    <Image
+                    <AvatarWithFallback
                       src={att.avatar}
                       alt={att.name}
                       width={24}

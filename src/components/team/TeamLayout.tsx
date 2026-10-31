@@ -26,7 +26,7 @@ const TeamLayout = () => {
     <div>
       <div className="grid md:grid-cols-3 gap-5 py-30 px-10">
         {teams.map((team, index) => {
-          const rawPic = (team.picture || "/Team/sahid_withoutGlow.webp").replace(
+          const rawPic = (team.picture || "/Team/sahidceo.webp").replace(
             /\.png$/,
             ".webp"
           );

@@ -143,6 +143,7 @@ description: >-
   - `TeamLiveTrackingSidebar.tsx`: Squad availability and active task statuses.
   - `UpcomingMeetingsSchedule.tsx`: Calendar of upcoming client consultations.
   - `ReliabilityGaugeCard.tsx` & `AiAssistantCard.tsx`: Infrastructure uptime score and AI assistant card.
+  - `AvatarWithFallback.tsx`: Resilient fallback rendering for admin dashboard avatars, preventing broken images by generating obsidian/zinc gradient initials badges.
 - **Admin Management Modules**:
   - `/admin/projects`: Project portfolio CRUD interface.
   - `/admin/services`: Service offerings and pricing tier management.
@@ -223,12 +224,45 @@ flowchart TD
 | Mobile Hero Section Typography & 3D Shape Visual Restoration | `src/components/sections/Hero.tsx` | `[COMPLETED]` | Restored 2-line headline layout (`text-[1.72rem] xs:text-3xl sm:text-5xl`), flex-nowrap word containment, and original 3D spiral shape framing (`w-[130vw] min-w-[1300px] scale-125 translate-y-[12%]`) directly matching reference screenshot. |
 | Technology Section Mobile Icon Rotation Effect Restoration | `src/components/sections/technology.tsx` | `[COMPLETED]` | Restore continuous orbital icon rotation ticker and synchronized dashed track animation on mobile viewports while maintaining touch pause/resume inspection and WebKit stability. |
 | FAQ Section Mobile Typing & Expanding Chat Animation Restoration | `src/components/sections/Faq.tsx` | `[COMPLETED]` | Restore desktop typing indicator pulse and expanding bubble scroll animation on mobile viewports and desktop with accurate height measurement and hardware acceleration. |
+| Admin Dashboard Broken Images & Avatar Asset Restoration | `src/components/admin/overview/*`, `public/Team/*`, `src/data/defaultTeam.ts` | `[COMPLETED]` | Restore deleted team avatar assets (`sumon`, `jenifa`, `abid`, `joyant`, `sahid`), update admin dashboard image references to official pictures (`sahidceo.webp`, `joyantcto.webp`, `shahriarcoo.webp`), and implement resilient fallback rendering. |
 
 ---
 
 ## 7. Task Completion Summaries & Change Log
 
 Every completed task is permanently recorded here to maintain historical transparency, prevent regression, and provide continuous context for engineering agents and human developers.
+
+### [TASK-008] Admin Dashboard Broken Images & Avatar Asset Restoration
+- **Completion Date**: 2026-10-27
+- **Category**: Bugfix & Asset Restoration
+- **Target Components / Routes**: `/admin`, `src/components/admin/overview/*`, `public/Team/*`, `src/components/ui/AvatarWithFallback.tsx`
+- **Objective & Problem Statement**:
+  - The admin dashboard (`/admin`) exhibited broken image icons across several core widgets: the team member avatars in "Team Live Tracking" (`MD Abu Sahid`, `Joyant Sheikhar`, `Abid Shahriar`, `Shamsul Islam`), the assignee avatars in "Running Project Progression" Gantt velocity bars, and the attendee avatars in "Upcoming Meetings".
+- **Root Cause & Technical Analysis**:
+  - In commit `89319f9`, legacy WebP files (`sahid_withoutGlow.webp`, `joyant_withoutGlow.webp`, `abid_withoutGlow.webp`, `sumon_withoutGlow.webp`, `jenifa_withoutGlow.webp`, and `*_withGlow.webp`) were deleted when new photos (`sahidceo.webp`, `joyantcto.webp`, `shahriarcoo.webp`) were added.
+  - However, `/admin` overview widgets (`TeamLiveTrackingSidebar.tsx`, `RunningProjectProgression.tsx`, `UpcomingMeetingsSchedule.tsx`, `TeamLiveTracking.tsx`, `RunningProjectsCards.tsx`, `UpcomingMeetings.tsx`, `TeamManagement.tsx`) still referenced the deleted filenames.
+  - In addition, `TeamLiveTrackingSidebar.tsx` lacked the `group` class on member cards, and none of the widgets had an error fallback, resulting in native browser broken-image icons and fragmented alt text (`Joya...`, `Abid...`, `Sha...`).
+- **Key Changes Implemented**:
+  - **Asset Restoration**: Restored missing WebP team assets (`sumon_withoutGlow.webp`, `sumon_withGlow.webp`, `jenifa_withoutGlow.webp`, `jenifa_withGlow.webp`, `sahid_withoutGlow.webp`, `joyant_withoutGlow.webp`, `abid_withoutGlow.webp`, and glow variants) to `public/Team/` so both legacy and database-stored paths resolve with HTTP 200 OK.
+  - **Updated Widget Paths**: Pointed all admin widgets (`RunningProjectProgression`, `TeamLiveTrackingSidebar`, `UpcomingMeetingsSchedule`, `TeamLiveTracking`, `RunningProjectsCards`, `UpcomingMeetings`, `TeamManagement`, `TeamLayout`) to the official high-resolution pictures (`sahidceo.webp`, `joyantcto.webp`, `shahriarcoo.webp`).
+  - **Resilient Fallback Component (`AvatarWithFallback.tsx`)**: Created a dedicated client component that handles image load failures gracefully by rendering an obsidian/zinc gradient badge with initials, guaranteeing that broken image icons never appear.
+  - **Card Hover Transitions**: Added `group` class to member cards in `TeamLiveTrackingSidebar.tsx` so glow avatar transitions on hover execute smoothly.
+- **Files Modified / Created**:
+  - `public/Team/*`: Restored missing WebP team assets.
+  - `src/components/ui/AvatarWithFallback.tsx`: Created reusable resilient avatar component.
+  - `src/components/admin/overview/TeamLiveTrackingSidebar.tsx`: Updated to official assets, added `group`, and hooked `AvatarWithFallback`.
+  - `src/components/admin/overview/RunningProjectProgression.tsx`: Updated assignees paths and hooked `AvatarWithFallback`.
+  - `src/components/admin/overview/UpcomingMeetingsSchedule.tsx`: Updated attendee paths and hooked `AvatarWithFallback`.
+  - `src/components/admin/overview/TeamLiveTracking.tsx`: Updated member avatar paths and hooked `AvatarWithFallback`.
+  - `src/components/admin/overview/RunningProjectsCards.tsx`: Updated member avatar paths and hooked `AvatarWithFallback`.
+  - `src/components/admin/overview/UpcomingMeetings.tsx`: Updated attendee paths and hooked `AvatarWithFallback`.
+  - `src/components/admin/overview/TeamManagement.tsx`: Updated preset team picture options.
+  - `src/components/team/TeamLayout.tsx`: Updated fallback picture to `/Team/sahidceo.webp`.
+  - `SKILL.md` & `.agents/skills/crevosys-guide/SKILL.md`: Updated Section 4, Section 6, and Section 7.
+- **Verification & Outcome**:
+  - `npm run build` completed with exit code 0 across all 41 routes with zero TypeScript/lint errors.
+  - All 19 asset endpoints (direct WebP files and Next.js Image Optimization API endpoints) verified with HTTP 200 OK via automated test suite.
+- **Status**: `[COMPLETED]`
 
 ### [TASK-007] FAQ Section Mobile Typing & Expanding Chat Animation Restoration
 - **Completion Date**: 2026-10-27

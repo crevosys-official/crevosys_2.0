@@ -10,6 +10,7 @@ import {
   Calendar,
   Layers,
 } from "lucide-react";
+import AvatarWithFallback from "@/components/ui/AvatarWithFallback";
 
 interface ProjectTimelineItem {
   id: string;
@@ -58,8 +59,8 @@ const PROJECTS_PROGRESSION: ProjectTimelineItem[] = [
     trackBg: "bg-blue-900/30",
     phase: "IN PROGRESS",
     assignees: [
-      { name: "MD Abu Sahid", avatar: "/Team/sahid_withoutGlow.webp" },
-      { name: "Joyant Sheikhar", avatar: "/Team/joyant_withoutGlow.webp" },
+      { name: "MD Abu Sahid", avatar: "/Team/sahidceo.webp" },
+      { name: "Joyant Sheikhar", avatar: "/Team/joyantcto.webp" },
     ],
   },
   {
@@ -77,8 +78,8 @@ const PROJECTS_PROGRESSION: ProjectTimelineItem[] = [
     trackBg: "bg-purple-900/30",
     phase: "IN PROGRESS",
     assignees: [
-      { name: "Joyant Sheikhar", avatar: "/Team/joyant_withoutGlow.webp" },
-      { name: "Abid Shahriar", avatar: "/Team/abid_withoutGlow.webp" },
+      { name: "Joyant Sheikhar", avatar: "/Team/joyantcto.webp" },
+      { name: "Abid Shahriar", avatar: "/Team/shahriarcoo.webp" },
     ],
   },
   {
@@ -96,8 +97,8 @@ const PROJECTS_PROGRESSION: ProjectTimelineItem[] = [
     trackBg: "bg-pink-900/30",
     phase: "EDITING",
     assignees: [
-      { name: "MD Abu Sahid", avatar: "/Team/sahid_withoutGlow.webp" },
-      { name: "Abid Shahriar", avatar: "/Team/abid_withoutGlow.webp" },
+      { name: "MD Abu Sahid", avatar: "/Team/sahidceo.webp" },
+      { name: "Abid Shahriar", avatar: "/Team/shahriarcoo.webp" },
     ],
   },
   {
@@ -115,8 +116,8 @@ const PROJECTS_PROGRESSION: ProjectTimelineItem[] = [
     trackBg: "bg-amber-900/30",
     phase: "IN PROGRESS",
     assignees: [
-      { name: "MD Abu Sahid", avatar: "/Team/sahid_withoutGlow.webp" },
-      { name: "Joyant Sheikhar", avatar: "/Team/joyant_withoutGlow.webp" },
+      { name: "MD Abu Sahid", avatar: "/Team/sahidceo.webp" },
+      { name: "Joyant Sheikhar", avatar: "/Team/joyantcto.webp" },
     ],
   },
 ];
@@ -256,7 +257,7 @@ export default function RunningProjectProgression() {
                                 className="relative w-5 h-5 rounded-full overflow-hidden border border-white/20 bg-zinc-900"
                                 title={mem.name}
                               >
-                                <Image
+                                <AvatarWithFallback
                                   src={mem.avatar}
                                   alt={mem.name}
                                   width={20}

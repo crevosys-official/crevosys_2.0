@@ -9,6 +9,7 @@ import {
   ExternalLink,
   ChevronRight,
 } from "lucide-react";
+import AvatarWithFallback from "@/components/ui/AvatarWithFallback";
 
 export interface ProjectCardItem {
   id: string;
@@ -31,7 +32,7 @@ const RUNNING_PROJECTS: ProjectCardItem[] = [
     dateStart: "Oct 15, 2026",
     daysLeft: 16,
     team: [
-      { name: "MD Abu Sahid", avatar: "/Team/sahid_withoutGlow.webp" },
+      { name: "MD Abu Sahid", avatar: "/Team/sahidceo.webp" },
       { name: "Nahid Akter Jenifa", avatar: "/Team/jenifa_withoutGlow.webp" },
     ],
     liveUrl: "https://the-palace-resort.vercel.app",
@@ -45,8 +46,8 @@ const RUNNING_PROJECTS: ProjectCardItem[] = [
     dateStart: "Oct 28, 2026",
     daysLeft: 29,
     team: [
-      { name: "Joyant Sheikhar", avatar: "/Team/joyant_withoutGlow.webp" },
-      { name: "Abid Shahriar", avatar: "/Team/abid_withoutGlow.webp" },
+      { name: "Joyant Sheikhar", avatar: "/Team/joyantcto.webp" },
+      { name: "Abid Shahriar", avatar: "/Team/shahriarcoo.webp" },
     ],
     liveUrl: "https://meetup-restaurant.vercel.app",
     statusText: "Supabase Driver Geo-tracking",
@@ -59,8 +60,8 @@ const RUNNING_PROJECTS: ProjectCardItem[] = [
     dateStart: "Oct 08, 2026",
     daysLeft: 9,
     team: [
-      { name: "MD Abu Sahid", avatar: "/Team/sahid_withoutGlow.webp" },
-      { name: "Joyant Sheikhar", avatar: "/Team/joyant_withoutGlow.webp" },
+      { name: "MD Abu Sahid", avatar: "/Team/sahidceo.webp" },
+      { name: "Joyant Sheikhar", avatar: "/Team/joyantcto.webp" },
     ],
     liveUrl: "https://skyletbankltd.netlify.app",
     statusText: "Final Pen-Testing & Biometrics",
@@ -150,7 +151,7 @@ export default function RunningProjectsCards() {
                     className="relative w-7 h-7 rounded-full overflow-hidden border-2 border-zinc-900 bg-zinc-800"
                     title={mem.name}
                   >
-                    <Image
+                    <AvatarWithFallback
                       src={mem.avatar}
                       alt={mem.name}
                       width={28}

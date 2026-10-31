@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
 import {
   Radio,
 } from "lucide-react";
+import AvatarWithFallback from "@/components/ui/AvatarWithFallback";
 
 export type StatusType = "working" | "meeting" | "leave";
 
@@ -25,7 +25,7 @@ const INITIAL_MEMBERS: TeamMemberItem[] = [
     id: 1,
     name: "MD Abu Sahid",
     role: "CEO • MERN & UI/UX",
-    avatar: "/Team/sahid_withoutGlow.webp",
+    avatar: "/Team/sahidceo.webp",
     glowAvatar: "/Team/sahid_withGlow.webp",
     status: "working",
     task: "Next.js 15 App Router Architecture",
@@ -36,7 +36,7 @@ const INITIAL_MEMBERS: TeamMemberItem[] = [
     id: 2,
     name: "Joyant Sheikhar",
     role: "CTO • Software Dev",
-    avatar: "/Team/joyant_withoutGlow.webp",
+    avatar: "/Team/joyantcto.webp",
     glowAvatar: "/Team/joyant_withGlow.webp",
     status: "working",
     task: "Redis Session Caching & Supabase ORM",
@@ -47,7 +47,7 @@ const INITIAL_MEMBERS: TeamMemberItem[] = [
     id: 4,
     name: "Abid Shahriar",
     role: "COO • Web Developer",
-    avatar: "/Team/abid_withoutGlow.webp",
+    avatar: "/Team/shahriarcoo.webp",
     glowAvatar: "/Team/abid_withGlow.webp",
     status: "working",
     task: "Multi-Currency Stripe & SSLCommerz",
@@ -139,27 +139,21 @@ export default function TeamLiveTrackingSidebar() {
           return (
             <div
               key={member.id}
-              className="p-3 rounded-2xl bg-zinc-950/60 border border-white/5 hover:border-white/10 transition-all duration-200 flex items-center justify-between gap-3 shadow-sm"
+              className="group p-3 rounded-2xl bg-zinc-950/60 border border-white/5 hover:border-white/10 transition-all duration-200 flex items-center justify-between gap-3 shadow-sm"
             >
               <div className="flex items-center gap-3 min-w-0">
                 {/* Avatar with Glow hover & online dot */}
                 <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shrink-0 bg-zinc-900">
-                  <Image
+                  <AvatarWithFallback
                     src={member.avatar}
+                    glowSrc={member.glowAvatar}
                     alt={member.name}
                     width={40}
                     height={40}
-                    className="w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-0"
-                  />
-                  <Image
-                    src={member.glowAvatar}
-                    alt={member.name}
-                    width={40}
-                    height={40}
-                    className="w-full h-full object-cover absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    className="w-full h-full object-cover"
                   />
                   <span
-                    className={`absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2 border-zinc-950 ${
+                    className={`absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2 border-zinc-950 z-10 ${
                       isWorking
                         ? "bg-emerald-400"
                         : isMeeting
