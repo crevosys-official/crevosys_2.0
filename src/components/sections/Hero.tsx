@@ -6,7 +6,7 @@ import React, { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { shouldRunAnimations } from "@/lib/animation";
+import { shouldRunAnimations, isMobileDevice } from "@/lib/animation";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -136,6 +136,15 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
       // Plays cinematic reveal when at top; skips if already scrolled midway
       // =========================================================================
       const isAlreadyScrolled = window.scrollY > 30;
+      const isMobile = isMobileDevice();
+      const preloaderOpeningFired =
+        typeof window !== "undefined" && !!window.__crevosysPreloaderOpeningDispatched;
+      const preloaderDoneFired =
+        typeof window !== "undefined" && !!window.__crevosysPreloaderDone;
+      const preloaderElement =
+        typeof document !== "undefined" && document.getElementById("site-preloader");
+      const shouldWaitForPreloader =
+        !isMobile && !!preloaderElement && !preloaderOpeningFired && !preloaderDoneFired;
 
       if (isAlreadyScrolled) {
         gsap.set(".hero-reveal-word", { yPercent: 0, rotateX: 0, opacity: 1, filter: "blur(0px)" });
@@ -145,6 +154,7 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
         gsap.set(".hero-shape-wrapper", { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" });
       } else {
         const introTl = gsap.timeline({
+          paused: shouldWaitForPreloader,
           defaults: { ease: "power4.out" },
           onComplete: () => {
             ScrollTrigger.refresh();
@@ -201,13 +211,39 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
             "-=1.1"
           );
 
-        // Fast-forward intro if user scrolls immediately
-        const handleEarlyScroll = () => {
-          if (introTl.isActive()) {
-            introTl.progress(1);
-          }
-        };
-        window.addEventListener("scroll", handleEarlyScroll, { passive: true, once: true });
+        if (shouldWaitForPreloader) {
+          const onOpening = () => {
+            if (introTl.paused()) {
+              introTl.play();
+            }
+          };
+          window.addEventListener("preloader-opening", onOpening, { once: true });
+          window.addEventListener("preloader-done", onOpening, { once: true });
+
+          // Fallback safety timeout (4.5s) so intro will never stay paused forever
+          const safetyTimer = setTimeout(() => {
+            onOpening();
+          }, 4500);
+
+          // Fast-forward intro if user scrolls immediately
+          const handleEarlyScroll = () => {
+            clearTimeout(safetyTimer);
+            if (introTl.isActive() || introTl.paused()) {
+              introTl.progress(1);
+            }
+          };
+          window.addEventListener("scroll", handleEarlyScroll, { passive: true, once: true });
+        } else {
+          // If preloader was already done or skipped, play immediately
+          introTl.play();
+
+          const handleEarlyScroll = () => {
+            if (introTl.isActive()) {
+              introTl.progress(1);
+            }
+          };
+          window.addEventListener("scroll", handleEarlyScroll, { passive: true, once: true });
+        }
       }
 
       // =========================================================================

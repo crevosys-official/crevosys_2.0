@@ -3,6 +3,7 @@ import { Inter_Tight, Bebas_Neue, Anton } from "next/font/google";
 import "./globals.css";
 import { ReactLenis } from "@/lib/lenis";
 import { Toaster } from "@/components/ui/sonner";
+import Preloader from "@/components/ui/Preloader";
 import ScrollToTop from "@/components/layout/ScrollToTop";
 
 const interTight = Inter_Tight({
@@ -82,6 +83,7 @@ export default function RootLayout({
         className={`${interTight.variable} ${bebasNeue.variable} ${anton.variable} antialiased`}
       >
         <ReactLenis root>
+          <Preloader />
           {children}
           <ScrollToTop />
           <Toaster />

@@ -127,6 +127,8 @@ description: >-
 - **Error & Utility Pages**:
   - Custom 404 (`not-found.tsx`), Error handler (`error.tsx`), Root boundary (`global-error.tsx`).
   - Automated SEO assets: `sitemap.ts`, `robots.ts`, OpenGraph (`opengraph-image.jpg`), and Twitter preview (`twitter-image.jpg`).
+- **Cinematic Split-Shutter Preloader & Landing Page Reveal (`Preloader.tsx`)**:
+  - Split top/bottom curtains parting vertically (`yPercent: ±100`), 3D text flip ("Plan, Design, Build, Automate"), percentage counter (`0 -> 100%`), quick skip trigger, automatic mobile WebKit bypass, and synchronized Hero headline reveal.
 
 ### 4.2 Admin Panel & Back-Office (`/admin`)
 - **Admin Authentication**:
@@ -225,12 +227,78 @@ flowchart TD
 | Technology Section Mobile Icon Rotation Effect Restoration | `src/components/sections/technology.tsx` | `[COMPLETED]` | Restore continuous orbital icon rotation ticker and synchronized dashed track animation on mobile viewports while maintaining touch pause/resume inspection and WebKit stability. |
 | FAQ Section Mobile Typing & Expanding Chat Animation Restoration | `src/components/sections/Faq.tsx` | `[COMPLETED]` | Restore desktop typing indicator pulse and expanding bubble scroll animation on mobile viewports and desktop with accurate height measurement and hardware acceleration. |
 | Admin Dashboard Broken Images & Avatar Asset Restoration | `src/components/admin/overview/*`, `public/Team/*`, `src/data/defaultTeam.ts` | `[COMPLETED]` | Restore deleted team avatar assets (`sumon`, `jenifa`, `abid`, `joyant`, `sahid`), update admin dashboard image references to official pictures (`sahidceo.webp`, `joyantcto.webp`, `shahriarcoo.webp`), and implement resilient fallback rendering. |
+| Split-Shutter 3D Preloader & Landing Page Reveal Restoration | `src/components/ui/Preloader.tsx`, `src/app/layout.tsx`, `src/components/sections/Hero.tsx`, `src/app/globals.css` | `[COMPLETED]` | Restore the cinematic split-shutter curtain reveal, 3D word-flipping typography ("Plan, Design, Build, Automate"), percentage counter, and synchronized Hero entrance timeline with mobile bypass protection. |
+| Squad Section Portfolio Links, Joyant Name Wrap Fix & Role Restoration | `src/components/sections/TeamSquadSection.tsx`, `src/data/defaultTeam.ts`, `src/models/Team.ts`, `src/types/team.ts` | `[COMPLETED]` | Normalized Joyant's name to "JOYANT SHEIKHAR", prevented multi-line name breaks with single-line whitespace-nowrap and fluid responsive typography, expanded container height to prevent clipping, restored "CTO • Software Developer" role, and added interactive portfolio buttons and social link badges for squad members with smooth hover preservation. |
 
 ---
 
 ## 7. Task Completion Summaries & Change Log
 
 Every completed task is permanently recorded here to maintain historical transparency, prevent regression, and provide continuous context for engineering agents and human developers.
+
+### [TASK-010] About Page Squad Section Portfolio Links, Joyant Sheikhar Name Wrap Fix & Role Restoration
+- **Completion Date**: 2026-11-01
+- **Category**: UI Enhancement & Bugfix
+- **Target Components / Routes**: `/about`, `src/components/sections/TeamSquadSection.tsx`, `src/data/defaultTeam.ts`, `src/models/Team.ts`, `src/types/team.ts`, `src/components/admin/overview/TeamManagement.tsx`, `src/app/api/teams/*`
+- **Objective & Problem Statement**:
+  - In `/about`, Joyant's full legal name (`JOYANT SHEIKHAR GUPTA JOY`) was breaking onto two lines (`JOYANT SHEIKHAR GUPTA` / `JOY`), creating an unbalanced heading and pushing `.member-info` outside the fixed `h-[250px] overflow-hidden` container, which caused his role (`CTO • Software Developer`) and university to vanish.
+  - The squad section also lacked direct links/buttons to view each member's personal portfolio.
+  - Hovering a card and moving down toward the member info prematurely triggered `resetDefault` because the card row had its own `onMouseLeave`.
+- **Key Changes Implemented**:
+  - **Name Normalization & Kinetic Heading Sizing (`src/components/sections/TeamSquadSection.tsx`, `src/data/defaultTeam.ts`)**:
+    - Normalized Joyant's display name to `JOYANT SHEIKHAR` across default fallback data, API mapping, and live MongoDB document.
+    - Set `whitespace-nowrap` and fluid responsive sizing (`text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[7.5rem]`) so long names never wrap into fragmented multi-line breaks.
+    - Expanded kinetic container height from `h-[250px]` to `min-h-[160px] sm:min-h-[200px] md:min-h-[240px] lg:min-h-[280px]` to comfortably fit the heading, designation line, and portfolio buttons without clipping.
+  - **Portfolio Links & Social Badges Integration (`TeamSquadSection.tsx`)**:
+    - Added `portfolio` and `socialLinks` properties to `TeamMember` interface, `CREVOSYS_MEMBERS`, and `defaultTeam.ts`.
+    - Integrated a sleek glassmorphic `"View Portfolio"` action pill with `Briefcase` and `ArrowUpRight` icons inside `.member-info` with `pointer-events-auto`.
+    - Added GitHub and LinkedIn quick-access icon buttons next to the portfolio pill.
+    - Removed `onMouseLeave={resetDefault}` from the top cards row `div` so users can transition the cursor down from the avatar card to click "View Portfolio" without resetting the view.
+  - **Schema & Admin Integration (`src/models/Team.ts`, `src/types/team.ts`, `TeamManagement.tsx`, `api/teams/route.ts`)**:
+    - Added `portfolio` field to Mongoose schema `TeamSchema` and `ITeam` TypeScript interface.
+    - Updated `TeamManagement.tsx` admin modal to allow entering and updating portfolio URLs.
+    - Updated live MongoDB team documents and default fallbacks for Sahid (`https://www.sahiddev.me`), Joyant (`https://www.joyantsgj.dev`), and Abid (`https://codewithshahriar.vercel.app`) with their live personal portfolio URLs.
+- **Files Modified**:
+  - `src/components/sections/TeamSquadSection.tsx`
+  - `src/data/defaultTeam.ts`
+  - `src/models/Team.ts`
+  - `src/types/team.ts`
+  - `src/app/api/teams/route.ts`
+  - `src/components/admin/overview/TeamManagement.tsx`
+  - `SKILL.md` & `.agents/skills/crevosys-guide/SKILL.md`
+- **Verification & Outcome**: `npm run build` completed with code 0 across all 41 routes with zero TypeScript or linting errors. Live API `/api/teams` verified returning updated data.
+- **Status**: `[COMPLETED]`
+
+### [TASK-009] Split-Shutter 3D Preloader & Landing Page Reveal Restoration
+- **Completion Date**: 2026-11-01
+- **Category**: Feature Restoration & Animation Synchronization
+- **Target Components / Routes**: `src/components/ui/Preloader.tsx`, `src/app/layout.tsx`, `src/components/sections/Hero.tsx`, `src/app/globals.css`
+- **Objective & Problem Statement**:
+  - The user requested restoring the previous landing page pre-loader reveal component that had been removed in commit `9d02a55`.
+- **Root Cause & Technical Analysis**:
+  - The preloader was previously uninstalled in commit `9d02a55`, leaving the landing page to load immediately without the obsidian split-shutter opening and synchronized 3D typography entrance.
+- **Key Changes Implemented**:
+  - **Component Restoration (`src/components/ui/Preloader.tsx`)**:
+    - Recreated `Preloader.tsx` with split obsidian shutters (`topPanelRef` lifts `yPercent: -100`, `bottomPanelRef` drops `yPercent: +100`).
+    - Synchronized 3D perspective word flips: `"We Plan,"` -> `"Design,"` -> `"Build,"` -> `"Automate."` with atmospheric glow and vibrant gradients.
+    - Added digital percentage ticker (`0% -> 100%`) over 2.2s with gradient progress line.
+    - Integrated Lenis scroll lock during loading with graceful scroll restore on completion.
+    - Added "Skip ➔" button, 3.5s safety timeout, and complete mobile/reduced-motion bypass.
+  - **Layout Integration (`src/app/layout.tsx`)**:
+    - Mounted `<Preloader />` inside `<ReactLenis root>` inside `<body>` to allow unified context and seamless top-level rendering (`z-[99999]`).
+  - **Hero Reveal Synchronization (`src/components/sections/Hero.tsx`)**:
+    - Re-connected `shouldWaitForPreloader` logic, pausing `introTl` until `preloader-opening` fires as the split shutters begin parting.
+    - Preserved early scroll fast-forward (`introTl.progress(1)`) and mobile bypass.
+  - **Mobile Safety CSS (`src/app/globals.css`)**:
+    - Re-applied `#site-preloader { display: none !important; ... }` on mobile / touch viewports, preventing any visual hydration flashes on mobile devices.
+- **Files Modified / Created**:
+  - `src/components/ui/Preloader.tsx`: Created preloader component.
+  - `src/app/layout.tsx`: Added `<Preloader />` to layout body.
+  - `src/components/sections/Hero.tsx`: Synchronized entrance animation with preloader events.
+  - `src/app/globals.css`: Added mobile bypass CSS rule.
+  - `SKILL.md` & `.agents/skills/crevosys-guide/SKILL.md`: Updated Section 4, Section 6, and Section 7.
+- **Verification & Outcome**: `npm run build` completed with exit code 0 across all 41 routes with zero type/lint errors.
+- **Status**: `[COMPLETED]`
 
 ### [TASK-008] Admin Dashboard Broken Images & Avatar Asset Restoration
 - **Completion Date**: 2026-10-27

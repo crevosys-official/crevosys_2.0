@@ -63,6 +63,7 @@ export default function TeamManagement() {
     picture: PRESET_TEAM_PICTURES[0].path,
     education: "Metropolitan University, Sylhet",
     bio: "",
+    portfolio: "",
     socialLinks: {
       linkedin: "",
       github: "",
@@ -106,6 +107,7 @@ export default function TeamManagement() {
       picture: PRESET_TEAM_PICTURES[0].path,
       education: "Metropolitan University, Sylhet",
       bio: "",
+      portfolio: "",
       socialLinks: {
         linkedin: "",
         github: "",
@@ -130,6 +132,7 @@ export default function TeamManagement() {
       picture: member.picture || PRESET_TEAM_PICTURES[0].path,
       education: member.education || "Metropolitan University, Sylhet",
       bio: member.bio || "",
+      portfolio: member.portfolio || member.socialLinks?.portfolio || "",
       socialLinks: {
         linkedin: member.socialLinks?.linkedin || "",
         github: member.socialLinks?.github || "",
@@ -1114,6 +1117,24 @@ export default function TeamManagement() {
                         setFormData({
                           ...formData,
                           socialLinks: { ...formData.socialLinks, email: e.target.value },
+                        })
+                      }
+                      className="w-full bg-zinc-900 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-[#ff8804]"
+                    />
+                  </div>
+
+                  <div className="space-y-1 sm:col-span-2">
+                    <label className="text-[11px] text-zinc-400 flex items-center gap-1 font-mono">
+                      <Briefcase size={11} /> Portfolio / Personal Website URL
+                    </label>
+                    <input
+                      type="url"
+                      placeholder="https://portfolio.example.com"
+                      value={formData.portfolio}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          portfolio: e.target.value,
                         })
                       }
                       className="w-full bg-zinc-900 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-[#ff8804]"

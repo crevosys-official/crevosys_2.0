@@ -9,11 +9,13 @@ export interface TeamMemberItem {
   picture: string;
   education?: string;
   bio?: string;
+  portfolio?: string;
   socialLinks?: {
     linkedin?: string;
     github?: string;
     twitter?: string;
     email?: string;
+    portfolio?: string;
   };
   order?: number;
   isActive?: boolean;
