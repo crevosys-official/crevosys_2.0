@@ -3,6 +3,7 @@
 import React, { useRef, useLayoutEffect, useEffect, useState, useCallback } from "react";
 import Image from "next/image";
 import gsap from "gsap";
+import { Briefcase, ArrowUpRight, Github, Linkedin } from "lucide-react";
 
 const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
@@ -13,6 +14,14 @@ export interface TeamMember {
   role: string;
   education?: string;
   image: string;
+  portfolio?: string;
+  socialLinks?: {
+    linkedin?: string;
+    github?: string;
+    twitter?: string;
+    email?: string;
+    portfolio?: string;
+  };
 }
 
 interface TeamSquadSectionProps {
@@ -27,6 +36,12 @@ export const CREVOSYS_MEMBERS: TeamMember[] = [
     role: "CEO • MERN Stack Developer & UI/UX Designer",
     education: "Metropolitan University, Sylhet",
     image: "/Team/sahidceo.webp",
+    portfolio: "https://www.sahiddev.me",
+    socialLinks: {
+      github: "https://github.com/sahidDev09",
+      linkedin: "https://linkedin.com",
+      portfolio: "https://www.sahiddev.me",
+    },
   },
   {
     id: 2,
@@ -34,6 +49,12 @@ export const CREVOSYS_MEMBERS: TeamMember[] = [
     role: "CTO • Software Developer",
     education: "Metropolitan University, Sylhet",
     image: "/Team/joyantcto.webp",
+    portfolio: "https://www.joyantsgj.dev",
+    socialLinks: {
+      github: "https://github.com/joyantgupta",
+      linkedin: "https://linkedin.com",
+      portfolio: "https://www.joyantsgj.dev",
+    },
   },
   {
     id: 3,
@@ -41,6 +62,12 @@ export const CREVOSYS_MEMBERS: TeamMember[] = [
     role: "COO • Web Developer",
     education: "Metropolitan University, Sylhet",
     image: "/Team/shahriarcoo.webp",
+    portfolio: "https://codewithshahriar.vercel.app",
+    socialLinks: {
+      github: "https://github.com/CodewithShahriar",
+      linkedin: "https://linkedin.com",
+      portfolio: "https://codewithshahriar.vercel.app",
+    },
   },
 ];
 
@@ -75,12 +102,36 @@ export default function TeamSquadSection({
               else if (nameLower.includes("abid") || nameLower.includes("shahriar")) imagePath = "/Team/shahriarcoo.webp";
               else imagePath = imagePath.replace(/\.png$/i, ".webp");
 
+              // Normalize name for squad display so long names like Joyant's don't break
+              let cleanName = (m.name || "").trim().toUpperCase();
+              if (cleanName.includes("JOYANT")) {
+                cleanName = "JOYANT SHEIKHAR";
+              }
+
+              // Ensure role is accurate and present
+              let memberRole = m.role || `${m.designation || ""} • ${m.position || ""}`.trim();
+              if (!memberRole || memberRole === "•" || memberRole.includes("undefined")) {
+                if (cleanName.includes("SAHID")) memberRole = "CEO • MERN Stack Developer & UI/UX Designer";
+                else if (cleanName.includes("JOYANT")) memberRole = "CTO • Software Developer";
+                else if (cleanName.includes("ABID") || cleanName.includes("SHAHRIAR")) memberRole = "COO • Web Developer";
+              }
+
+              // Resilient portfolio URL resolution
+              let portfolioUrl = m.portfolio || m.socialLinks?.portfolio || "";
+              if (!portfolioUrl || portfolioUrl.includes("github.com")) {
+                if (nameLower.includes("sahid")) portfolioUrl = "https://www.sahiddev.me";
+                else if (nameLower.includes("joyant")) portfolioUrl = "https://www.joyantsgj.dev";
+                else if (nameLower.includes("abid") || nameLower.includes("shahriar")) portfolioUrl = "https://codewithshahriar.vercel.app";
+              }
+
               return {
                 id: m._id || m.id,
-                name: m.name,
-                role: m.role || `${m.designation} • ${m.position}`,
+                name: cleanName,
+                role: memberRole,
                 education: m.education || "Metropolitan University, Sylhet",
                 image: imagePath,
+                portfolio: portfolioUrl,
+                socialLinks: m.socialLinks,
               };
             })
           );
@@ -414,7 +465,6 @@ export default function TeamSquadSection({
     >
       {/* Top Cards Row */}
       <div
-        onMouseLeave={resetDefault}
         className="relative z-10 mb-8 sm:mb-12 flex items-center justify-center gap-2.5 sm:gap-3.5 md:gap-4.5 px-4 py-2"
       >
         {squad.map((member, index) => (
@@ -441,7 +491,7 @@ export default function TeamSquadSection({
       </div>
 
       {/* Massive Kinetic Typography Display */}
-      <div className="relative flex h-[140px] sm:h-[180px] md:h-[220px] lg:h-[250px] w-full max-w-[1500px] items-center justify-center overflow-hidden text-center px-4">
+      <div className="relative flex min-h-[160px] sm:min-h-[200px] md:min-h-[240px] lg:min-h-[280px] h-[160px] sm:h-[200px] md:h-[240px] lg:h-[280px] w-full max-w-[1500px] items-center justify-center overflow-hidden text-center px-4">
         {/* Default Slide: "THE SQUAD" (Clean, bold, standalone) */}
         <div
           ref={(el) => {
@@ -465,32 +515,80 @@ export default function TeamSquadSection({
             }}
             className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none px-4"
           >
-            <h2 className="flex flex-wrap items-center justify-center font-anton font-normal uppercase tracking-tight text-[#e2e3de] [perspective:1200px] text-3xl sm:text-5xl md:text-7xl lg:text-[7.5rem] xl:text-[9rem] leading-[0.95] m-0">
+            <h2 className="flex items-center justify-center font-anton font-normal uppercase tracking-tight text-[#e2e3de] [perspective:1200px] text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[7.5rem] leading-[0.95] m-0 whitespace-nowrap">
               {renderSplitChars(member.name)}
             </h2>
 
-            {/* Member designation & education sub-line (Uses application font Inter Tight) */}
-            <div className="member-info mt-3 sm:mt-5 flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-3 text-xs sm:text-sm font-primary tracking-wide text-[#9ea3af]">
-              <span className="font-semibold text-[#cfd3dc]">{member.role}</span>
-              {member.education && (
-                <>
-                  <span className="hidden sm:inline opacity-30 text-[11px]">•</span>
-                  <div className="inline-flex items-center gap-1.5 font-medium text-[#a8adb9]">
-                    <svg
-                      className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-[#e2e3de] opacity-80 shrink-0"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+            {/* Member designation, education & portfolio sub-line */}
+            <div className="member-info mt-3 sm:mt-4 flex flex-col items-center justify-center gap-2 sm:gap-2.5 text-xs sm:text-sm font-primary tracking-wide text-[#9ea3af]">
+              {/* Role & Education line */}
+              <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-3">
+                <span className="font-semibold text-[#cfd3dc]">{member.role}</span>
+                {member.education && (
+                  <>
+                    <span className="hidden sm:inline opacity-30 text-[11px]">•</span>
+                    <div className="inline-flex items-center gap-1.5 font-medium text-[#a8adb9]">
+                      <svg
+                        className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-[#e2e3de] opacity-80 shrink-0"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                        <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                      </svg>
+                      <span>{member.education}</span>
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {/* Portfolio & Social Link Action Badges */}
+              {(member.portfolio || member.socialLinks?.github || member.socialLinks?.linkedin) && (
+                <div className="flex items-center gap-2 pt-0.5 pointer-events-auto z-20">
+                  {member.portfolio && (
+                    <a
+                      href={member.portfolio}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="group/port inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/[0.07] hover:bg-orange-500/15 border border-white/10 hover:border-orange-500/40 text-zinc-300 hover:text-white text-xs font-medium tracking-wide transition-all duration-300 shadow-sm active:scale-95 cursor-pointer backdrop-blur-md"
                     >
-                      <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
-                      <path d="M6 12v5c3 3 9 3 12 0v-5" />
-                    </svg>
-                    <span>{member.education}</span>
-                  </div>
-                </>
+                      <Briefcase className="w-3.5 h-3.5 text-orange-400 group-hover/port:rotate-12 transition-transform duration-300" />
+                      <span>View Portfolio</span>
+                      <ArrowUpRight className="w-3.5 h-3.5 text-zinc-400 group-hover/port:text-orange-400 group-hover/port:translate-x-0.5 group-hover/port:-translate-y-0.5 transition-all duration-300" />
+                    </a>
+                  )}
+
+                  {member.socialLinks?.github && member.socialLinks.github !== member.portfolio && (
+                    <a
+                      href={member.socialLinks.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="p-1.5 rounded-full bg-white/[0.07] hover:bg-white/[0.14] border border-white/10 hover:border-white/25 text-zinc-400 hover:text-white transition-all duration-200 cursor-pointer shadow-sm active:scale-95"
+                      title="GitHub Profile"
+                    >
+                      <Github className="w-3.5 h-3.5" />
+                    </a>
+                  )}
+
+                  {member.socialLinks?.linkedin && (
+                    <a
+                      href={member.socialLinks.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="p-1.5 rounded-full bg-white/[0.07] hover:bg-blue-500/20 border border-white/10 hover:border-blue-500/40 text-zinc-400 hover:text-blue-400 transition-all duration-200 cursor-pointer shadow-sm active:scale-95"
+                      title="LinkedIn Profile"
+                    >
+                      <Linkedin className="w-3.5 h-3.5" />
+                    </a>
+                  )}
+                </div>
               )}
             </div>
           </div>

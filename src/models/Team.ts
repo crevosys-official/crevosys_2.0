@@ -9,11 +9,13 @@ export interface ITeam extends Document {
   picture: string;
   education?: string;
   bio?: string;
+  portfolio?: string;
   socialLinks?: {
     linkedin?: string;
     github?: string;
     twitter?: string;
     email?: string;
+    portfolio?: string;
   };
   order: number;
   isActive: boolean;
@@ -74,11 +76,17 @@ const TeamSchema = new Schema<ITeam>(
       default: "",
       trim: true,
     },
+    portfolio: {
+      type: String,
+      default: "",
+      trim: true,
+    },
     socialLinks: {
       linkedin: { type: String, default: "" },
       github: { type: String, default: "" },
       twitter: { type: String, default: "" },
       email: { type: String, default: "" },
+      portfolio: { type: String, default: "" },
     },
     order: {
       type: Number,
