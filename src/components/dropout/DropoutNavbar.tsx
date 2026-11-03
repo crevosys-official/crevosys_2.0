@@ -3,6 +3,7 @@
 import React, { useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
 
 interface DropoutNavbarProps {
@@ -126,15 +127,18 @@ export const DropoutNavbar: React.FC<DropoutNavbarProps> = ({
 
         {/* Right Controls: GET IN TOUCH + Cominvi Animated Toggle */}
         <div className="flex items-center gap-3 sm:gap-4 pointer-events-auto">
-          {/* GET IN TOUCH Button (matches existing site) */}
+          {/* GET IN TOUCH Button (Semi-bold text + interactive icon pill) */}
           <Link
             href="/contact"
-            className="group relative hidden md:inline-flex items-center justify-center px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wider uppercase text-white bg-white/[0.08] hover:bg-white/[0.16] border border-white/15 hover:border-white/30 backdrop-blur-md transform-gpu transition-all duration-300 shadow-[0_2px_12px_rgba(0,0,0,0.3)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f47920]"
+            className="group relative hidden md:inline-flex items-center gap-2 sm:gap-2.5 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wider uppercase text-white bg-white/[0.08] hover:bg-white/[0.16] border border-white/15 hover:border-white/30 backdrop-blur-md transform-gpu transition-all duration-300 shadow-[0_2px_12px_rgba(0,0,0,0.3)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f47920]"
           >
-            <span>GET IN TOUCH</span>
+            <span className="font-semibold tracking-wider">GET IN TOUCH</span>
+            <span className="w-5 h-5 rounded-full bg-[#f47920]/20 text-[#f47920] group-hover:bg-[#f47920] group-hover:text-white flex items-center justify-center transition-all duration-300 shadow-sm">
+              <ArrowUpRight className="w-3 h-3 stroke-[2.5] transform transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </span>
           </Link>
 
-          {/* Interactive Menu Toggle Button */}
+          {/* Interactive Menu Toggle Button (Sized to perfectly match GET IN TOUCH button) */}
           <button
             type="button"
             onClick={onToggle}
@@ -143,7 +147,7 @@ export const DropoutNavbar: React.FC<DropoutNavbarProps> = ({
             aria-expanded={isOpen}
             aria-controls="dropout-nav-menu"
             aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
-            className="group relative flex items-center gap-3 sm:gap-3.5 pl-4 sm:pl-5 pr-1.5 sm:pr-2 py-1.5 rounded-full text-xs sm:text-sm font-semibold tracking-wider uppercase text-white bg-white/[0.08] hover:bg-white/[0.14] border border-white/15 hover:border-white/25 backdrop-blur-md transform-gpu transition-all duration-300 shadow-[0_2px_12px_rgba(0,0,0,0.3)] active:scale-95 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f47920]"
+            className="group relative flex items-center gap-2.5 sm:gap-3 pl-4 sm:pl-5 pr-2 sm:pr-2.5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wider uppercase text-white bg-white/[0.08] hover:bg-white/[0.16] border border-white/15 hover:border-white/30 backdrop-blur-md transform-gpu transition-all duration-300 shadow-[0_2px_12px_rgba(0,0,0,0.3)] active:scale-95 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f47920]"
           >
             {/* Text Roll Ticker (.is-menu_label-wrap) */}
             <div className="is-menu_label-wrap relative h-[1.3em] overflow-hidden leading-none select-none text-xs sm:text-sm font-semibold tracking-wider uppercase text-white pointer-events-none">
@@ -151,32 +155,32 @@ export const DropoutNavbar: React.FC<DropoutNavbarProps> = ({
                 ref={tickerTrackRef}
                 className="flex flex-col will-change-transform"
               >
-                <span className="h-[1.3em] flex items-center justify-end">
+                <span className="h-[1.3em] flex items-center justify-end font-semibold">
                   {isOpen ? "Close" : menuText}
                 </span>
-                <span className="h-[1.3em] flex items-center justify-end">
-                  {isOpen ? "Cerrar" : menuText}
+                <span className="h-[1.3em] flex items-center justify-end font-semibold">
+                  {isOpen ? "Close" : menuText}
                 </span>
               </div>
             </div>
 
-            {/* 48px Morphing Icon Container */}
+            {/* Compact Morphing Icon Container matching the GET IN TOUCH button height */}
             <div
               ref={iconContainerRef}
-              className="relative w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-white/20 bg-white/[0.08] flex items-center justify-center overflow-hidden transition-colors duration-300 flex-shrink-0"
+              className="relative w-5 h-5 sm:w-6 sm:h-6 rounded-full border border-white/20 bg-white/[0.08] flex items-center justify-center overflow-hidden transition-colors duration-300 flex-shrink-0"
               aria-hidden="true"
             >
               {/* Line 1: Top horizontal line */}
               <span
                 ref={line1Ref}
-                className="absolute left-[11px] sm:left-[13px] right-[11px] sm:right-[13px] h-[2px] bg-white rounded-full will-change-transform"
+                className="absolute left-[3.5px] sm:left-[4px] right-[3.5px] sm:right-[4px] h-[1.5px] bg-white rounded-full will-change-transform"
                 style={{ top: "42%" }}
               />
 
               {/* Line 2: Bottom horizontal line */}
               <span
                 ref={line2Ref}
-                className="absolute left-[11px] sm:left-[13px] right-[11px] sm:right-[13px] h-[2px] bg-white rounded-full will-change-transform origin-center"
+                className="absolute left-[3.5px] sm:left-[4px] right-[3.5px] sm:right-[4px] h-[1.5px] bg-white rounded-full will-change-transform origin-center"
                 style={{ bottom: "42%" }}
               />
             </div>

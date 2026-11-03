@@ -232,13 +232,42 @@ flowchart TD
 | Split-Shutter 3D Preloader & Landing Page Reveal Restoration | `src/components/ui/Preloader.tsx`, `src/app/layout.tsx`, `src/components/sections/Hero.tsx`, `src/app/globals.css` | `[COMPLETED]` | Restore the cinematic split-shutter curtain reveal, 3D word-flipping typography ("Plan, Design, Build, Automate"), percentage counter, and synchronized Hero entrance timeline with mobile bypass protection. |
 | Squad Section Portfolio Links, Joyant Name Wrap Fix & Role Restoration | `src/components/sections/TeamSquadSection.tsx`, `src/data/defaultTeam.ts`, `src/models/Team.ts`, `src/types/team.ts` | `[COMPLETED]` | Normalized Joyant's name to "JOYANT SHEIKHAR", prevented multi-line name breaks with single-line whitespace-nowrap and fluid responsive typography, expanded container height to prevent clipping, restored "CTO • Software Developer" role, and added interactive portfolio buttons and social link badges for squad members with smooth hover preservation. |
 | Cominvi-Style Animated Dropout Navigation Menu | `src/components/dropout/*`, `src/components/layout/*`, `src/app/page.tsx` | `[COMPLETED]` | Implement Cominvi-inspired dropout navigation architecture: `<DropoutLayout>`, fixed navbar with text ticker & morphing icon, navigation layer behind page with staggered links, dynamic page-wrap dropdown animation using GSAP CustomEase, scroll-aware visibility, and strict preservation of existing site styling. |
-| Dropout Menu Column 3 Contact Information & Social Media Handles Integration | `src/components/dropout/DropoutMenu.tsx`, `src/components/dropout/DropoutNavLink.tsx` | `[IN PROGRESS]` | Update Column 3 of the dropout navigation menu to display: 1st line location (Dhaka, Bangladesh), 2nd line phone number (+88 01855245281), 3rd line email (crevosysofficial@gmail.com), and 4th line interactive social media handle icons (GitHub, LinkedIn, Instagram, Facebook) with GSAP stagger animation and responsive typography. |
+| Dropout Menu Column 3 Contact Information & Social Media Handles Integration | `src/components/dropout/DropoutMenu.tsx`, `src/components/dropout/DropoutNavLink.tsx`, `src/components/dropout/DropoutNavbar.tsx` | `[COMPLETED]` | Update Column 3 of the dropout navigation menu to display: 1st line location (Dhaka, Bangladesh), 2nd line phone number (+88 01855245281), 3rd line email (crevosysofficial@gmail.com), and 4th line interactive social media handle icons (GitHub, LinkedIn, Instagram, Facebook). Synchronize menu toggle button dimensions with GET IN TOUCH button, eliminate "Cerrar" ticker string in favor of "Close", and enhance GET IN TOUCH with semi-bold typography and micro-animated icon pill. |
 
 ---
 
 ## 7. Task Completion Summaries & Change Log
 
 Every completed task is permanently recorded here to maintain historical transparency, prevent regression, and provide continuous context for engineering agents and human developers.
+
+### [TASK-012] Dropout Menu Column 3 Contact Information, Social Handles & Navbar Button Alignment
+- **Completion Date**: 2026-11-03
+- **Category**: UI Enhancement & Component Polish
+- **Target Components / Routes**: `src/components/dropout/DropoutMenu.tsx`, `src/components/dropout/DropoutNavLink.tsx`, `src/components/dropout/DropoutNavbar.tsx`
+- **Objective & Problem Statement**:
+  - In `DropoutMenu.tsx`, replace the previous Column 3 items with 4 distinct contact & social entries: 1st line location (Dhaka, Bangladesh), 2nd line phone number (+88 01855245281), 3rd line email (crevosysofficial@gmail.com), and 4th line interactive social media handle icons (GitHub, LinkedIn, Instagram, Facebook).
+  - Fix the menu toggle button size in `DropoutNavbar.tsx` so that its height and padding match the "GET IN TOUCH" button perfectly.
+  - Fix the ticker text roll when open: replace the Cominvi demo placeholder "Cerrar" (which read like "Cerror") with "Close".
+  - Update the "GET IN TOUCH" button with semi-bold typography (`font-semibold`) and add an interactive arrow icon pill (`ArrowUpRight`).
+- **Key Changes Implemented**:
+  - **DropoutMenu Column 3 Restructuring (`DropoutMenu.tsx`)**:
+    - Restructured Email, Phone Number, Address, and Social Handles into 4 clean, borderless rows matching the exact row heights (`.dropout-link-wrapper`) and baseline alignment of Columns 1 and 2, completely removing card backgrounds, borders, and extra wrapper padding.
+    - Directly aligned each contact item and icon flush with the column title ("Get in Touch"), keeping typography compact (`text-sm sm:text-[15px]`) and ensuring all 4 rows sit strictly inside the navigation vertical boundary.
+    - Preserved full GSAP stagger animation across all `.nav-link-item` elements.
+  - **DropoutNavLink External Link & Icon Support (`DropoutNavLink.tsx`)**:
+    - Added support for `external`, `icon`, and `textClassName` props on `DropoutLink`.
+    - Automatically detects external protocols (`http`, `mailto:`, `tel:`) and renders accessible `<a>` tags with `target="_blank"` and `rel="noopener noreferrer"`.
+  - **Navbar Toggle Button & GET IN TOUCH Symmetry (`DropoutNavbar.tsx`)**:
+    - Resized the menu toggle button's morphing icon circle from `48px` down to `w-5 h-5 sm:w-6 sm:h-6`, aligning the button's overall height, border radius, and padding (`py-2 sm:py-2.5`) directly with the "GET IN TOUCH" button.
+    - Fixed ticker text roll when menu is open: updated the second ticker line to `"Close"` (removing `"Cerrar"`).
+    - Upgraded "GET IN TOUCH" button with semi-bold text (`font-semibold`) and added a circular micro-animated `ArrowUpRight` icon pill with subtle orange background accent.
+- **Files Modified / Created**:
+  - `src/components/dropout/DropoutMenu.tsx`: Updated Column 3 with Location, Phone, Email, and Social media buttons.
+  - `src/components/dropout/DropoutNavLink.tsx`: Extended `DropoutLink` and added external link handling.
+  - `src/components/dropout/DropoutNavbar.tsx`: Synchronized button sizes, added icon to GET IN TOUCH, and fixed "Close" text ticker.
+  - `SKILL.md` & `.agents/skills/crevosys-guide/SKILL.md`: Updated Section 6 and Section 7.
+- **Verification & Outcome**: `npm run build` completed with exit code 0 across all 41 routes with zero TypeScript or linting errors.
+- **Status**: `[COMPLETED]`
 
 ### [TASK-011] Cominvi-Style Animated Dropout Navigation Menu Integration
 - **Completion Date**: 2026-11-02

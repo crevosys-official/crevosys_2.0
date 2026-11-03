@@ -9,6 +9,8 @@ import {
   Linkedin,
   Instagram,
   Facebook,
+  Sparkles,
+  ArrowUpRight,
 } from "lucide-react";
 import { DropoutNavLink, DropoutLink } from "./DropoutNavLink";
 
@@ -121,7 +123,8 @@ export const DropoutMenu = React.forwardRef<HTMLDivElement, DropoutMenuProps>(
 
             {/* Column 3: Contact Info & Social Media Handles */}
             <div className="flex flex-col space-y-1 sm:space-y-2">
-              <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-white/40 mb-1 select-none">
+              <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-white/50 mb-1 select-none flex items-center gap-1.5">
+                <Sparkles className="w-3 h-3 text-[#f47920]" />
                 Get in Touch
               </span>
 
@@ -135,48 +138,53 @@ export const DropoutMenu = React.forwardRef<HTMLDivElement, DropoutMenuProps>(
                 ))
               ) : (
                 <>
-                  {/* Line 1: Location */}
-                  <DropoutNavLink
-                    link={{
-                      label: CONTACT_INFO.location.label,
-                      href: CONTACT_INFO.location.href,
-                      icon: <MapPin className="w-4 h-4 stroke-[2.5]" />,
-                      external: true,
-                      textClassName:
-                        "!text-[1.25rem] sm:!text-[1.45rem] md:!text-[1.65rem] lg:!text-[1.85rem]",
-                    }}
-                    onClick={onLinkClick}
-                  />
+                  {/* Row 1: Email */}
+                  <div className="dropout-link-wrapper nav-link-item">
+                    <a
+                      href={CONTACT_INFO.email.href}
+                      onClick={onLinkClick}
+                      className="group flex items-center gap-2.5 sm:gap-3 text-zinc-300 hover:text-white transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#f47920] rounded-md"
+                    >
+                      <Mail className="w-4 h-4 text-[#f47920] flex-shrink-0 transition-transform duration-200 group-hover:scale-110" />
+                      <span className="text-sm sm:text-[15px] font-medium tracking-tight group-hover:translate-x-0.5 transition-transform duration-200 truncate">
+                        {CONTACT_INFO.email.label}
+                      </span>
+                    </a>
+                  </div>
 
-                  {/* Line 2: Phone Number */}
-                  <DropoutNavLink
-                    link={{
-                      label: CONTACT_INFO.phone.label,
-                      href: CONTACT_INFO.phone.href,
-                      icon: <Phone className="w-4 h-4 stroke-[2.5]" />,
-                      external: true,
-                      textClassName:
-                        "!text-[1.25rem] sm:!text-[1.45rem] md:!text-[1.65rem] lg:!text-[1.85rem]",
-                    }}
-                    onClick={onLinkClick}
-                  />
+                  {/* Row 2: Phone Number */}
+                  <div className="dropout-link-wrapper nav-link-item">
+                    <a
+                      href={CONTACT_INFO.phone.href}
+                      onClick={onLinkClick}
+                      className="group flex items-center gap-2.5 sm:gap-3 text-zinc-300 hover:text-white transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#f47920] rounded-md"
+                    >
+                      <Phone className="w-4 h-4 text-[#f47920] flex-shrink-0 transition-transform duration-200 group-hover:scale-110" />
+                      <span className="text-sm sm:text-[15px] font-medium tracking-tight group-hover:translate-x-0.5 transition-transform duration-200 truncate">
+                        {CONTACT_INFO.phone.label}
+                      </span>
+                    </a>
+                  </div>
 
-                  {/* Line 3: Email */}
-                  <DropoutNavLink
-                    link={{
-                      label: CONTACT_INFO.email.label,
-                      href: CONTACT_INFO.email.href,
-                      icon: <Mail className="w-4 h-4 stroke-[2.5]" />,
-                      external: true,
-                      textClassName:
-                        "!text-[1.05rem] sm:!text-[1.2rem] md:!text-[1.35rem] lg:!text-[1.45rem] xl:!text-[1.55rem]",
-                    }}
-                    onClick={onLinkClick}
-                  />
+                  {/* Row 3: Address / Location */}
+                  <div className="dropout-link-wrapper nav-link-item">
+                    <a
+                      href={CONTACT_INFO.location.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={onLinkClick}
+                      className="group flex items-center gap-2.5 sm:gap-3 text-zinc-300 hover:text-white transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#f47920] rounded-md"
+                    >
+                      <MapPin className="w-4 h-4 text-[#f47920] flex-shrink-0 transition-transform duration-200 group-hover:scale-110" />
+                      <span className="text-sm sm:text-[15px] font-medium tracking-tight group-hover:translate-x-0.5 transition-transform duration-200 truncate">
+                        {CONTACT_INFO.location.label}
+                      </span>
+                    </a>
+                  </div>
 
-                  {/* Line 4: Social Media Handles Icons (GitHub, LinkedIn, Instagram, Facebook) */}
+                  {/* Row 4: Social Media Handles */}
                   <div className="dropout-link-wrapper nav-link-item !overflow-visible">
-                    <div className="flex items-center gap-3 sm:gap-4 py-1">
+                    <div className="flex items-center gap-2.5 sm:gap-3">
                       {CONTACT_INFO.socials.map((social) => {
                         const Icon = social.icon;
                         return (
@@ -186,9 +194,9 @@ export const DropoutMenu = React.forwardRef<HTMLDivElement, DropoutMenuProps>(
                             target="_blank"
                             rel="noopener noreferrer"
                             aria-label={`Follow CrevoSys on ${social.name}`}
-                            className="group/social w-10 h-10 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl bg-white/[0.06] hover:bg-[#f47920] border border-white/10 hover:border-[#f47920] text-zinc-300 hover:text-white flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-[0_0_20px_rgba(244,121,32,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f47920]"
+                            className="group/social w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-white/[0.05] hover:bg-[#f47920] border border-white/10 hover:border-[#f47920] text-zinc-300 hover:text-white flex items-center justify-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_16px_rgba(244,121,32,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f47920]"
                           >
-                            <Icon className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover/social:scale-110" />
+                            <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-300 group-hover/social:scale-110" />
                           </a>
                         );
                       })}
