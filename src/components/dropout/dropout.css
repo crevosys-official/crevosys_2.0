@@ -1,0 +1,104 @@
+/* =========================================================================
+   Cominvi-Style Animated Dropout Navigation Menu Styles
+   Scoped specifically to dropout navigation components to protect site styling
+   ========================================================================= */
+
+/* Navigation item wrapper */
+.dropout-link-wrapper {
+  height: 2.7em;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 640px) {
+  .dropout-link-wrapper {
+    height: 2.3em;
+  }
+}
+
+/* Navlink slide-in interaction:
+   Arrow starts hidden off-left (-2.5em), label at left edge.
+   On hover, entire container translates to 0, revealing arrow. */
+.dropout-navlink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  transform: translateX(-2.5em);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dropout-navlink:hover,
+  .dropout-navlink:focus-visible {
+    transform: translateX(0);
+  }
+}
+
+/* On touch/coarse devices, show arrow naturally without requiring hover */
+@media (hover: none) or (pointer: coarse) {
+  .dropout-navlink {
+    transform: translateX(0);
+  }
+}
+
+/* Directional Arrow Container */
+.dropout-arrow-box {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  border-radius: 0.5rem;
+  background-color: #f47920;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.dropout-navlink:hover .dropout-arrow-box {
+  background-color: #ff8c3a;
+  transform: scale(1.05);
+}
+
+/* Navigation Typography */
+.dropout-navlink-text {
+  font-size: 2.15rem;
+  font-weight: 700;
+  white-space: nowrap;
+  line-height: 1.1;
+  color: #f0eeee;
+  letter-spacing: -0.02em;
+  transition: color 0.3s ease;
+}
+
+@media (max-width: 1024px) {
+  .dropout-navlink-text {
+    font-size: 1.65rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .dropout-navlink-text {
+    font-size: 1.35rem;
+  }
+}
+
+.dropout-navlink:hover .dropout-navlink-text {
+  color: #ffffff;
+}
+
+/* Menu Toggle Button & Ticker */
+.is-menu_label-wrap {
+  overflow: hidden;
+  height: 1.3em;
+  line-height: 1.3em;
+}
+
+/* Page Wrapper rounded clipping */
+.page-wrap {
+  will-change: top, transform, border-radius;
+}
+

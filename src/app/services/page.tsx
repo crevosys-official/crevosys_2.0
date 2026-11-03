@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { connectDB } from "@/lib/mongodb";
 import { Service } from "@/models/Service";
-import Navbar from "@/components/layout/Navbar";
+import DropoutLayout from "@/components/dropout/DropoutLayout";
 import Footer from "@/components/layout/Footer";
 import PixelCard from "@/components/animation/PlexCard";
 import { Star, MoveRight, ArrowRight } from "lucide-react";
@@ -41,23 +41,22 @@ export default async function ServicesDirectoryPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#000000] text-white selection:bg-[#ff8804]/30 relative overflow-hidden">
-      {/* Background glow overlay */}
-      <div className="fixed inset-0 z-0 pointer-events-none flex items-center justify-center w-full h-full">
-        <Image
-          src="/gradient.webp"
-          alt=""
-          fill
-          sizes="100vw"
-          style={{ objectFit: "cover" }}
-          className="opacity-15"
-          priority
-        />
-      </div>
+    <DropoutLayout menuText="Menu">
+      <div className="min-h-screen bg-[#000000] text-white selection:bg-[#ff8804]/30 relative overflow-hidden">
+        {/* Background glow overlay */}
+        <div className="fixed inset-0 z-0 pointer-events-none flex items-center justify-center w-full h-full">
+          <Image
+            src="/gradient.webp"
+            alt=""
+            fill
+            sizes="100vw"
+            style={{ objectFit: "cover" }}
+            className="opacity-15"
+            priority
+          />
+        </div>
 
-      <Navbar />
-
-      <main className="relative z-10 pt-36 pb-24 container mx-auto px-6">
+        <main className="relative z-10 pt-36 pb-24 container mx-auto px-6">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
           <div className="border border-white/10 bg-white/[0.03] backdrop-blur-md w-fit flex justify-center mx-auto px-4 py-1.5 rounded-full gap-2 items-center text-zinc-300 text-xs">
@@ -144,5 +143,6 @@ export default async function ServicesDirectoryPage() {
 
       <Footer />
     </div>
+  </DropoutLayout>
   );
 }

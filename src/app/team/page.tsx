@@ -1,37 +1,38 @@
 import React from "react";
 import TeamLayout from "@/components/team/TeamLayout";
 import Image from "next/image";
-import Navbar from "@/components/layout/Navbar";
+import DropoutLayout from "@/components/dropout/DropoutLayout";
 
 const page = () => {
   return (
-    <div
-      className={[
-        "min-h-screen",
-        "bg-gradient-to-t from-[#070707] to-[#221f35]",
-      ].join(" ")}>
+    <DropoutLayout menuText="Menu">
       <div
         className={[
-          "fixed inset-0 z-0 pointer-events-none",
-          "flex items-center justify-center w-full h-full",
+          "min-h-screen",
+          "bg-gradient-to-t from-[#070707] to-[#221f35]",
         ].join(" ")}>
-        <Image
-          src="/gradient.webp"
-          alt=""
-          fill
-          sizes="100vw"
-          style={{ objectFit: "cover" }}
-          className="opacity-10"
-          priority
-        />
+        <div
+          className={[
+            "fixed inset-0 z-0 pointer-events-none",
+            "flex items-center justify-center w-full h-full",
+          ].join(" ")}>
+          <Image
+            src="/gradient.webp"
+            alt=""
+            fill
+            sizes="100vw"
+            style={{ objectFit: "cover" }}
+            className="opacity-10"
+            priority
+          />
+        </div>
+        <div className="md:container md:mx-auto xl:container xl:mx-auto">
+          <main>
+            <TeamLayout />
+          </main>
+        </div>
       </div>
-      <div className="md:container md:mx-auto xl:container xl:mx-auto">
-        <Navbar />
-        <main>
-          <TeamLayout />
-        </main>
-      </div>
-    </div>
+    </DropoutLayout>
   );
 };
 

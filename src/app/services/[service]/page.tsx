@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { connectDB } from "@/lib/mongodb";
 import { Service } from "@/models/Service";
-import Navbar from "@/components/layout/Navbar";
+import DropoutLayout from "@/components/dropout/DropoutLayout";
 import Footer from "@/components/layout/Footer";
 import PixelCard from "@/components/animation/PlexCard";
 import { Button } from "@/components/ui/button";
@@ -127,21 +127,20 @@ export default async function DynamicServicePage({ params }: ServicePageProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-t from-[#070707] via-[#090912] to-[#121124] text-white selection:bg-[#ff8804]/30 relative overflow-hidden">
-      {/* Background overlay */}
-      <div className="fixed inset-0 z-0 pointer-events-none flex items-center justify-center w-full h-full">
-        <Image
-          src="/gradient.webp"
-          alt="gradient background"
-          fill
-          style={{ objectFit: "cover" }}
-          className="opacity-15"
-        />
-      </div>
+    <DropoutLayout menuText="Menu">
+      <div className="min-h-screen bg-gradient-to-t from-[#070707] via-[#090912] to-[#121124] text-white selection:bg-[#ff8804]/30 relative overflow-hidden">
+        {/* Background overlay */}
+        <div className="fixed inset-0 z-0 pointer-events-none flex items-center justify-center w-full h-full">
+          <Image
+            src="/gradient.webp"
+            alt="gradient background"
+            fill
+            style={{ objectFit: "cover" }}
+            className="opacity-15"
+          />
+        </div>
 
-      <Navbar />
-
-      <main className="relative z-10 pt-32 pb-24">
+        <main className="relative z-10 pt-32 pb-24">
         {/* Breadcrumb Navigation */}
         <div className="container mx-auto px-6 mb-8">
           <nav className="flex items-center gap-2 text-xs text-zinc-500 font-mono">
@@ -335,5 +334,6 @@ export default async function DynamicServicePage({ params }: ServicePageProps) {
 
       <Footer />
     </div>
+  </DropoutLayout>
   );
 }
