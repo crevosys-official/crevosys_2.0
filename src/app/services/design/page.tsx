@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import Navbar from "@/components/layout/Navbar";
+import DropoutLayout from "@/components/dropout/DropoutLayout";
 import Footer from "@/components/layout/Footer";
 import GetTouch from "@/components/sections/GetTouch";
 import Image from "next/image";
@@ -69,23 +69,22 @@ const DesignPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#000000] text-white selection:bg-orange-500/30 relative overflow-hidden font-primary">
-      {/* Background overlay matched with landing page */}
-      <div className="fixed inset-0 z-0 pointer-events-none flex items-center justify-center w-full h-full">
-        <Image
-          src="/gradient.webp"
-          alt=""
-          fill
-          sizes="100vw"
-          style={{ objectFit: "cover" }}
-          className="opacity-10"
-          priority
-        />
-      </div>
+    <DropoutLayout menuText="Menu">
+      <div className="min-h-screen bg-[#000000] text-white selection:bg-orange-500/30 relative overflow-hidden font-primary">
+        {/* Background overlay matched with landing page */}
+        <div className="fixed inset-0 z-0 pointer-events-none flex items-center justify-center w-full h-full">
+          <Image
+            src="/gradient.webp"
+            alt=""
+            fill
+            sizes="100vw"
+            style={{ objectFit: "cover" }}
+            className="opacity-10"
+            priority
+          />
+        </div>
 
-      <Navbar />
-
-      <main className="relative z-10 pt-28 sm:pt-32 pb-12">
+        <main className="relative z-10 pt-28 sm:pt-32 pb-12">
         {/* Breadcrumb Navigation */}
         <div className="container mx-auto px-4 sm:px-6 mb-8 sm:mb-10">
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs text-zinc-400 font-mono">
@@ -300,6 +299,7 @@ const DesignPage = () => {
 
       <Footer />
     </div>
+  </DropoutLayout>
   );
 };
 

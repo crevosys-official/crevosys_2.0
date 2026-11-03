@@ -1,20 +1,17 @@
 import Image from "next/image";
 import React from "react";
-import Navbar from "@/components/layout/Navbar";
+import DropoutLayout from "@/components/dropout/DropoutLayout";
 import ContactLayout from "@/components/contact/ContactLayout";
 
 const page = () => {
   return (
-    <div>
-        
+    <DropoutLayout menuText="Menu">
       {/* background container */}
       <div
         className={[
           "min-h-screen relative overflow-hidden",
           "bg-gradient-to-t from-[#070707] to-[#221f35]",
         ].join(" ")}>
-        <Navbar />
-
         <div
           className={[
             "fixed inset-0 z-0 pointer-events-none overflow-hidden",
@@ -45,7 +42,7 @@ const page = () => {
           <ContactLayout />
         </main>
       </div>
-    </div>
+    </DropoutLayout>
   );
 };
 

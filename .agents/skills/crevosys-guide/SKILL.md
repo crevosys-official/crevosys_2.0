@@ -129,6 +129,8 @@ description: >-
   - Automated SEO assets: `sitemap.ts`, `robots.ts`, OpenGraph (`opengraph-image.jpg`), and Twitter preview (`twitter-image.jpg`).
 - **Cinematic Split-Shutter Preloader & Landing Page Reveal (`Preloader.tsx`)**:
   - Split top/bottom curtains parting vertically (`yPercent: ±100`), 3D text flip ("Plan, Design, Build, Automate"), percentage counter (`0 -> 100%`), quick skip trigger, automatic mobile WebKit bypass, and synchronized Hero headline reveal.
+- **Cominvi-Style Animated Dropout Navigation Menu (`DropoutLayout.tsx`)**:
+  - Reusable `<DropoutLayout>` architecture with fixed navbar (`.navbar`), concealed 3-column navigation layer (`.nav-inner`), dynamic page-wrap dropdown animation using GSAP `CustomEase` ("cominviEase"), text roll ticker, 48px morphing icon, arrow-reveal interactive navlinks, scroll-aware visibility, and strict preservation of existing site styling.
 
 ### 4.2 Admin Panel & Back-Office (`/admin`)
 - **Admin Authentication**:
@@ -229,12 +231,91 @@ flowchart TD
 | Admin Dashboard Broken Images & Avatar Asset Restoration | `src/components/admin/overview/*`, `public/Team/*`, `src/data/defaultTeam.ts` | `[COMPLETED]` | Restore deleted team avatar assets (`sumon`, `jenifa`, `abid`, `joyant`, `sahid`), update admin dashboard image references to official pictures (`sahidceo.webp`, `joyantcto.webp`, `shahriarcoo.webp`), and implement resilient fallback rendering. |
 | Split-Shutter 3D Preloader & Landing Page Reveal Restoration | `src/components/ui/Preloader.tsx`, `src/app/layout.tsx`, `src/components/sections/Hero.tsx`, `src/app/globals.css` | `[COMPLETED]` | Restore the cinematic split-shutter curtain reveal, 3D word-flipping typography ("Plan, Design, Build, Automate"), percentage counter, and synchronized Hero entrance timeline with mobile bypass protection. |
 | Squad Section Portfolio Links, Joyant Name Wrap Fix & Role Restoration | `src/components/sections/TeamSquadSection.tsx`, `src/data/defaultTeam.ts`, `src/models/Team.ts`, `src/types/team.ts` | `[COMPLETED]` | Normalized Joyant's name to "JOYANT SHEIKHAR", prevented multi-line name breaks with single-line whitespace-nowrap and fluid responsive typography, expanded container height to prevent clipping, restored "CTO • Software Developer" role, and added interactive portfolio buttons and social link badges for squad members with smooth hover preservation. |
+| Cominvi-Style Animated Dropout Navigation Menu | `src/components/dropout/*`, `src/components/layout/*`, `src/app/page.tsx` | `[COMPLETED]` | Implement Cominvi-inspired dropout navigation architecture: `<DropoutLayout>`, fixed navbar with text ticker & morphing icon, navigation layer behind page with staggered links, dynamic page-wrap dropdown animation using GSAP CustomEase, scroll-aware visibility, and strict preservation of existing site styling. |
+| Dropout Menu Column 3 Contact Information & Social Media Handles Integration | `src/components/dropout/DropoutMenu.tsx`, `src/components/dropout/DropoutNavLink.tsx`, `src/components/dropout/DropoutNavbar.tsx` | `[COMPLETED]` | Update Column 3 of the dropout navigation menu to display: 1st line location (Dhaka, Bangladesh), 2nd line phone number (+88 01855245281), 3rd line email (crevosysofficial@gmail.com), and 4th line interactive social media handle icons (GitHub, LinkedIn, Instagram, Facebook). Synchronize menu toggle button dimensions with GET IN TOUCH button, eliminate "Cerrar" ticker string in favor of "Close", and enhance GET IN TOUCH with semi-bold typography and micro-animated icon pill. |
 
 ---
 
 ## 7. Task Completion Summaries & Change Log
 
 Every completed task is permanently recorded here to maintain historical transparency, prevent regression, and provide continuous context for engineering agents and human developers.
+
+### [TASK-012] Dropout Menu Column 3 Contact Information, Social Handles & Navbar Button Alignment
+- **Completion Date**: 2026-11-03
+- **Category**: UI Enhancement & Component Polish
+- **Target Components / Routes**: `src/components/dropout/DropoutMenu.tsx`, `src/components/dropout/DropoutNavLink.tsx`, `src/components/dropout/DropoutNavbar.tsx`
+- **Objective & Problem Statement**:
+  - In `DropoutMenu.tsx`, replace the previous Column 3 items with 4 distinct contact & social entries: 1st line location (Dhaka, Bangladesh), 2nd line phone number (+88 01855245281), 3rd line email (crevosysofficial@gmail.com), and 4th line interactive social media handle icons (GitHub, LinkedIn, Instagram, Facebook).
+  - Fix the menu toggle button size in `DropoutNavbar.tsx` so that its height and padding match the "GET IN TOUCH" button perfectly.
+  - Fix the ticker text roll when open: replace the Cominvi demo placeholder "Cerrar" (which read like "Cerror") with "Close".
+  - Update the "GET IN TOUCH" button with semi-bold typography (`font-semibold`) and add an interactive arrow icon pill (`ArrowUpRight`).
+- **Key Changes Implemented**:
+  - **DropoutMenu Column 3 Restructuring (`DropoutMenu.tsx`)**:
+    - Restructured Email, Phone Number, Address, and Social Handles into 4 clean, borderless rows matching the exact row heights (`.dropout-link-wrapper`) and baseline alignment of Columns 1 and 2, completely removing card backgrounds, borders, and extra wrapper padding.
+    - Directly aligned each contact item and icon flush with the column title ("Get in Touch"), keeping typography compact (`text-sm sm:text-[15px]`) and ensuring all 4 rows sit strictly inside the navigation vertical boundary.
+    - Preserved full GSAP stagger animation across all `.nav-link-item` elements.
+  - **DropoutNavLink External Link & Icon Support (`DropoutNavLink.tsx`)**:
+    - Added support for `external`, `icon`, and `textClassName` props on `DropoutLink`.
+    - Automatically detects external protocols (`http`, `mailto:`, `tel:`) and renders accessible `<a>` tags with `target="_blank"` and `rel="noopener noreferrer"`.
+  - **Navbar Toggle Button & GET IN TOUCH Symmetry (`DropoutNavbar.tsx`)**:
+    - Resized the menu toggle button's morphing icon circle from `48px` down to `w-5 h-5 sm:w-6 sm:h-6`, aligning the button's overall height, border radius, and padding (`py-2 sm:py-2.5`) directly with the "GET IN TOUCH" button.
+    - Fixed ticker text roll when menu is open: updated the second ticker line to `"Close"` (removing `"Cerrar"`).
+    - Upgraded "GET IN TOUCH" button with semi-bold text (`font-semibold`) and added a circular micro-animated `ArrowUpRight` icon pill with subtle orange background accent.
+- **Files Modified / Created**:
+  - `src/components/dropout/DropoutMenu.tsx`: Updated Column 3 with Location, Phone, Email, and Social media buttons.
+  - `src/components/dropout/DropoutNavLink.tsx`: Extended `DropoutLink` and added external link handling.
+  - `src/components/dropout/DropoutNavbar.tsx`: Synchronized button sizes, added icon to GET IN TOUCH, and fixed "Close" text ticker.
+  - `SKILL.md` & `.agents/skills/crevosys-guide/SKILL.md`: Updated Section 6 and Section 7.
+- **Verification & Outcome**: `npm run build` completed with exit code 0 across all 41 routes with zero TypeScript or linting errors.
+- **Status**: `[COMPLETED]`
+
+### [TASK-011] Cominvi-Style Animated Dropout Navigation Menu Integration
+- **Completion Date**: 2026-11-02
+- **Category**: Feature Implementation & Animation Engineering
+- **Target Components / Routes**: `src/components/dropout/*`, `src/components/layout/DropoutLayout.tsx`, `src/app/page.tsx`, `src/app/about/page.tsx`, `src/app/team/page.tsx`, `src/app/contact/page.tsx`, `src/app/services/page.tsx`, `src/app/services/[service]/page.tsx`, `src/app/services/*`, `src/app/not-found.tsx`
+- **Objective & Problem Statement**:
+  - Implement a premium, Cominvi-inspired animated dropout navigation menu in Next.js App Router using GSAP and CustomEase.
+  - When the user triggers the menu, the main page card (`.page-wrap`) drops down smoothly with rounded top corners, revealing a 3-column navigation layer (`.nav-inner`) behind it with staggered link animations.
+  - Ensure the Cominvi navbar and dropout maneuver function consistently across every page on the site (Homepage, About, Team, Contact, Services directory, Service detail pages, 404), while preserving each page's specific background colors, design, and layout.
+- **Key Changes Implemented**:
+  - **Modular Architecture (`src/components/dropout/`)**:
+    - Created `DropoutLayout.tsx` as a reusable top-level wrapper exposing `{children}`, `logo`, `menuText`, and `links` props.
+    - Created `DropoutNavbar.tsx` (`.navbar`, `z-[998]`) preserving CrevoSys logo, GET IN TOUCH button, accessible menu toggle, text roll ticker (`.is-menu_label-wrap`), and 48px morphing icon (parallel lines -> plus sign on hover -> 45deg cross with `#f47920` accent background when open).
+    - Created `DropoutMenu.tsx` (`.nav-inner`, `z-10`) positioned behind `.page-wrap`, organizing navigation into 3 responsive columns, featuring interactive language switcher (`EN | ES`), and social media icons (Instagram, Facebook, LinkedIn, GitHub).
+    - Created `DropoutNavLink.tsx` featuring 32px × 32px rounded square directional arrow boxes and bold navigation typography (`2.15rem`) that slide in from `translateX(-2.5em)` to `translateX(0)` on hover with cubic-bezier transition.
+    - Created `dropout.css` with scoped styles for ticker, navlink transforms, and wrapper transitions without contaminating global stylesheets.
+  - **GSAP CustomEase Dropout Animation**:
+    - Registered `CustomEase.create("cominviEase", "M0,0 C0.6,0 0,1 1,1")`.
+    - Implemented coordinated 1.1s GSAP timeline: dynamically calculates dropdown position (`navBottom + 7 * fontSize` on desktop, `18em` on tablet, `34em` on mobile), animates `.page-wrap` (`top: dropdownTop`, `scale: (window.innerWidth - 64) / window.innerWidth`, `borderRadius: "1rem"`, `transformOrigin: "50% 0%"`), and staggers links (`fromTo` with `y: -25 -> 0, opacity: 0 -> 1, stagger: 0.03`).
+    - Made timeline completely reversible on toggle close or by clicking the lowered `.page-wrap` card via a dedicated backdrop overlay.
+  - **Scroll-Aware Navbar Visibility & Accessibility**:
+    - Hides navbar on scroll down > 80px (`y: -100, opacity: 0`) and reveals on scroll up (`y: 0, opacity: 1`), with scroll hiding suspended while menu is open.
+    - Integrated with Lenis smooth-scroll (`lenis.stop()` / `lenis.start()`) and native body overflow lock.
+    - Added full keyboard accessibility (`aria-expanded`, `aria-controls`, `aria-label`, Escape key close) and `prefers-reduced-motion` compliance.
+  - **Full Sitewide Rollout (`src/app/*`)**:
+    - Wrapped all public pages (`/`, `/about`, `/team`, `/contact`, `/services`, `/services/[service]`, `/services/development`, `/services/design`, `/services/automation`, `/services/marketing`, `not-found.tsx`) with `<DropoutLayout menuText="Menu">`.
+    - Preserved each page's unique background colors and atmospheric effects (`#000000`, `#050508`, gradients, ambient radial glows) within its `.page-wrap` container.
+- **Files Modified / Created**:
+  - `src/components/dropout/DropoutLayout.tsx`: Created master layout component.
+  - `src/components/dropout/DropoutNavbar.tsx`: Created fixed navbar with ticker and morphing icon.
+  - `src/components/dropout/DropoutMenu.tsx`: Created 3-column navigation layer behind page.
+  - `src/components/dropout/DropoutNavLink.tsx`: Created arrow-reveal navigation links.
+  - `src/components/dropout/dropout.css`: Scoped component styling.
+  - `src/components/layout/DropoutLayout.tsx`: Re-export for layout component path.
+  - `src/app/page.tsx`: Integrated `DropoutLayout` on homepage.
+  - `src/app/about/page.tsx`: Integrated `DropoutLayout` on about page.
+  - `src/app/team/page.tsx`: Integrated `DropoutLayout` on team page.
+  - `src/app/contact/page.tsx`: Integrated `DropoutLayout` on contact page.
+  - `src/app/services/page.tsx`: Integrated `DropoutLayout` on services hub page.
+  - `src/app/services/[service]/page.tsx`: Integrated `DropoutLayout` on dynamic service route.
+  - `src/app/services/development/page.tsx`: Integrated `DropoutLayout` on development service page.
+  - `src/app/services/design/page.tsx`: Integrated `DropoutLayout` on design service page.
+  - `src/app/services/automation/page.tsx`: Integrated `DropoutLayout` on automation service page.
+  - `src/app/services/marketing/page.tsx`: Integrated `DropoutLayout` on marketing service page.
+  - `src/app/not-found.tsx`: Integrated `DropoutLayout` on 404 page.
+  - `SKILL.md` & `.agents/skills/crevosys-guide/SKILL.md`: Updated Section 4, 6, and 7.
+- **Verification & Outcome**: `npm run build` completed with exit code 0 across all 41 routes with zero TypeScript or linting errors. Dev server confirmed clean hydration and full interaction fidelity.
+- **Status**: `[COMPLETED]`
 
 ### [TASK-010] About Page Squad Section Portfolio Links, Joyant Sheikhar Name Wrap Fix & Role Restoration
 - **Completion Date**: 2026-11-01

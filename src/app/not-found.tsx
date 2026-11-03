@@ -5,24 +5,22 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
-import Navbar from "@/components/layout/Navbar";
+import DropoutLayout from "@/components/dropout/DropoutLayout";
 
 export default function NotFound() {
   return (
-    <div className="h-screen h-[100dvh] max-h-screen bg-[#000000] text-white flex flex-col justify-between relative overflow-hidden font-sans selection:bg-purple-500/30">
-      {/* Top Navbar */}
-      <Navbar />
-
-      {/* Website Background Gradient */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <Image
-          src="/gradient.webp"
-          alt="gradient background"
-          fill
-          style={{ objectFit: "cover" }}
-          className="opacity-15"
-        />
-      </div>
+    <DropoutLayout menuText="Menu">
+      <div className="min-h-screen bg-[#000000] text-white flex flex-col justify-between relative overflow-hidden font-sans selection:bg-purple-500/30">
+        {/* Website Background Gradient */}
+        <div className="fixed inset-0 pointer-events-none z-0">
+          <Image
+            src="/gradient.webp"
+            alt="gradient background"
+            fill
+            style={{ objectFit: "cover" }}
+            className="opacity-15"
+          />
+        </div>
 
       {/* Ambient Radial Lighting matching the character's pastel fur palette */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden flex items-center justify-center">
@@ -122,5 +120,6 @@ export default function NotFound() {
         CrevoSys • 404 Not Found
       </footer>
     </div>
+  </DropoutLayout>
   );
 }
