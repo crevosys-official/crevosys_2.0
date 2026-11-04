@@ -49,7 +49,6 @@ export const DropoutLayout: React.FC<DropoutLayoutProps> = ({
 
   // Animation timeline & state refs
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
-  const lastScrollY = useRef(0);
   const isNavbarHidden = useRef(false);
 
   const lenis = useLenis();
@@ -258,43 +257,22 @@ export const DropoutLayout: React.FC<DropoutLayoutProps> = ({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, closeMenu]);
 
-  // Scroll-aware navbar visibility
+  // Top-only navbar visibility: only display when at the top of the page (scrollY <= 20)
   useEffect(() => {
+    // If mounted while already scrolled down, hide immediately without transition flash
+    if (typeof window !== "undefined" && window.scrollY > 20 && navbarRef.current) {
+      isNavbarHidden.current = true;
+      gsap.set(navbarRef.current, { y: -100, opacity: 0 });
+    }
+
     const handleScroll = () => {
       // Suspend scroll hiding while menu is open
       if (isOpen) return;
 
       const currentScrollY = window.scrollY;
-      const diff = currentScrollY - lastScrollY.current;
 
-      if (currentScrollY > 80) {
-        if (diff > 8 && !isNavbarHidden.current) {
-          // Scrolling down beyond 80px: hide navbar
-          isNavbarHidden.current = true;
-          if (navbarRef.current) {
-            gsap.to(navbarRef.current, {
-              y: -100,
-              opacity: 0,
-              duration: 0.35,
-              ease: "power2.out",
-              overwrite: "auto",
-            });
-          }
-        } else if (diff < -8 && isNavbarHidden.current) {
-          // Scrolling upward: reveal navbar
-          isNavbarHidden.current = false;
-          if (navbarRef.current) {
-            gsap.to(navbarRef.current, {
-              y: 0,
-              opacity: 1,
-              duration: 0.35,
-              ease: "power2.out",
-              overwrite: "auto",
-            });
-          }
-        }
-      } else {
-        // At or near top (< 80px)
+      if (currentScrollY <= 20) {
+        // At the top: show navbar
         if (isNavbarHidden.current) {
           isNavbarHidden.current = false;
           if (navbarRef.current) {
@@ -307,14 +285,37 @@ export const DropoutLayout: React.FC<DropoutLayoutProps> = ({
             });
           }
         }
+      } else {
+        // Scrolled down away from top: hide navbar (never show on scroll-up unless back at top)
+        if (!isNavbarHidden.current) {
+          isNavbarHidden.current = true;
+          if (navbarRef.current) {
+            gsap.to(navbarRef.current, {
+              y: -100,
+              opacity: 0,
+              duration: 0.35,
+              ease: "power2.out",
+              overwrite: "auto",
+            });
+          }
+        }
       }
-
-      lastScrollY.current = currentScrollY;
     };
 
+    handleScroll();
+
+    if (lenis) {
+      lenis.on("scroll", handleScroll);
+    }
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [isOpen]);
+
+    return () => {
+      if (lenis) {
+        lenis.off("scroll", handleScroll);
+      }
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [isOpen, lenis]);
 
   // Viewport resize handling: recalculate dropdown position if open
   useEffect(() => {
