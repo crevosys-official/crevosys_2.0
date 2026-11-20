@@ -491,14 +491,14 @@ export default function Integrations() {
       {/* Ambient Background Glow */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div
-          className="absolute left-1/2 bottom-0 -translate-x-1/2 w-[850px] max-w-[95vw] h-[480px] rounded-full blur-2xl md:blur-[110px] transform-gpu opacity-40"
+          className="absolute left-1/2 bottom-0 -translate-x-1/2 w-[850px] max-w-[95vw] h-[480px] rounded-full hidden md:block blur-2xl md:blur-[110px] transform-gpu opacity-40"
           style={{
             background:
               "radial-gradient(ellipse at 50% 85%, rgba(147, 51, 234, 0.45) 0%, rgba(79, 70, 229, 0.25) 40%, transparent 70%)",
           }}
         />
         <div
-          className="absolute left-1/2 top-10 -translate-x-1/2 w-[650px] max-w-[85vw] h-[300px] rounded-full blur-2xl md:blur-[120px] transform-gpu opacity-25"
+          className="absolute left-1/2 top-10 -translate-x-1/2 w-[650px] max-w-[85vw] h-[300px] rounded-full hidden md:block blur-2xl md:blur-[120px] transform-gpu opacity-25"
           style={{
             background: "radial-gradient(circle, rgba(168, 85, 247, 0.3) 0%, transparent 70%)",
           }}

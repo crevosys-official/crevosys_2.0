@@ -233,12 +233,36 @@ flowchart TD
 | Squad Section Portfolio Links, Joyant Name Wrap Fix & Role Restoration | `src/components/sections/TeamSquadSection.tsx`, `src/data/defaultTeam.ts`, `src/models/Team.ts`, `src/types/team.ts` | `[COMPLETED]` | Normalized Joyant's name to "JOYANT SHEIKHAR", prevented multi-line name breaks with single-line whitespace-nowrap and fluid responsive typography, expanded container height to prevent clipping, restored "CTO • Software Developer" role, and added interactive portfolio buttons and social link badges for squad members with smooth hover preservation. |
 | Cominvi-Style Animated Dropout Navigation Menu | `src/components/dropout/*`, `src/components/layout/*`, `src/app/page.tsx` | `[COMPLETED]` | Implement Cominvi-inspired dropout navigation architecture: `<DropoutLayout>`, fixed navbar with text ticker & morphing icon, navigation layer behind page with staggered links, dynamic page-wrap dropdown animation using GSAP CustomEase, scroll-aware visibility, and strict preservation of existing site styling. |
 | Dropout Menu Column 3 Contact Information & Social Media Handles Integration | `src/components/dropout/DropoutMenu.tsx`, `src/components/dropout/DropoutNavLink.tsx`, `src/components/dropout/DropoutNavbar.tsx` | `[COMPLETED]` | Update Column 3 of the dropout navigation menu to display: 1st line location (Dhaka, Bangladesh), 2nd line phone number (+88 01855245281), 3rd line email (crevosysofficial@gmail.com), and 4th line interactive social media handle icons (GitHub, LinkedIn, Instagram, Facebook). Synchronize menu toggle button dimensions with GET IN TOUCH button, eliminate "Cerrar" ticker string in favor of "Close", and enhance GET IN TOUCH with semi-bold typography and micro-animated icon pill. |
+| Navbar Sticky-on-Scroll-Up Removal & Top-Only Display Restoration | `src/components/dropout/DropoutLayout.tsx` | `[COMPLETED]` | Eliminate sticky navbar reveal on scroll up (`diff < -8`). Restore top-only navbar display (`scrollY <= 20`) so the navbar only appears when the user is at the top of the page and hides when scrolling down. |
 
 ---
 
 ## 7. Task Completion Summaries & Change Log
 
 Every completed task is permanently recorded here to maintain historical transparency, prevent regression, and provide continuous context for engineering agents and human developers.
+
+### [TASK-013] Navbar Sticky-on-Scroll-Up Removal & Top-Only Display Restoration
+- **Completion Date**: 2026-11-03
+- **Category**: Bugfix & UI Refinement
+- **Target Components / Routes**: `src/components/dropout/DropoutLayout.tsx`
+- **Objective & Problem Statement**:
+  - The user requested removing the sticky navbar behavior where scrolling up in the middle of a page causes the navbar to slide down and display.
+  - The navbar should only be positioned and displayed at the top of the page (`scrollY <= 20`). When scrolling down away from the top, it hides; when scrolling up anywhere down the page, it remains hidden, only appearing when the user scrolls back to the very top.
+- **Root Cause & Technical Analysis**:
+  - In TASK-011, `DropoutLayout.tsx` introduced a directional scroll delta check (`diff < -8 && isNavbarHidden.current`) which caused the navbar to animate back into view whenever the user scrolled upward, regardless of scroll position down the page.
+- **Key Changes Implemented**:
+  - **Removed Scroll-Up Sticky Reveal**: Eliminated the `diff < -8` scroll-up reveal trigger and `lastScrollY` delta calculation in `DropoutLayout.tsx`.
+  - **Restored Top-Only Visibility Boundary (`scrollY <= 20`)**:
+    - When `window.scrollY <= 20`, the navbar is displayed at the top (`y: 0, opacity: 1`).
+    - When `window.scrollY > 20`, the navbar is smoothly hidden (`y: -100, opacity: 0`).
+    - Scrolling up in the middle of the page no longer triggers any visibility change; the navbar strictly remains hidden until reaching the top boundary.
+    - Added immediate non-animated mounting check (`gsap.set(navbarRef.current, { y: -100, opacity: 0 })`) if the page is mounted while already scrolled down, avoiding hydration visual flashes.
+    - Synchronized with both native window scroll events and Lenis scroll listeners (`lenis.on("scroll", ...)`).
+- **Files Modified / Created**:
+  - `src/components/dropout/DropoutLayout.tsx`: Updated scroll listener to only display navbar when at the top (`scrollY <= 20`).
+  - `SKILL.md` & `.agents/skills/crevosys-guide/SKILL.md`: Updated Section 6 roadmap status to `[COMPLETED]` and recorded Task Summary in Section 7.
+- **Verification & Outcome**: `npm run build` completed with exit code 0 across all 41 routes with zero TypeScript or linting errors.
+- **Status**: `[COMPLETED]`
 
 ### [TASK-012] Dropout Menu Column 3 Contact Information, Social Handles & Navbar Button Alignment
 - **Completion Date**: 2026-11-03

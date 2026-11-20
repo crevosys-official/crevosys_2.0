@@ -307,8 +307,8 @@ export default function ScrollFaq({ items = DEFAULT_FAQS }: { items?: FAQItemDat
       className="relative w-full py-10 md:py-16 px-4 sm:px-6 md:px-12 flex flex-col items-center justify-center overflow-hidden"
     >
       {/* Ambient background glow to match app theme and card colors */}
-      <div className="absolute top-1/3 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[350px] bg-[#071FA9]/15 blur-2xl md:blur-[120px] transform-gpu rounded-full pointer-events-none -z-10" />
-      <div className="absolute top-2/3 right-1/4 translate-x-1/2 -translate-y-1/2 w-[500px] h-[350px] bg-[#D79DBA]/10 blur-2xl md:blur-[120px] transform-gpu rounded-full pointer-events-none -z-10" />
+      <div className="absolute top-1/3 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[350px] bg-[#071FA9]/15 hidden md:block blur-2xl md:blur-[120px] transform-gpu rounded-full pointer-events-none -z-10" />
+      <div className="absolute top-2/3 right-1/4 translate-x-1/2 -translate-y-1/2 w-[500px] h-[350px] bg-[#D79DBA]/10 hidden md:block blur-2xl md:blur-[120px] transform-gpu rounded-full pointer-events-none -z-10" />
 
       {/* Small Header matched with other sections */}
       <div className="faq-header flex flex-col gap-4 mb-16 md:mb-24 text-center">

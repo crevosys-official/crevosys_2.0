@@ -84,7 +84,6 @@ export default function Preloader() {
   const lenisRef = useRef(lenis);
   const isDoneRef = useRef(false);
   const isMobileRef = useRef(false);
-  const initializedRef = useRef(false);
   const masterTlRef = useRef<gsap.core.Timeline | null>(null);
 
   // Keep lenisRef up-to-date and maintain desktop scroll lock independently
@@ -211,10 +210,6 @@ export default function Preloader() {
       return;
     }
 
-    // Prevent duplicate animation in React Strict Mode
-    if (initializedRef.current) return;
-    initializedRef.current = true;
-
     // Dismiss immediately if window is resized to mobile during preloading
     const handleResize = () => {
       if (isMobileDevice() && !isDoneRef.current) {
@@ -229,14 +224,6 @@ export default function Preloader() {
     }
     document.body.style.overflow = "hidden";
     document.documentElement.style.overflow = "hidden";
-
-    // Hard safety timeout: Desktop preloader will NEVER hang or block the user (3.5s max)
-    const safetyTimer = setTimeout(() => {
-      if (!isDoneRef.current) {
-        console.warn("[Preloader] Safety timeout reached (3.5s). Forcing completion to unblock view.");
-        handleSkip();
-      }
-    }, 3500);
 
     // Viewport resize & orientation change handler
     const handleResizeOrOrientation = () => {
@@ -418,9 +405,18 @@ export default function Preloader() {
       setIsComplete(true);
     });
 
+    // Hard safety timeout: never block the user longer than the timeline + 1.5s grace
+    const safetyTimer = setTimeout(() => {
+      if (!isDoneRef.current) {
+        console.warn("[Preloader] Safety timeout reached. Forcing completion to unblock view.");
+        handleSkip();
+      }
+    }, masterTl.duration() * 1000 + 1500);
+
     return () => {
       clearTimeout(safetyTimer);
       window.removeEventListener("resize", handleResize);
+      window.removeEventListener("resize", handleResizeOrOrientation);
       window.removeEventListener("orientationchange", handleResizeOrOrientation);
       masterTl.kill();
       cleanupAndUnlock();
@@ -452,18 +448,6 @@ export default function Preloader() {
       >
         {/* Subtle Ambient Bottom Glow */}
         <div className="absolute -bottom-[25%] left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-t from-[#ff6a00]/[0.10] via-purple-600/[0.06] to-transparent blur-[140px] rounded-full pointer-events-none" />
-      </div>
-
-      {/* Top-Right Quick Skip Button */}
-      <div className="fixed top-5 right-5 sm:top-7 sm:right-7 z-50 pointer-events-auto">
-        <button
-          onClick={handleSkip}
-          type="button"
-          aria-label="Skip introduction"
-          className="px-3.5 py-1.5 rounded-full text-xs font-mono tracking-wider text-zinc-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-colors uppercase cursor-pointer"
-        >
-          Skip ➔
-        </button>
       </div>
 
       {/* CENTER: "We [Plan, / Design, / Build, / Automate.]" */}
