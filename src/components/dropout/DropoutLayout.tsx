@@ -346,6 +346,9 @@ export const DropoutLayout: React.FC<DropoutLayoutProps> = ({
     };
   }, [isOpen, calculateDropdownTop]);
 
+  // Route change unmounts this mid-close-animation, killing onReverseComplete — re-enable the global Lenis here.
+  useEffect(() => () => lenis?.start(), [lenis]);
+
   // Clean up on component unmount
   useEffect(() => {
     return () => {

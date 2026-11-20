@@ -321,9 +321,9 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
 
       {/* Ambient background blur lights with GPU acceleration and responsive mobile blur */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[20%] left-[-10%] w-[550px] max-w-[80vw] h-[450px] bg-blue-600/[0.08] blur-2xl md:blur-[140px] transform-gpu rounded-full" />
-        <div className="absolute top-[30%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] max-w-[95vw] h-[450px] bg-gradient-to-r from-blue-600/[0.08] via-indigo-600/[0.11] to-purple-600/[0.09] blur-2xl md:blur-[135px] transform-gpu rounded-full" />
-        <div className="absolute top-[25%] right-[-10%] w-[550px] max-w-[80vw] h-[450px] bg-purple-600/[0.08] blur-2xl md:blur-[140px] transform-gpu rounded-full" />
+        <div className="absolute top-[20%] left-[-10%] w-[550px] max-w-[80vw] h-[450px] bg-blue-600/[0.08] hidden md:block blur-2xl md:blur-[140px] transform-gpu rounded-full" />
+        <div className="absolute top-[30%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] max-w-[95vw] h-[450px] bg-gradient-to-r from-blue-600/[0.08] via-indigo-600/[0.11] to-purple-600/[0.09] hidden md:block blur-2xl md:blur-[135px] transform-gpu rounded-full" />
+        <div className="absolute top-[25%] right-[-10%] w-[550px] max-w-[80vw] h-[450px] bg-purple-600/[0.08] hidden md:block blur-2xl md:blur-[140px] transform-gpu rounded-full" />
       </div>
 
       {/* Main Content Area */}
@@ -424,7 +424,7 @@ const Hero: React.FC<HeroProps> = ({ onCursorEnter, onCursorLeave }) => {
         {/* Ambient glow matching the 3D shape gradient */}
         <div
           ref={glowRef}
-          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-[320px] bg-gradient-to-r from-blue-600/30 via-purple-600/35 to-pink-500/30 blur-2xl md:blur-[130px] transform-gpu rounded-full pointer-events-none will-change-transform"
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-[320px] bg-gradient-to-r from-blue-600/30 via-purple-600/35 to-pink-500/30 hidden md:block blur-2xl md:blur-[130px] transform-gpu rounded-full pointer-events-none will-change-transform"
         />
 
         {/* Parallax Container driven by GSAP ScrollTrigger */}
